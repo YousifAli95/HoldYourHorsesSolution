@@ -1,0 +1,69 @@
+﻿@model KassaVM[]
+@section JS{
+     <script src="~/JS/kassa.js" defer></script>
+}
+@section CSS{
+    <link rel="stylesheet" href="~/CSS/kassa.css">
+}
+
+<div class="artikel-container" id="container">
+<div>
+
+@if (Model != null && Model?.Count() != 0)
+	{
+		<div class="another-container">
+		<h1>Din kundvagn</h1>
+	@foreach (var item in Model)
+	{
+	<div class="artikel" id="@item.ArtikelNr">
+		<div class="img-div">
+		<img src="@item.GetPictureUrl()" />
+		</div>
+		<div class="pris-namn">
+		<p class="p-namn">@item.ArtikelNamn</p>
+		<p>@item.getPriceFormatted() kr</p>
+	
+		</div>
+			<div>
+		 	<svg onclick="deleteItem(@item.ArtikelNr, @item.Pris, @item.Antal)" class="trash" id="trash" x="0px" y="0px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+                <path fill="#1D1D1B" d="M459.232,60.687h-71.955c-1.121-17.642-15.631-31.657-33.553-31.657H161.669
+    c-17.921,0-32.441,14.015-33.553,31.657H64.579c-18.647,0-33.767,15.12-33.767,33.768v8.442c0,18.648,15.12,33.768,33.767,33.768
+    h21.04v342.113c0,13.784,11.179,24.963,24.963,24.963h308.996c13.784,0,24.964-11.179,24.964-24.963V136.665h14.691
+    c18.663,0,33.768-15.12,33.768-33.768v-8.442C493,75.807,477.896,60.687,459.232,60.687z M196.674,443.725
+    c0,12.58-10.197,22.803-22.802,22.803c-12.598,0-22.803-10.223-22.803-22.803v-284.9c0-12.597,10.205-22.802,22.803-22.802
+    c12.605,0,22.802,10.206,22.802,22.802V443.725z M287.887,443.725c0,12.58-10.205,22.803-22.803,22.803
+    s-22.803-10.223-22.803-22.803v-284.9c0-12.597,10.205-22.802,22.803-22.802s22.803,10.206,22.803,22.802V443.725z M379.099,443.725
+    c0,12.58-10.205,22.803-22.803,22.803c-12.613,0-22.803-10.223-22.803-22.803v-284.9c0-12.597,10.189-22.802,22.803-22.802
+    c12.598,0,22.803,10.206,22.803,22.802V443.725z"></path>
+              </svg>
+			  <P class="p-antal">@item.Antal st </P>
+			  </div>
+	
+	</div>
+	}
+
+	
+
+	<div class="summa">
+		
+			 <div class="line"></div>
+			 <span id="summa">Summa: </span>
+			 <span id="totalsumma">
+			@KassaVM.getPriceFormatted(Model.Sum(x => x.Pris *  x.Antal)) kr</span>
+
+	<div class="kassa-btn-div">
+        <button class="btn" id="rensakorg" onclick="rensakorg()">Töm varukorg</button>
+        <button class="btn" id="betalning" onclick="checkout()" >Till betalning</button>
+    </div>
+	</div>
+	</div>
+		}
+    else
+	{
+		<h1>Din kundvagn är tom</h1>
+		<button class="tom-kassa-btn" id="fortsättHandla" onclick="location.href='/'" >Bläddra bland våra produkter</button> 
+
+    }
+</div>
+</div>	
+

@@ -1,0 +1,96 @@
+﻿
+.race {
+    position: relative;
+    margin-top: 40px;
+}
+.race-container{
+    min-height:350px;
+}
+.goal {
+    position: absolute;
+    width: 5px;
+    background: var(--navbar-logos);
+    margin-left: 795px;
+    transform: translateY(-20px)
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    animation: Move forwards;
+    animation-delay: 1s;
+    transform: scaleX(-1);
+}
+
+.div1 {
+    position: relative;
+}
+
+.div::before {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    font-size: 40px;
+    padding: 5px;
+    background: #044c6e;
+    position: absolute;
+    margin-left: 150px;
+    transform: translateY(-15px);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: Move2 forwards;
+    opacity: 0;
+    animation-delay: 1s;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    font-size: 40px;
+    padding: 5px;
+    background: #044c6e;
+    position: absolute;
+    margin-left: 150px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: Move2 forwards;
+    opacity: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    animation-delay: 1s;
+}
+.p-name {
+    margin: 20px 0 5px 0;
+    font-size: 20px;
+    animation-delay: 1s !important;
+    animation: Move3 forwards;
+}
+
+@keyframes Move {
+
+    100% {
+        transform: translateX(800px)  translateY(0) scaleX(-1);
+    }
+}
+@keyframes Move3 {
+    100% {
+        transform: translateX(800px);
+    }
+}
+
+@keyframes Move2 {
+    90% {
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(800px) translateY(15px);
+        opacity: 1;
+    }
+}

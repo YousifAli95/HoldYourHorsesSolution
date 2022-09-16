@@ -1,0 +1,28 @@
+﻿@model CompareVM[]
+ @section CSS{
+ <link rel="stylesheet" href="~/CSS/compare.css">
+ }
+  @section JS{
+ <script src="~/JS/compare.js" defer></script>
+ }
+ <div class="race-container">
+    <div class="race">
+      <div class="goal"></div>
+      @foreach (var item in Model)
+    {
+         <div data-land="@item.Land" data-kategori="@item.Kategori" data-density="@item.Trädensitet" data-horsepowers="@item.Hästkrafter" data-wood="@item.Material"  data-equal="" id="div1" class="horse">
+        <div class="circle"></div>
+        <p class="p-name">@item.ArtikelNamn</p>
+        <img
+          src="@item.GetPictureUrl()"
+          alt=""
+          id="a1"
+          class="box"
+        />
+
+    </div>
+    }
+     
+</div>
+<div style="display:none" class="numberOfHorses">@Model.Count()</div>
+</div>

@@ -1,0 +1,187 @@
+﻿:root {
+    --navbar-background: white;
+    /* --navbar-logos:  #ffdcd9 #*/
+    --navbar-logos: #7b63ad;
+    --body-background: #f2f2f2;
+    --light-purple: #e2d7f7;
+    --filter-background: #e2d7f7;
+    --price-tag: #7b63ad;
+    --light-pink: #E8A0BF;
+}
+body{margin:0;
+     background: var(--body-background)
+}
+
+@font-face {
+    font-family: Good Unicorn;
+    src: url('../Typsnitt/Good Unicorn - TTF.ttf')
+}
+
+@font-face {
+    font-family: Gotham Narrow Book;
+    src: url('../Typsnitt/GothamNarrowBook.ttf')
+}
+
+*:not(.h1-logo) {
+    font-family: 'Gotham Narrow Book';
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    min-height: 140px;
+    flex-wrap: wrap;
+    justify-content:space-around;
+    background: var(--navbar-background);
+    box-shadow: 0 0px 5px -5px rgb(0 0 0 / 15%);
+    margin-right:8%;
+    margin-left:8%;
+}
+.navbar-container{
+    width:100%;
+    background:white;
+
+}
+
+.navbar a{
+    color:black;
+    text-decoration:none;
+        
+}
+
+
+.h1-navbar {
+    font-size:40px;
+    display: inline-block;
+    color: var(--navbar-logos);
+    letter-spacing: 2.5px;
+   
+}
+.h1-logo {
+    font-family: Good Unicorn;
+}
+    .h1-navbar h1 {
+        margin: 0;
+    }
+    .logo {
+        height: 140px;
+        width:auto;
+        display: inline-block;
+        fill: var(--navbar-logos);
+    }
+
+.search-div {
+    display: flex;
+}
+
+.search-div > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+#search-input {
+    height: 60px;
+    width: 300px;
+    font-size: 20px;
+    border: none;
+    outline: 3px solid var(--navbar-logos);
+    box-sizing: border-box;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    cursor: pointer;
+    background: var(--light-purple)
+}
+
+.navbar input[type=text]{
+    padding: 5px 10px;
+    color: var(--navbar-logos);
+}
+
+    .navbar input[type=text]::placeholder {
+        color: var(--navbar-logos);
+    }
+#search-btn {
+    font-family: 'Gotham Narrow Book';
+    height: 60px;
+    border: none;
+    width: 60px;
+    outline: 3px solid var(--navbar-logos);
+    box-sizing: border-box;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+    background: var(--light-purple);
+    
+}
+
+#search-btn:active {
+    box-shadow: 0 2px rgba(20, 20, 20, 0.966);
+    transform: translateY(2px);
+    filter: contrast(110%);
+}
+
+#icon {
+    fill: var(--navbar-logos);
+    height: 35px;
+}
+
+
+#logo-a, #a-cart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin: 0;
+}
+
+#cart {
+    height: 60px;
+    width: auto;
+    fill: var(--navbar-logos)
+}
+
+#a-cart {
+    position: relative
+}
+
+.badge::after {
+    content: attr(value);
+    font-size: 20px;
+    color: var(--navbar-logos);
+    background: var(--light-purple);
+    border-radius: 50%;
+    padding: 5px 10px;
+    position: relative;
+    left: -20px;
+    top: -45px;
+}
+.user-logo{
+    height:60px;
+    fill: var(--navbar-logos)
+}
+
+.logo-p{
+    font-size:16px;
+    text-align:center;
+    margin:5px;
+    color: var(--navbar-logos)
+}
+
+#a-logo{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+input, select, button, option{
+    cursor:pointer;
+}
+
+.logos{
+    display:flex;
+    width: 200px;
+    justify-content:space-between;
+}

@@ -1,0 +1,67 @@
+﻿.login-body {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+    min-height: 500px;
+}
+.login-body h1{
+    margin:10px 0;
+}
+.login-label{
+    font-size:20px;
+    width:150px;
+    display:inline-block;
+    margin-right:20px;
+}
+.info-div{
+    margin-bottom:5px;
+}
+.login-body input[type=text], .login-body input[type=password] {
+    padding:5px;
+    padding-left:8px;
+    font-size:17px;
+    height:30px;
+    width:250px;    
+}
+.konto{
+    margin-top: 50px;
+    font-size:20px;
+    width:170px;
+}
+    .konto p{
+        margin-bottom:7px;
+    }
+
+    .login-body input[type=button], .login-body input[type=submit] {
+        background: var(--navbar-logos);
+        color: white;
+        outline: 3px solid var(--light-purple);
+        outline-offset: -8px;
+        border: none;
+        padding: 15px;
+        transition: outline 150ms ease-in;
+        border-radius: 5px;
+        box-sizing: border-box;
+        width: 170px;
+        font-size: 15px;
+    }
+    .login-body input[type=submit]{
+        margin-top: 15px;
+    }
+    .login-body input[type=button]:hover, .login-body input[type=submit]:hover {
+        outline: 3px solid var(--navbar-logos);
+        outline-offset: 4px;
+    }
+
+    .login-body input[type=button]:focus, .login-body input[type=submit] :focus{
+        outline: 3px solid var(--navbar-logos);
+        outline-offset: 4px;
+    }
+
+    .login-body input[type=button]:active, .login-body input[type=submit] :active{
+        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
+        transform: translateY(2px);
+        filter: contrast(110%);
+    }

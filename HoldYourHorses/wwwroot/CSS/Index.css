@@ -1,0 +1,234 @@
+:root {
+    font-size: 62.5%;
+
+}
+
+
+.super-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.filter {   
+    min-width: 35rem;
+    background-color: var(--filter-background);
+    border-top:none;
+    transition: min-width 300ms ease-in, background 300ms ease-in, border 300ms ease-in !important;
+
+}
+
+.filter > *{
+ opacity:100;
+ transition: opacity 300ms ease-in;
+
+}
+
+.main-div {
+    min-width: 35rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 8%;
+    margin-left: 2%;
+}
+
+
+
+.card-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+
+.article-card {
+  width: 25rem;
+  margin: 2rem;
+  padding-bottom: 5rem;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2.5px 10px;
+  border-radius: 1rem;
+  background:white;
+}
+.card-container a {
+    color: black;
+    text-decoration:none;
+}
+.article-card img {
+        width: inherit;
+        border-top-right-radius:1rem;
+        border-top-left-radius:1rem;
+        object-fit: contain;
+        height: 250px;
+        width: 250px;
+
+    }
+
+.price {
+  position: absolute;
+  display: inline-block;
+  height: 4rem;
+  width: 9rem;
+  background: var(--price-tag);
+  color: white;
+  font-size: 1.5rem;
+}
+
+.arrow-div {
+  position: relative;
+  margin: 0.5rem;
+}
+
+.arrow-right {
+  position: absolute;
+  margin-left: 9rem;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 2rem solid transparent;
+  border-bottom: 2rem solid transparent;
+  border-left: 2rem solid var(--price-tag);
+}
+
+.price-span {
+  position: absolute;
+  display: inline-block;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 30%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(
+    -30%,
+    -50%
+  ); /* This is a shorthand of translateX(-50%) and translateY(-50%) */
+}
+
+.name {
+  font-size: 1.8rem;
+  margin: 0.5rem;
+  overflow-wrap: break-word;
+}
+
+#hamburger {
+    fill: #000000;
+    stroke: #000000;
+    height: 50px;
+    width: auto;
+    cursor: pointer;
+    transition: transform 300ms ease-in;
+    transform: rotate(90deg);
+}
+
+.compare-svg {
+    position: absolute;
+    opacity: 50;
+    fill: var(--light-purple);
+    height: 30px;
+    z-index: 100;
+    top: 30px;
+    left: 20px;
+    cursor: pointer;
+}
+
+    .compare-svg:hover {
+        fill: var(--navbar-logos);
+    }
+.compare-select {
+    margin-top:25px;
+    margin-bottom:10px;
+    display:flex;
+    width:450px;
+    justify-content:space-between
+
+}
+
+
+.checkboxes{
+    width:90%;
+}
+
+.heart{
+    height:30px;
+    position:absolute;
+    right:22px;
+    top:30px;
+    fill:white;
+    stroke: var(--navbar-logos);
+    cursor:pointer;
+}
+    .heart:hover {
+        fill: rgb(248,48,95);
+    }
+
+.header-picture {
+    width: 1000px;
+    margin-top: 20px;
+    filter: brightness(55%);
+
+}
+.div-img {
+    position: relative;
+    padding:0;
+    width:fit-content;
+}
+#Norden {
+    font-size: 6rem;
+    position: absolute;
+    width:100%;
+    margin:0;
+    padding:0;
+    color: white;
+    top: 55%;
+    left: 50%; 
+    transform: translate( -50%, -50% );
+    text-align:center;
+}
+
+#Norden2 {
+    font-size: 4rem;
+    color: var(--navbar-logos);
+
+}
+
+.main-div select {
+    height: 30px;
+    font-size: 18px;
+    background: var(--navbar-logos);
+    color: white;
+    border: var(--navbar-logos);
+    border-radius: 5px;
+    width: 180px;
+    padding: 15px;
+    box-sizing: content-box;
+    text-align:center;
+
+}
+.compare-btn {
+    background: var(--navbar-logos);
+    color: white;
+    outline: 3px solid var(--light-purple);
+    outline-offset: -8px;
+    border: none;
+    padding: 15px;
+    width:  180px;
+    transition: outline 150ms ease-in;
+    border-radius: 5px;
+    font-size: 18px;
+    height: 30px;
+    box-sizing: content-box;
+    font-family: inherit;
+}
+
+    .compare-btn:hover, .main-div select:hover {
+        outline: 3px solid var(--navbar-logos);
+        outline-offset: 4px;
+    }
+
+    .compare-btn:focus, .main-div select:focus{
+        outline: 3px solid var(--navbar-logos);
+        outline-offset: 4px;
+    }
+
+    .compare-btn:active {
+        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
+        transform: translateY(2px);
+        filter: contrast(110%);
+    }

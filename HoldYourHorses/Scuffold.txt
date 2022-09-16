@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext -Connection name=DefaultConnection -Provider Microsoft.EntityFrameworkCore.SqlServer -Project "HoldYourHorses" -OutputDir "Models/Entities" -Context "SticksDBContext" -NoOnConfiguring -Force

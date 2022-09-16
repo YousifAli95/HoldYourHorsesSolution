@@ -1,0 +1,44 @@
+﻿.footer-container, .foot-div > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+.foot-div {
+    display: inline-block;
+    height:150px;
+    margin-right:40px;
+
+}
+    .foot-div > div *{
+        margin:10px;
+        height:50px;
+        margin-left:0;
+        max-width:50px;
+    }
+
+    .footer-container b {
+        font-size: 20px;
+    }
+#info a {
+    font-size: 18px;
+    text-decoration: none;
+    color: var(--light-purple)
+}
+.footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    background: var(--navbar-logos);
+    color: var(--light-purple);
+    padding-top: 30px;
+}
+#second-footer {
+    margin-top:0;
+    padding-top: 10px;
+}
+
+.footer svg{
+    fill: var(--light-purple);
+    cursor:pointer;
+}

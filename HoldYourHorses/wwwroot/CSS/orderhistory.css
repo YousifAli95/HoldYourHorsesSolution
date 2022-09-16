@@ -1,0 +1,22 @@
+﻿.artikel-container {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*margin: 1rem;*/
+    min-height: 500px;
+}
+
+.orderTitel {
+    font-size: 2rem;
+    color: var(--navbar-logos);
+}
+
+.orderinfo{
+    margin-bottom: 10px;
+}
+
+.artikel-container  ul {
+    list-style-type: none;
+    padding:0;
+}

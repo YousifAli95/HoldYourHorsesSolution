@@ -1,0 +1,40 @@
+﻿@model OrderhistoryVM
+@section CSS{
+	<link rel="stylesheet" href="~/CSS/orderhistory.css">
+}
+
+	<div class="artikel-container" id="container">
+		<div>
+			@foreach (var orderId in Model.OrderHej.OrderByDescending(o => o))
+		{
+
+			var hejhej = orderId;
+			<div>
+				<h2 class="orderTitel"> Order: @orderId</h2>
+
+				<ul>
+					@foreach (var item in Model.Historik)
+					{
+						@if (hejhej == item.OrderId)
+						{
+
+							<li>
+								<div class="orderinfo">
+									@item.Antal st
+									@item.ArtikelNamn
+									@Model.getPriceFormatted(@item.Pris*item.Antal) kr
+								</div>
+							</li>
+
+						}
+					}
+				</ul>
+				<div>
+					<strong>Totalsumma:  @Model.getPriceFormatted(@Model.Historik.Where(o => o.OrderId == hejhej).Select(o => o.Pris*o.Antal).Sum()) kr</strong>
+				</div>
+			</div>
+		}
+	</div>
+
+</div>
+</div>
