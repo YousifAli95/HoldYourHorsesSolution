@@ -4,12 +4,13 @@
     justify-content: start;
     align-items: center;
 }
+
 .foot-div {
     display: inline-block;
     height:150px;
     margin-right:40px;
-
 }
+
     .foot-div > div *{
         margin:10px;
         height:50px;
@@ -20,25 +21,28 @@
     .footer-container b {
         font-size: 20px;
     }
+
 #info a {
     font-size: 18px;
     text-decoration: none;
     color: var(--light-purple)
 }
-.footer {
+
+footer {
     display: flex;
     justify-content: center;
-    margin-top: 60px;
+    align-items: center;
+    gap: 3rem;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
     background: var(--navbar-logos);
     color: var(--light-purple);
-    padding-top: 30px;
-}
-#second-footer {
-    margin-top:0;
-    padding-top: 10px;
+    margin: 6rem 0 0 0;
+    padding: 3rem 0; 
 }
 
-.footer svg{
+footer svg{
     fill: var(--light-purple);
     cursor:pointer;
 }

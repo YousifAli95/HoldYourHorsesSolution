@@ -1,116 +1,125 @@
 :root {
-    font-size: 62.5%;
-
+    --filter-width: 35rem;
 }
-
 
 .super-container {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
-.filter {   
-    min-width: 35rem;
+.filter {
+    min-width: var(--filter-width);
     background-color: var(--filter-background);
-    border-top:none;
+    border-top: none;
     transition: min-width 300ms ease-in, background 300ms ease-in, border 300ms ease-in !important;
-
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
 }
 
-.filter > *{
- opacity:100;
- transition: opacity 300ms ease-in;
-
-}
+    .filter > * {
+        opacity: 100;
+        transition: opacity 300ms ease-in;
+    }
 
 .main-div {
-    min-width: 35rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 8%;
-    margin-left: 2%;
+    margin-right: 5rem;
+    margin-left: 5rem;
+    padding-bottom: 6rem;
 }
 
-
+footer {
+    margin-top: 0 !important;
+}
 
 .card-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
 }
 
 .article-card {
-  width: 25rem;
-  margin: 2rem;
-  padding-bottom: 5rem;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 2.5px 10px;
-  border-radius: 1rem;
-  background:white;
+    width: 25rem;
+    padding-bottom: 5rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0rem 0.25rem 1rem;
+    border-radius: 1rem;
+    background: white;
 }
-.card-container a {
-    color: black;
-    text-decoration:none;
-}
-.article-card img {
-        width: inherit;
-        border-top-right-radius:1rem;
-        border-top-left-radius:1rem;
-        object-fit: contain;
-        height: 250px;
-        width: 250px;
 
+.card-div {
+    transition: 200ms ease-in scale;
+}
+
+    .card-div:hover {
+        scale: 1.1;
     }
 
+.card-container a {
+    color: black;
+    text-decoration: none;
+}
+
+.article-card img {
+    width: inherit;
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+    object-fit: contain;
+    height: 25rem;
+    width: 25rem;
+}
+
 .price {
-  position: absolute;
-  display: inline-block;
-  height: 4rem;
-  width: 9rem;
-  background: var(--price-tag);
-  color: white;
-  font-size: 1.5rem;
+    position: absolute;
+    display: inline-block;
+    height: 4rem;
+    width: 9rem;
+    background: var(--price-tag);
+    color: white;
+    font-size: 1.5rem;
 }
 
 .arrow-div {
-  position: relative;
-  margin: 0.5rem;
+    position: relative;
+    margin: 0.5rem;
 }
 
 .arrow-right {
-  position: absolute;
-  margin-left: 9rem;
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-top: 2rem solid transparent;
-  border-bottom: 2rem solid transparent;
-  border-left: 2rem solid var(--price-tag);
+    position: absolute;
+    margin-left: 9rem;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 2rem solid transparent;
+    border-bottom: 2rem solid transparent;
+    border-left: 2rem solid var(--price-tag);
 }
 
 .price-span {
-  position: absolute;
-  display: inline-block;
-  top: 50%; /* position the top  edge of the element at the middle of the parent */
-  left: 30%; /* position the left edge of the element at the middle of the parent */
-  transform: translate(
-    -30%,
-    -50%
-  ); /* This is a shorthand of translateX(-50%) and translateY(-50%) */
+    position: absolute;
+    display: inline-block;
+    top: 50%;
+    left: 30%;
+    transform: translate( -30%, -50% );
+}
+
+#price-name-container{
+    margin-left: 1rem;
 }
 
 .name {
-  font-size: 1.8rem;
-  margin: 0.5rem;
-  overflow-wrap: break-word;
+    font-size: 1.8rem;
+    margin: 0.5rem;
+    overflow-wrap: break-word;
 }
 
 #hamburger {
     fill: #000000;
     stroke: #000000;
-    height: 50px;
+    height: 5rem;
     width: auto;
     cursor: pointer;
     transition: transform 300ms ease-in;
@@ -121,114 +130,93 @@
     position: absolute;
     opacity: 50;
     fill: var(--light-purple);
-    height: 30px;
+    height: 3rem;
     z-index: 100;
-    top: 30px;
-    left: 20px;
+    top: 1rem;
+    left: 1rem;
     cursor: pointer;
 }
 
     .compare-svg:hover {
         fill: var(--navbar-logos);
     }
+
 .compare-select {
-    margin-top:25px;
-    margin-bottom:10px;
-    display:flex;
-    width:450px;
-    justify-content:space-between
-
+    margin: 2.5rem 0 3rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
 }
 
 
-.checkboxes{
-    width:90%;
+.checkboxes {
+    width: 90%;
 }
 
-.heart{
-    height:30px;
-    position:absolute;
-    right:22px;
-    top:30px;
-    fill:white;
+.heart {
+    height: 3rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    fill: white;
     stroke: var(--navbar-logos);
-    cursor:pointer;
+    cursor: pointer;
 }
+
     .heart:hover {
         fill: rgb(248,48,95);
     }
 
-.header-picture {
-    width: 1000px;
-    margin-top: 20px;
-    filter: brightness(55%);
-
-}
 .div-img {
     position: relative;
-    padding:0;
-    width:fit-content;
-}
-#Norden {
-    font-size: 6rem;
-    position: absolute;
-    width:100%;
-    margin:0;
-    padding:0;
-    color: white;
-    top: 55%;
-    left: 50%; 
-    transform: translate( -50%, -50% );
-    text-align:center;
+    padding: 0;
+    width: fit-content;
 }
 
-#Norden2 {
+#index-header {
     font-size: 4rem;
     color: var(--navbar-logos);
-
 }
 
 .main-div select {
-    height: 30px;
-    font-size: 18px;
+    height: 3rem;
+    font-size: 1.8rem;
     background: var(--navbar-logos);
     color: white;
     border: var(--navbar-logos);
-    border-radius: 5px;
-    width: 180px;
-    padding: 15px;
+    border-radius: 0.5rem;
+    width: 18rem;
+    padding: 1.5rem;
     box-sizing: content-box;
-    text-align:center;
-
+    text-align: center;
 }
+
 .compare-btn {
     background: var(--navbar-logos);
     color: white;
-    outline: 3px solid var(--light-purple);
-    outline-offset: -8px;
+    outline: 0.3rem solid var(--light-purple);
+    outline-offset: -0.8rem;
     border: none;
-    padding: 15px;
-    width:  180px;
+    padding: 1.5rem;
+    width: 18rem;
     transition: outline 150ms ease-in;
-    border-radius: 5px;
-    font-size: 18px;
-    height: 30px;
+    border-radius: 0.5rem;
+    font-size: 1.8rem;
+    height: 3rem;
     box-sizing: content-box;
     font-family: inherit;
 }
 
-    .compare-btn:hover, .main-div select:hover {
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
-    }
-
-    .compare-btn:focus, .main-div select:focus{
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
+    .compare-btn:hover,
+    .main-div select:hover,
+    .compare-btn:focus,
+    .main-div select:focus {
+        outline: 0.3rem solid var(--navbar-logos);
+        outline-offset: 0.4rem;
     }
 
     .compare-btn:active {
-        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
-        transform: translateY(2px);
+        box-shadow: 0 0.2rem rgba(20, 20, 20, 0.966);
+        transform: translateY(0.2rem);
         filter: contrast(110%);
     }

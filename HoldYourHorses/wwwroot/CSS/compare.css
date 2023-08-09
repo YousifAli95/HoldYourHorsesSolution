@@ -1,7 +1,7 @@
 ﻿
 .race {
     position: relative;
-    margin-top: 40px;
+    padding: 4rem 0;
 }
 .race-container{
     min-height:350px;
@@ -61,8 +61,7 @@
     justify-content: center;
     animation: Move2 forwards;
     opacity: 0;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 0.5rem;
     animation-delay: 1s;
 }
 .p-name {

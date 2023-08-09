@@ -1,15 +1,17 @@
 ﻿:root {
     --navbar-background: white;
-    /* --navbar-logos:  #ffdcd9 #*/
     --navbar-logos: #7b63ad;
     --body-background: #f2f2f2;
     --light-purple: #e2d7f7;
     --filter-background: #e2d7f7;
     --price-tag: #7b63ad;
     --light-pink: #E8A0BF;
+    font-size: 62.5%;
 }
-body{margin:0;
-     background: var(--body-background)
+
+body {
+    margin: 0;
+    background: var(--body-background)
 }
 
 @font-face {
@@ -31,60 +33,56 @@ body{margin:0;
     flex-direction: row;
     align-content: center;
     min-height: 140px;
-    flex-wrap: wrap;
-    justify-content:space-around;
+    justify-content: space-between;
     background: var(--navbar-background);
     box-shadow: 0 0px 5px -5px rgb(0 0 0 / 15%);
-    margin-right:8%;
-    margin-left:8%;
-}
-.navbar-container{
-    width:100%;
-    background:white;
-
+    padding: 1rem 5rem;
+    gap: 3rem;
 }
 
-.navbar a{
-    color:black;
-    text-decoration:none;
-        
+.navbar-container {
+    width: 100%;
+    background: white;
 }
 
+.navbar a {
+    color: black;
+    text-decoration: none;
+}
 
 .h1-navbar {
-    font-size:40px;
+    font-size: 4rem;
     display: inline-block;
     color: var(--navbar-logos);
-    letter-spacing: 2.5px;
-   
+    letter-spacing: 0.25rem;
 }
+
 .h1-logo {
     font-family: Good Unicorn;
 }
-    .h1-navbar h1 {
-        margin: 0;
-    }
-    .logo {
-        height: 140px;
-        width:auto;
-        display: inline-block;
-        fill: var(--navbar-logos);
-    }
+
+.h1-navbar h1 {
+    margin: 0;
+}
+
+#company-logo {
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+    fill: var(--navbar-logos);
+}
 
 .search-div {
     display: flex;
-}
-
-.search-div > * {
-    display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-content: center;
+    width: 50%;
 }
 
 #search-input {
     height: 60px;
-    width: 300px;
+    width: clamp(300px, 80%, 600px);
     font-size: 20px;
     border: none;
     outline: 3px solid var(--navbar-logos);
@@ -95,45 +93,45 @@ body{margin:0;
     background: var(--light-purple)
 }
 
-.navbar input[type=text]{
-    padding: 5px 10px;
+.navbar input[type=text] {
+    padding: 0.5rem 1rem;
     color: var(--navbar-logos);
 }
 
     .navbar input[type=text]::placeholder {
         color: var(--navbar-logos);
     }
+
 #search-btn {
     font-family: 'Gotham Narrow Book';
-    height: 60px;
+    height: 6rem;
     border: none;
-    width: 60px;
-    outline: 3px solid var(--navbar-logos);
+    width: 6rem;
+    outline: 0.3rem solid var(--navbar-logos);
     box-sizing: border-box;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
     cursor: pointer;
     background: var(--light-purple);
-    
 }
 
-#search-btn:active {
-    box-shadow: 0 2px rgba(20, 20, 20, 0.966);
-    transform: translateY(2px);
-    filter: contrast(110%);
-}
+    #search-btn:active {
+        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
+        transform: translateY(2px);
+        filter: contrast(110%);
+    }
 
 #icon {
     fill: var(--navbar-logos);
     height: 35px;
 }
 
-
-#logo-a, #a-cart {
+.navbar-svg-navigation {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
+    min-width: 7rem;
     margin: 0;
 }
 
@@ -149,39 +147,40 @@ body{margin:0;
 
 .badge::after {
     content: attr(value);
-    font-size: 20px;
+    font-size: 2rem;
     color: var(--navbar-logos);
     background: var(--light-purple);
     border-radius: 50%;
-    padding: 5px 10px;
-    position: relative;
-    left: -20px;
-    top: -45px;
+    padding: 0.5rem 1rem;
+    position: absolute;
+    left: 5rem;
+    top: 2rem;
 }
-.user-logo{
-    height:60px;
+
+.user-logo {
+    height: 6rem;
     fill: var(--navbar-logos)
 }
 
-.logo-p{
-    font-size:16px;
-    text-align:center;
-    margin:5px;
+.logo-p {
+    font-size: 1.6rem;
+    text-align: center;
+    margin: 0.5rem;
     color: var(--navbar-logos)
 }
 
-#a-logo{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+#a-company-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-input, select, button, option{
-    cursor:pointer;
+input, select, button, option {
+    cursor: pointer;
 }
 
-.logos{
-    display:flex;
-    width: 200px;
-    justify-content:space-between;
+.logos {
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
 }

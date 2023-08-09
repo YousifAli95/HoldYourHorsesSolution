@@ -1,0 +1,138 @@
+﻿@model HoldYourHorses.Views.Sticks.IndexVM
+
+<div class="filter">
+   
+    <div class="hamburger-div">
+        <svg id="hamburger" onclick="showHideFilter()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><path d="M 3 7 A 1.0001 1.0001 0 1 0 3 9 L 27 9 A 1.0001 1.0001 0 1 0 27 7 L 3 7 z M 3 14 A 1.0001 1.0001 0 1 0 3 16 L 27 16 A 1.0001 1.0001 0 1 0 27 14 L 3 14 z M 3 21 A 1.0001 1.0001 0 1 0 3 23 L 27 23 A 1.0001 1.0001 0 1 0 27 21 L 3 21 z" /></svg>
+    </div>
+
+    <div id="div-p-no-slider" class="filter-price">
+
+        <div class="div-p">
+            <div class="p-name"><p class="p-filter p-filter-slider">Pris</p></div>
+            <div onclick="hideProperty(pris, '1')" class="plus div-plus">
+                <svg id="svg1"
+                     class="svg-plus"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24">
+                    <path d="M0 10h24v4h-24z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div id="pris" class="slider-super-container">
+            <div class="min-max-slider">
+                <div id="min-int" class="form_control_container">
+                    <div class="form_control_container__time">Min</div>
+                    <input class="form_control_container__time__input" type="number" id="fromInput" value="@Model.PrisMin" min="@Model.PrisMin" max="@Model.PrisMax" />
+                </div>
+
+                <div class="range_container">
+                    <div class="sliders_control">
+                        <input id="fromSlider" type="range" value="@Model.PrisMin" min="@Model.PrisMin" max="@Model.PrisMax" />
+                        <input id="toSlider" type="range" value="@Model.PrisMax" min="@Model.PrisMin" max="@Model.PrisMax" />
+                    </div>
+                </div>
+
+                <div id="max-int" class="form_control_container">
+                    <div class="form_control_container__time">Max</div>
+                    <input class="form_control_container__time__input" type="number" id="toInput" value="@Model.PrisMax" min="@Model.PrisMin" max="@Model.PrisMax" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="div-p-no-slider" class="filter-hk">
+        <div class="div-p">
+            <div class="p-name"><p class="p-filter p-filter-slider">Hästkrafter</p></div>
+            <div onclick="hideProperty(hastkrafter, '2')" class="plus div-plus">
+                <svg id="svg2"
+                     class="svg-plus"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24">
+                    <path d="M0 10h24v4h-24z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div id="hastkrafter" class="slider-super-container">
+            <div class="min-max-slider">
+                <div id="min-int" class="form_control_container">
+                    <div class="form_control_container__time">Min</div>
+                    <input class="form_control_container__time__input" type="number" id="fromInputHK" value="@Model.HästkrafterMin" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
+                </div>
+
+                <div class="range_container">
+                    <div class="sliders_control">
+                        <input id="fromSliderHK" type="range" value="@Model.HästkrafterMin" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
+                        <input id="toSliderHK" type="range" value="@Model.HästkrafterMax" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
+                    </div>
+                </div>
+
+                <div id="max-int" class="form_control_container">
+                    <div class="form_control_container__time">Max</div>
+                    <input class="form_control_container__time__input" type="number" id="toInputHK" value="@Model.HästkrafterMax" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div id="div-p-no-slider" class="div-p">
+            <div class="p-name"><p class="p-filter p-filter-slider">Kategori</p></div>
+            <div onclick="hideProperty(kategori, '3')" class="plus div-plus">
+                <svg id="svg3"
+                     class="svg-plus"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24">
+                    <path d="M0 10h24v4h-24z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div id="kategori" class="kategori-container">
+            <div class="checkboxes">
+                @foreach (var item in @Model.Kategorier)
+                {
+                    <div>
+                        <input type="checkbox" class="kategori" id="@item" name="@item" value="@item" checked> <label for="@item">@item</label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div id="div-p-no-slider" class="div-p">
+            <div class="p-name"><p class="p-filter p-filter-slider">Material</p></div>
+            <div onclick="hideProperty(material, '4')" class="plus div-plus">
+                <svg id="svg4"
+                     class="svg-plus"
+                     xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24">
+                    <path d="M0 10h24v4h-24z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div id="material" class="material-container">
+            <div class="checkboxes">
+                @foreach (var item in @Model.Material)
+                {
+                    <div>
+                        <input type="checkbox" class="material" value="@item" id="@item" name="@item" checked> <label for="@item">@item</label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="filter-btn-div">
+            <button onclick="resetFilter()" class="btn">Återställ filtrering</button>
+        </div>
+        <div class="filter-btn-div">
+            <button id="last-filter-btn" onclick="removeCompare()" class="btn">Ta bort jämförelsemarkeringar</button>
+        </div>
+    </div>
+</div>
