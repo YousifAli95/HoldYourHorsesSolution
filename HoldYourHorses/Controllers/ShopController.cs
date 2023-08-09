@@ -1,15 +1,15 @@
 ﻿using HoldYourHorses.Models;
-using HoldYourHorses.Views.Sticks;
 using Microsoft.AspNetCore.Mvc;
 using HoldYourHorses.Views.Shared;
+using HoldYourHorses.ViewModels.Shop;
 
 namespace HoldYourHorses.Controllers
 {
-    public class SticksController : Controller
+    public class ShopController : Controller
     {
         private readonly DataService dataService;
 
-        public SticksController(DataService dataService)
+        public ShopController(DataService dataService)
         {
             this.dataService = dataService;
         }

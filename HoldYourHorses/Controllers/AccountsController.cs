@@ -1,5 +1,5 @@
 ﻿using HoldYourHorses.Models;
-using HoldYourHorses.Views.Accounts;
+using HoldYourHorses.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

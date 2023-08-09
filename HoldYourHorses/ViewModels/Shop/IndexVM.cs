@@ -1,4 +1,4 @@
-﻿namespace HoldYourHorses.Views.Sticks
+﻿namespace HoldYourHorses.ViewModels.Shop
 {
     public class IndexVM
     {
@@ -6,7 +6,7 @@
         public int PrisMax { get; set; }
         public int HästkrafterMin { get; set; }
         public int HästkrafterMax { get; set; }
-        public string[] Material { get; set; } 
+        public string[] Material { get; set; }
         public string[] Kategorier { get; set; }
 
 

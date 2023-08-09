@@ -1,4 +1,4 @@
-﻿namespace HoldYourHorses.Views.Sticks
+﻿namespace HoldYourHorses.ViewModels.Shop
 {
     public class KvittoVM
     {

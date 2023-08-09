@@ -1,6 +1,4 @@
-﻿using HoldYourHorses.Models.Entities;
-
-namespace HoldYourHorses.Views.Accounts
+﻿namespace HoldYourHorses.ViewModels.Account
 {
     public class OrderhistoryVM
     {
@@ -13,7 +11,7 @@ namespace HoldYourHorses.Views.Accounts
             return pris.ToString("#,0", nfi);
         }
 
-       
+
         public class Order
         {
             public int Antal { get; set; }

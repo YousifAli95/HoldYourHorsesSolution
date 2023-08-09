@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HoldYourHorses.Views.Accounts
+namespace HoldYourHorses.ViewModels.Account
 {
     public class LoginVM
     {

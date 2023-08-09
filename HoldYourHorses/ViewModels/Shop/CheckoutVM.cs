@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HoldYourHorses.Views.Sticks
+namespace HoldYourHorses.ViewModels.Shop
 {
     public class CheckoutVM
     {

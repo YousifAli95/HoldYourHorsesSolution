@@ -1,14 +1,13 @@
 ﻿using HoldYourHorses.Models.Entities;
-using HoldYourHorses.Views.Accounts;
+using HoldYourHorses.ViewModels.Account;
+using HoldYourHorses.ViewModels.Shop;
 using HoldYourHorses.Views.Shared;
-using HoldYourHorses.Views.Sticks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Text.Json;
-using static HoldYourHorses.Views.Accounts.OrderhistoryVM;
+using static HoldYourHorses.ViewModels.Account.OrderhistoryVM;
 
 namespace HoldYourHorses.Models
 {

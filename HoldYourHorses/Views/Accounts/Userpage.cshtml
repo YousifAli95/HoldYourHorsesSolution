@@ -1,54 +1,56 @@
-﻿@using HoldYourHorses.Views.Accounts
+﻿@using HoldYourHorses.ViewModels.Account
+
 @model UserpageVM
+
 @section CSS{
     <link rel="stylesheet" href="~/CSS/userpage.css">
 }
 <div class="user-body">
 
-<div style="min-height: 400px">
-<h3 id="Norden2">Mitt Konto</h3>
-Välkommen tillbaka @Model.Username
+    <div style="min-height: 400px">
+        <h3 id="Norden2">Mitt Konto</h3>
+        Välkommen tillbaka @Model.Username
 
-<div class="konto" id="buttons">
-<input type='button' value='Logga ut' onClick='redirectOnClick()' />
-<input type='button' value='Orderhistorik' onClick='redirectOnClick2()' />
-</div>
-<div>
-    <div class="article-container">
-    <h1 class="dina-f">Dina favoriter</h1>
-                @if(Model.Cards.Length == 0)
-            {
-                <p>Du har inga favoritmarkerade käpphästar :( </p>
-            }
-            else
-            {
-                foreach (var card in Model.Cards)
+        <div class="konto" id="buttons">
+            <input type='button' value='Logga ut' onClick='redirectOnClick()' />
+            <input type='button' value='Orderhistorik' onClick='redirectOnClick2()' />
+        </div>
+        <div>
+            <div class="article-container">
+                <h1 class="dina-f">Dina favoriter</h1>
+                @if (Model.Cards.Length == 0)
                 {
-                    <a href="/product/@card.ArticleNr">
-                    <div class="artikel" id="@card.ArticleName">
-		<div class="img-div">
-		<img src="@card.GetPictureUrl()" />
-		</div>
-		<div class="pris-namn">
-		<p class="p-namn">@card.ArticleName</p>
-		<p>@card.getPriceFormatted() kr</p>
-	
-		</div>
-        </div>
-        </a>
+                    <p>Du har inga favoritmarkerade käpphästar :( </p>
                 }
-            }
-        </div>
-        </div>
-</div>
+                else
+                {
+                    foreach (var card in Model.Cards)
+                    {
+                        <a href="/product/@card.ArticleNr">
+                            <div class="artikel" id="@card.ArticleName">
+                                <div class="img-div">
+                                    <img src="@card.GetPictureUrl()" />
+                                </div>
+                                <div class="pris-namn">
+                                    <p class="p-namn">@card.ArticleName</p>
+                                    <p>@card.getPriceFormatted() kr</p>
 
-<script>
-    function redirectOnClick() {
-        document.location = 'logout';
-    }
-</script>
-<script>
-    function redirectOnClick2() {
-        document.location = 'orderhistory';
-    }
-</script>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirectOnClick() {
+            document.location = 'logout';
+        }
+    </script>
+    <script>
+        function redirectOnClick2() {
+            document.location = 'orderhistory';
+        }
+    </script>
