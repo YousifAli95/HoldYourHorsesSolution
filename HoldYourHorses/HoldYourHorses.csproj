@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Other\" />
     <Folder Include="wwwroot\Typsnitt\" />
   </ItemGroup>
 
