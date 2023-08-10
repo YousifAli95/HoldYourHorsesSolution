@@ -12,7 +12,7 @@
     background-color: var(--filter-background);
     border-top: none;
     transition: min-width 300ms ease-in, background 300ms ease-in, border 300ms ease-in !important;
-    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.35);
 }
 
     .filter > * {

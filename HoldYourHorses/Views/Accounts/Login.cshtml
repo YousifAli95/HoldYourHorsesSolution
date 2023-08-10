@@ -1,38 +1,26 @@
-﻿@using HoldYourHorses.ViewModels.Account
-
-@model LoginVM
+﻿@model LoginVM
 
 @section CSS{
     <link rel="stylesheet" href="~/CSS/login.css">
 }
 
 <div class="login-body">
-    <div>
-<h1>Logga In</h1>
-<form asp-controller="Accounts" asp-action="Login">
-    <div class="info-div">
-    <label class="login-label" asp-for="Username"></label>
-    <input asp-for="Username" />
-    <span asp-validation-for="Username"></span>
-    </div>
-     <div class="info-div">
-    <label class="login-label" asp-for="Password"></label>
-    <input asp-for="Password" />
-    <span asp-validation-for="Password"></span>
-    </div>
-    <input type="submit" value="Logga in" />
-</form>
-<div asp-validation-summary="All"></div>
+    <form id="login-form" asp-controller="Accounts" asp-action="Login">
+        <div class="info-div">
+            <span class="invalid-span" asp-validation-for="Username"></span>
+            <label class="login-label" asp-for="Username"></label>
+            <input asp-for="Username" />
+        </div>
 
-<div class="konto">
-    <p>Har du inget konto?</p>
-<input type='button' value='Skapa ett här' onClick='redirectOnClick()' />
-</div>
+        <div class="info-div">
+            <label class="login-label" asp-for="Password"></label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
 
-<script>
-    function redirectOnClick() {
-        document.location = 'register';
-    }
-</script>
-</div>
+        <input id="login-button" type="submit" value="Logga in" />
+    </form>
+
+    <a id="register-account-link" asp-controller="Accounts" asp-action="Register">Skapa ett nytt konto</a>
+
 </div>

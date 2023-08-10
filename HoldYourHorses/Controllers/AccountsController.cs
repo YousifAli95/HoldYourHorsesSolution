@@ -53,7 +53,7 @@ namespace HoldYourHorses.Controllers
             var success = await dataService.TryLogin(viewModel);
             if (!success)
             {
-                ModelState.AddModelError(string.Empty, "Incorrect password or username");
+                ModelState.AddModelError(nameof(LoginVM.Username), "Felaktigt användarnamn eller lösernord");
                 return View();
             }
 

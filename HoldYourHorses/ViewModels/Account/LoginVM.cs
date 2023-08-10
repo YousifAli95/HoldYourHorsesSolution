@@ -8,6 +8,7 @@ namespace HoldYourHorses.ViewModels.Account
         [Required]
         public string Username { get; set; }
 
+        [Display(Name = "Lösenord")]
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

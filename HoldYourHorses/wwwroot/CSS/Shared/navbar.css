@@ -16,12 +16,12 @@ body {
 
 @font-face {
     font-family: Good Unicorn;
-    src: url('../Typsnitt/Good Unicorn - TTF.ttf')
+    src: url('../../Typsnitt/Good Unicorn - TTF.ttf')
 }
 
 @font-face {
     font-family: Gotham Narrow Book;
-    src: url('../Typsnitt/GothamNarrowBook.ttf')
+    src: url('../../Typsnitt/GothamNarrowBook.ttf')
 }
 
 *:not(.h1-logo) {
@@ -32,10 +32,10 @@ body {
     display: flex;
     flex-direction: row;
     align-content: center;
-    min-height: 140px;
+    min-height: 14rem;
     justify-content: space-between;
     background: var(--navbar-background);
-    box-shadow: 0 0px 5px -5px rgb(0 0 0 / 15%);
+    box-shadow: 0 0 0.5rem -0.5rem rgb(0 0 0 / 15%);
     padding: 1rem 5rem;
     gap: 3rem;
 }
@@ -81,11 +81,11 @@ body {
 }
 
 #search-input {
-    height: 60px;
-    width: clamp(300px, 80%, 600px);
-    font-size: 20px;
+    height: 6rem;
+    width: clamp(30rem, 80%, 60rem);
+    font-size: 2rem;
     border: none;
-    outline: 3px solid var(--navbar-logos);
+    outline: 0.3rem solid var(--navbar-logos);
     box-sizing: border-box;
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
@@ -116,14 +116,14 @@ body {
 }
 
     #search-btn:active {
-        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
-        transform: translateY(2px);
+        box-shadow: 0 0.2rem rgba(20, 20, 20, 0.966);
+        transform: translateY(0.2rem);
         filter: contrast(110%);
     }
 
 #icon {
     fill: var(--navbar-logos);
-    height: 35px;
+    height: 3.5rem;
 }
 
 .navbar-svg-navigation {
@@ -136,7 +136,7 @@ body {
 }
 
 #cart {
-    height: 60px;
+    height: 6rem;
     width: auto;
     fill: var(--navbar-logos)
 }

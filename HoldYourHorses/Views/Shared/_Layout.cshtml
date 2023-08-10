@@ -2,29 +2,31 @@
 
 <html>
 <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
 
-	<meta name="viewport" content="width=device-width" />
-	<title>@ViewBag.Title</title>
-	@RenderSection("CSS", false)
-	@RenderSection("JS", false)
-	<link rel="stylesheet" href="~/CSS/navbar.css">
-	<link rel="stylesheet" href="~/CSS/footer.css">
-	<link rel="stylesheet" href="~/CSS/cookies.css">
+    @RenderSection("CSS", false)
+    @RenderSection("JS", false)
+
+    <link rel="stylesheet" href="~/CSS/Shared/navbar.css">
+    <link rel="stylesheet" href="~/CSS/Shared/footer.css">
+    <link rel="stylesheet" href="~/CSS/Shared/shared.css">
+    <link rel="stylesheet" href="~/CSS/Shared/cookies.css">
+
     <script src="~/JS/cookies.js" defer></script>
-	<script src="~/JS/navbar.js" defer></script>
+    <script src="~/JS/navbar.js" defer></script>
 </head>
 <body>
-	@Html.Partial("_Navbar")
-	<div>
-		@RenderBody()
-		<div id="overlay"></div>
-		<div id="popup">
-		<partial name="_CookieConsentPartial" />
-	</div>
-	</div>
-	@Html.Partial("_Footer")
-	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    @Html.Partial("_Navbar")
+    <div>
+        @RenderBody()
+        <div id="overlay"></div>
+        <div id="popup">
+            <partial name="_CookieConsentPartial" />
+        </div>
+    </div>
+
+    @Html.Partial("_Footer")
 
 </body>
 </html>
