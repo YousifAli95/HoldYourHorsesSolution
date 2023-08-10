@@ -1,4 +1,4 @@
-﻿using HoldYourHorses.Models;
+﻿using HoldYourHorses.Services.Interfaces;
 using HoldYourHorses.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +7,13 @@ namespace HoldYourHorses.Controllers
 {
     public class AccountsController : Controller
     {
-        private readonly DataService dataService;
+        private readonly IAccountService dataService;
 
-        public AccountsController(DataService dataService)
+        public AccountsController(IAccountService dataService)
         {
             this.dataService = dataService;
+            Console.WriteLine("account");
+
         }
 
         [HttpGet("register")]
@@ -19,26 +21,23 @@ namespace HoldYourHorses.Controllers
         {
             return View();
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterVM viewModel)
         {
             if (!ModelState.IsValid)
                 return View();
 
-            // Try to register user
-            var errorMessage = await dataService.TryRegister(viewModel);
+            var errorMessage = await dataService.TryRegisterAsync(viewModel);
             if (errorMessage != null)
             {
-                // Show error
                 ModelState.AddModelError(string.Empty, errorMessage);
                 return View();
             }
 
-            // Redirect user
-            //return RedirectToAction("IndexAsync", "SticksController", new { area = "" });
-
             return RedirectToAction(nameof(Userpage));
         }
+
         [HttpGet("login")]
         public IActionResult Login()
         {
@@ -51,23 +50,21 @@ namespace HoldYourHorses.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            // Check if credentials is valid (and set auth cookie)
             var success = await dataService.TryLogin(viewModel);
             if (!success)
             {
-                // Show error
-                ModelState.AddModelError(string.Empty, "Login failed");
+                ModelState.AddModelError(string.Empty, "Incorrect password or username");
                 return View();
             }
 
-            // Redirect user
             return RedirectToAction(nameof(Userpage));
         }
+
         [Authorize]
         [HttpGet("Userpage")]
-        public IActionResult Userpage()
+        public async Task<IActionResult> Userpage()
         {
-            UserpageVM model = dataService.getUserPageVM(User.Identity.Name);
+            UserpageVM model = await dataService.GetUserPageVMAsync(User.Identity.Name);
             return View(model);
         }
         [Authorize]
@@ -77,19 +74,20 @@ namespace HoldYourHorses.Controllers
             await dataService.LogOutUserAsync();
             return RedirectToAction(nameof(Login));
         }
+
         [Authorize]
         [HttpGet("orderhistory")]
         public IActionResult Orderhistory()
         {
             return View(dataService.GetOrderHistory());
         }
+
         [Authorize]
         [HttpGet("orderhistoryget")]
         public IActionResult Orderhistoryget()
         {
             var order = dataService.GetOrderHistory();
 
-            //dataService.SortHistory()
             return View(order);
         }
     }

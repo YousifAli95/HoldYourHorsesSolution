@@ -11,16 +11,6 @@
             return pris.ToString("#,0", nfi);
         }
 
-
-        public class Order
-        {
-            public int Antal { get; set; }
-            public string ArtikelNamn { get; set; }
-            public decimal Pris { get; set; }
-            public int OrderId { get; set; }
-        }
-
         public int[] OrderHej { get; set; }
-
     }
 }

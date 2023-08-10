@@ -1,20 +1,20 @@
-﻿using HoldYourHorses.Models;
-using Microsoft.AspNetCore.Mvc;
-using HoldYourHorses.Views.Shared;
+﻿using HoldYourHorses.Services.Interfaces;
 using HoldYourHorses.ViewModels.Shop;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HoldYourHorses.Controllers
 {
     public class ShopController : Controller
     {
-        private readonly DataService dataService;
+        private readonly IShopService dataService;
 
-        public ShopController(DataService dataService)
+        public ShopController(IShopService dataService)
         {
             this.dataService = dataService;
         }
 
         [HttpGet("")]
+        [HttpGet("index")]
         public async Task<IActionResult> IndexAsync(string search)
         {
             IndexVM model = await dataService.GetIndexVMAsync(search);
@@ -89,7 +89,7 @@ namespace HoldYourHorses.Controllers
         [HttpGet("kvitto")]
         public IActionResult Kvitto()
         {
-           return View(dataService.GetReceipt());
+            return View(dataService.GetReceipt());
         }
         [HttpGet("jämför")]
         public async Task<IActionResult> CompareAsync()
@@ -112,8 +112,8 @@ namespace HoldYourHorses.Controllers
         [HttpGet("removeCompare")]
         public IActionResult removeCompare()
         {
-           dataService.removeCompare();
-           return Ok();
+            dataService.removeCompare();
+            return Ok();
         }
 
         [HttpGet("addFavourite")]

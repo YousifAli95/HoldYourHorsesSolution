@@ -1,5 +1,6 @@
-using HoldYourHorses.Models;
 using HoldYourHorses.Models.Entities;
+using HoldYourHorses.Services.Implementations;
+using HoldYourHorses.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddTransient<DataService>();
+builder.Services.AddTransient<IShopService, ShopServiceDB>();
+builder.Services.AddTransient<IAccountService, AccountServiceDB>();
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
@@ -29,7 +31,7 @@ builder.Services.ConfigureApplicationCookie(o => o.LoginPath = "/Index");
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Changed Password settings.
-    options.Password.RequireDigit = false;
+    options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;

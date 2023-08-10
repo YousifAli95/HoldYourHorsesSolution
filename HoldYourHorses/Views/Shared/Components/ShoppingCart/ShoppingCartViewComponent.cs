@@ -1,13 +1,13 @@
-﻿using HoldYourHorses.Models;
+﻿using HoldYourHorses.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HoldYourHorses.Views.Shared.Components.ShoppingCart
 {
     public class ShoppingCartViewComponent : ViewComponent
     {
-        private readonly DataService dataService;
+        private readonly IShopService dataService;
 
-        public ShoppingCartViewComponent(DataService dataService)
+        public ShoppingCartViewComponent(IShopService dataService)
         {
             this.dataService = dataService;
         }
