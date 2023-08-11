@@ -20,7 +20,7 @@
         <div class="logos">
             @if (User.Identity.IsAuthenticated)
             {
-                <a class="navbar-svg-navigation" asp-controller="Accounts" asp-action="Login">
+                <a class="navbar-svg-navigation" asp-controller="Account" asp-action="Login">
                     <!-- User SVG icon -->
                     <svg style="height:60px" class="user-logo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
                     <g><g transform="translate(0.000000,511.000000) scale(0.100000,-0.100000)">
@@ -33,7 +33,7 @@
             }
             else
             {
-                <a class="navbar-svg-navigation" asp-controller="Accounts" asp-action="Login">
+                <a class="navbar-svg-navigation" asp-controller="Account" asp-action="Login">
                     <!-- Login SVG icon -->
                     <svg style="height:60px" class="user-logo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
                     <g><g transform="translate(0.000000,511.000000) scale(0.100000,-0.100000)">
@@ -45,7 +45,7 @@
                 </a>
             }
 
-            <a id="a-cart" class="navbar-svg-navigation" asp-controller="Sticks" asp-action="Kassa">
+            <a id="a-cart" class="navbar-svg-navigation" asp-controller="Shop" asp-action="ShoppingCart">
                 <span id="number-of-products" class="fa badge fa-lg" value="@await Component.InvokeAsync("ShoppingCart")">
                     <!-- Cart SVG icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" id="cart" class="ionicon s-ion-icon" viewBox="0 0 470 450">

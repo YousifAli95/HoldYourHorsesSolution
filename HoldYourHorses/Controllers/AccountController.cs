@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HoldYourHorses.Controllers
 {
-    public class AccountsController : Controller
+    public class AccountController : Controller
     {
         private readonly IAccountService dataService;
 
-        public AccountsController(IAccountService dataService)
+        public AccountController(IAccountService dataService)
         {
             this.dataService = dataService;
             Console.WriteLine("account");

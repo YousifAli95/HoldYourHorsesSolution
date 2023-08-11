@@ -21,10 +21,11 @@ namespace HoldYourHorses.Controllers
             return View(model);
         }
 
-        [HttpGet("Product/{artikelnr}")]
-        public IActionResult Details(int artikelNr)
+        [HttpGet("product/{articleNr}")]
+        public IActionResult Details(int articleNr)
         {
-            return View(dataService.GetDetailsVM(artikelNr));
+            DetailsVM model = dataService.GetDetailsVM(articleNr);
+            return View(model);
         }
 
         [HttpGet("checkout")]
@@ -61,7 +62,7 @@ namespace HoldYourHorses.Controllers
         public IActionResult Kassa(int artikelNr)
         {
             dataService.DeleteItem(artikelNr);
-            return Kassa();
+            return ShoppingCart();
         }
 
 
@@ -72,8 +73,8 @@ namespace HoldYourHorses.Controllers
             return PartialView("_IndexPartial", model);
         }
 
-        [HttpGet("Kassa")]
-        public IActionResult Kassa()
+        [HttpGet("shopping-cart")]
+        public IActionResult ShoppingCart()
         {
             KassaVM[] model = dataService.GetKassaVM();
             return View(model);
@@ -83,7 +84,7 @@ namespace HoldYourHorses.Controllers
         public IActionResult Kassa(string korg)
         {
             dataService.ClearCart();
-            return Kassa();
+            return ShoppingCart();
         }
 
         [HttpGet("kvitto")]
