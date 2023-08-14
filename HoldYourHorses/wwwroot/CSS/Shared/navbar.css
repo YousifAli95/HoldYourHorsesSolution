@@ -1,15 +1,4 @@
-﻿:root {
-    --navbar-background: white;
-    --navbar-logos: #7b63ad;
-    --body-background: #f2f2f2;
-    --light-purple: #e2d7f7;
-    --filter-background: #e2d7f7;
-    --price-tag: #7b63ad;
-    --light-pink: #E8A0BF;
-    font-size: 62.5%;
-}
-
-body {
+﻿body {
     margin: 0;
     background: var(--body-background)
 }
@@ -38,6 +27,7 @@ body {
     box-shadow: 0 0 0.5rem -0.5rem rgb(0 0 0 / 15%);
     padding: 1rem 5rem;
     gap: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .navbar-container {

@@ -23,9 +23,9 @@ namespace HoldYourHorses.Controllers
         }
 
         [HttpGet("product/{articleNr}")]
-        public IActionResult Details(int articleNr)
+        public IActionResult ArticleDetails(int articleNr)
         {
-            DetailsVM model = dataService.GetDetailsVM(articleNr);
+            ArticleDetailsVM model = dataService.GetArticleDetailsVM(articleNr);
             return View(model);
         }
 
@@ -45,19 +45,31 @@ namespace HoldYourHorses.Controllers
             return RedirectToAction(nameof(Kvitto));
         }
 
-        [HttpGet("/uppdateravarukorg/")]
-        public IActionResult Details(int artikelNr, int antalVaror, string artikelNamn, string price)
+        [HttpGet("update-shopping-cart")]
+        public IActionResult updateShoppingCart(int articleNr, int amount, string articleName, string price)
         {
-            var p = price.ToCharArray()
-            .Where(c => !Char.IsWhiteSpace(c))
-            .Select(c => c.ToString())
-            .Aggregate((a, b) => a + b);
+            // Remove all non-numeric characters from the price string
+            string sanitizedPrice = new string(price.Where(char.IsDigit).ToArray());
 
-            var pris = int.Parse(p);
-            dataService.AddToCart(artikelNr, antalVaror, artikelNamn, pris);
-            int numberOfProducts = dataService.AddToCart(artikelNr, antalVaror, artikelNamn, pris);
-            return Content(numberOfProducts.ToString());
+            if (string.IsNullOrEmpty(sanitizedPrice))
+            {
+                return BadRequest("Invalid price parameter.");
+            }
+
+            if (!int.TryParse(sanitizedPrice, out int priceInt))
+            {
+                return BadRequest("Invalid price parameter format.");
+            }
+
+            if (amount < 0 || amount > 100)
+            {
+                return BadRequest("Invalid amount parameter. Amount must be between 1 and 99.");
+            }
+
+            dataService.AddToCart(articleNr, amount, articleName, priceInt);
+            return Ok();
         }
+
 
         [HttpDelete("remove-from-shopping-cart/{articleNr}")]
         public IActionResult Kassa(int articleNr)

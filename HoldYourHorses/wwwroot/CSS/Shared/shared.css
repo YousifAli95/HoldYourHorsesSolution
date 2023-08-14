@@ -1,4 +1,19 @@
-﻿.invalid-span {
+﻿:root {
+    --navbar-background: white;
+    --navbar-logos: #7b63ad;
+    --body-background: #f2f2f2;
+    --light-purple: #e2d7f7;
+    --filter-background: #e2d7f7;
+    --price-tag: #7b63ad;
+    --light-pink: #E8A0BF;
+    font-size: 62.5%;
+}
+
+body{
+    font-size: 1.8rem;
+}
+
+.invalid-span {
     color: red;
     font-size: 2rem;
 }

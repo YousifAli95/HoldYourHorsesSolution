@@ -13,8 +13,8 @@ namespace HoldYourHorses.Services.Implementations
     {
         readonly SticksDBContext _shopContext;
         readonly ITempDataDictionaryFactory _tempFactory;
-
         readonly IHttpContextAccessor _accessor;
+        readonly string _shoppingCart = "ShoppingCart";
 
         public ShopServiceDB(SticksDBContext shopContext, IHttpContextAccessor accessor, ITempDataDictionaryFactory tempFactory)
         {
@@ -77,7 +77,7 @@ namespace HoldYourHorses.Services.Implementations
         public void AddToOrderrader(int id)
         {
             List<ShoppingCartProduct> products;
-            var cookieContent = _accessor.HttpContext.Request.Cookies["ShoppingCart"];
+            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
             products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
             foreach (var item in products)
             {
@@ -91,15 +91,14 @@ namespace HoldYourHorses.Services.Implementations
                 };
 
                 _shopContext.Orderraders.Add(orderrad);
-                //context.Orderraders.Select(o => new ShoppingCartProduct { Antal = item.Antal, ArtikelNr = item.ArtikelNr, Pris = item.Pris });
             }
         }
 
-        public DetailsVM GetDetailsVM(int artikelNr)
+        public ArticleDetailsVM GetArticleDetailsVM(int artikelNr)
         {
             return _shopContext.Sticks
                  .Where(o => o.Artikelnr == artikelNr)
-                 .Select(o => new DetailsVM()
+                 .Select(o => new ArticleDetailsVM()
                  {
                      Artikelnr = o.Artikelnr,
                      Pris = o.Pris,
@@ -125,67 +124,56 @@ namespace HoldYourHorses.Services.Implementations
             };
         }
 
-        public int AddToCart(int artikelNr, int antalVaror, string arikelNamn, int pris)
+        public void AddToCart(int articleNr, int amount, string articleName, int price)
         {
             List<ShoppingCartProduct> products;
 
             var newItem = new ShoppingCartProduct()
             {
-                Artikelnamn = arikelNamn,
-                Pris = pris,
-                ArtikelNr = artikelNr,
-                Antal = antalVaror
+                Artikelnamn = articleName,
+                Pris = price,
+                ArtikelNr = articleNr,
+                Antal = amount
             };
-            if (string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies["ShoppingCart"]))
-            {
-                products = new List<ShoppingCartProduct>();
-                products.Add(newItem);
 
-                string json = JsonSerializer.Serialize(products);
+            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
-                _accessor.HttpContext.Response.Cookies.Append("ShoppingCart", json);
+            if (string.IsNullOrEmpty(cookieContent))
+                products = new List<ShoppingCartProduct> { newItem };
 
-                return antalVaror;
-            }
             else
             {
-                var cookieContent = _accessor.HttpContext.Request.Cookies["ShoppingCart"];
-                products = new List<ShoppingCartProduct>();
                 products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
-                var temp = products.SingleOrDefault(p => p.ArtikelNr == artikelNr);
-                if (temp == null)
-                {
-                    products.Add(newItem);
-                }
-                else
-                {
-                    temp.Antal += antalVaror;
-                }
-                string json = JsonSerializer.Serialize(products);
+                var article = products.SingleOrDefault(p => p.ArtikelNr == articleNr);
 
-                _accessor.HttpContext.Response.Cookies.Append("ShoppingCart", json);
-                return products.Sum(o => o.Antal);
+                if (article == null)
+                    products.Add(newItem);
+                else
+                    article.Antal += amount;
             }
+
+            string json = JsonSerializer.Serialize(products);
+            _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
         }
 
         public void ClearCart()
         {
-            if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies["ShoppingCart"]))
+            if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies[_shoppingCart]))
             {
-                var cookieContent = _accessor.HttpContext.Request.Cookies["ShoppingCart"];
+                var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
                 var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
                 products.Clear();
 
                 string json = JsonSerializer.Serialize(products);
-                _accessor.HttpContext.Response.Cookies.Append("ShoppingCart", json);
+                _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
             }
         }
 
         public void RemoveItemFromShoppingCart(int articleNr)
         {
-            if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies["ShoppingCart"]))
+            if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies[_shoppingCart]))
             {
-                var cookieContent = _accessor.HttpContext.Request.Cookies["ShoppingCart"];
+                var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
                 var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
 
                 var itemToBeDeleted = products.SingleOrDefault(p => p.ArtikelNr == articleNr);
@@ -197,7 +185,7 @@ namespace HoldYourHorses.Services.Implementations
 
                 products.Remove(itemToBeDeleted);
                 string json = JsonSerializer.Serialize(products);
-                _accessor.HttpContext.Response.Cookies.Append("ShoppingCart", json);
+                _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
             }
         }
 
@@ -205,7 +193,7 @@ namespace HoldYourHorses.Services.Implementations
         {
             List<ShoppingCartProduct> products;
 
-            var cookieContent = _accessor.HttpContext.Request.Cookies["ShoppingCart"];
+            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
             if (cookieContent == null)
             {
@@ -295,7 +283,7 @@ namespace HoldYourHorses.Services.Implementations
 
         public int GetCart()
         {
-            var cookieContent = _accessor.HttpContext.Request.Cookies["ShoppingCart"];
+            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
             if (string.IsNullOrEmpty(cookieContent))
             {

@@ -1,6 +1,6 @@
 ﻿namespace HoldYourHorses.ViewModels.Shop
 {
-    public class DetailsVM
+    public class ArticleDetailsVM
     {
         public int Artikelnr { get; set; }
         public decimal Pris { get; set; }

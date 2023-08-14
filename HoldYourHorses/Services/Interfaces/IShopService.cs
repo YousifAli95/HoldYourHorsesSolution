@@ -6,11 +6,11 @@ namespace HoldYourHorses.Services.Interfaces
     {
         void SaveOrder(CheckoutVM checkoutVM);
 
-        DetailsVM GetDetailsVM(int artikelNr);
+        ArticleDetailsVM GetArticleDetailsVM(int artikelNr);
 
         KvittoVM GetReceipt();
 
-        int AddToCart(int artikelNr, int antalVaror, string arikelNamn, int pris);
+        void AddToCart(int artikelNr, int antalVaror, string arikelNamn, int pris);
 
         void ClearCart();
 
