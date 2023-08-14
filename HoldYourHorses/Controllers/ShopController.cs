@@ -1,4 +1,5 @@
-﻿using HoldYourHorses.Services.Interfaces;
+﻿using HoldYourHorses.Exceptions;
+using HoldYourHorses.Services.Interfaces;
 using HoldYourHorses.ViewModels.Shop;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,11 +59,18 @@ namespace HoldYourHorses.Controllers
             return Content(numberOfProducts.ToString());
         }
 
-        [HttpGet("/deleteItem")]
-        public IActionResult Kassa(int artikelNr)
+        [HttpDelete("remove-from-shopping-cart/{articleNr}")]
+        public IActionResult Kassa(int articleNr)
         {
-            dataService.DeleteItem(artikelNr);
-            return ShoppingCart();
+            try
+            {
+                dataService.RemoveItemFromShoppingCart(articleNr);
+                return Ok();
+            }
+            catch (BadRequestException)
+            {
+                return NotFound();
+            }
         }
 
 
@@ -76,15 +84,15 @@ namespace HoldYourHorses.Controllers
         [HttpGet("shopping-cart")]
         public IActionResult ShoppingCart()
         {
-            KassaVM[] model = dataService.GetKassaVM();
+            ShoppingCartVM[] model = dataService.GetShoppingCartVM();
             return View(model);
         }
 
-        [HttpGet("rensakorg")]
-        public IActionResult Kassa(string korg)
+        [HttpDelete("clear-cart")]
+        public IActionResult ClearCart()
         {
             dataService.ClearCart();
-            return ShoppingCart();
+            return Ok();
         }
 
         [HttpGet("kvitto")]
@@ -124,12 +132,10 @@ namespace HoldYourHorses.Controllers
         }
 
         [HttpGet("getFavourites")]
-        public IActionResult getFavourites()
+        public IActionResult GetFavourites()
         {
             var model = dataService.GetFavourites();
             return Content(model);
         }
-
-
     }
 }

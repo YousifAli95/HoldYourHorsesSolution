@@ -1,4 +1,4 @@
-﻿.artikel-container {
+﻿.article-container {
     flex-direction: column;
     display: flex;
     align-items: center;
@@ -16,7 +16,7 @@
     margin-bottom: 10px;
 }
 
-.artikel-container  ul {
+.article-container  ul {
     list-style-type: none;
     padding:0;
 }

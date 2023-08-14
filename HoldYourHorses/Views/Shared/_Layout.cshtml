@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
-    @RenderSection("CSS", false)
-    @RenderSection("JS", false)
 
     <link rel="stylesheet" href="~/CSS/Shared/navbar.css">
     <link rel="stylesheet" href="~/CSS/Shared/footer.css">
     <link rel="stylesheet" href="~/CSS/Shared/shared.css">
     <link rel="stylesheet" href="~/CSS/Shared/cookies.css">
+    @RenderSection("CSS", false)
 
     <script src="~/JS/cookies.js" defer></script>
     <script src="~/JS/navbar.js" defer></script>
+    @RenderSection("JS", false)
 </head>
 <body>
     @Html.Partial("_Navbar")

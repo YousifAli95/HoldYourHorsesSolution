@@ -14,9 +14,9 @@ namespace HoldYourHorses.Services.Interfaces
 
         void ClearCart();
 
-        void DeleteItem(int artikelNr);
+        void RemoveItemFromShoppingCart(int artikelNr);
 
-        KassaVM[] GetKassaVM();
+        ShoppingCartVM[] GetShoppingCartVM();
 
         Task<IndexVM> GetIndexVMAsync(string search);
 

@@ -1,6 +1,7 @@
 ﻿using HoldYourHorses.Models.Entities;
 using HoldYourHorses.Services.DTOs;
 using HoldYourHorses.Services.Interfaces;
+using HoldYourHorses.Utils;
 using HoldYourHorses.ViewModels.Shop;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
@@ -180,26 +181,27 @@ namespace HoldYourHorses.Services.Implementations
             }
         }
 
-        public void DeleteItem(int artikelNr)
+        public void RemoveItemFromShoppingCart(int articleNr)
         {
             if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies["ShoppingCart"]))
             {
                 var cookieContent = _accessor.HttpContext.Request.Cookies["ShoppingCart"];
                 var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
 
-                var itemToBeDeleted = products.SingleOrDefault(p => p.ArtikelNr == artikelNr);
-                if (itemToBeDeleted != null)
+                var itemToBeDeleted = products.SingleOrDefault(p => p.ArtikelNr == articleNr);
+
+                if (itemToBeDeleted == null)
                 {
-                    products.Remove(itemToBeDeleted);
+                    throw new BadHttpRequestException("ArticleNr not found");
                 }
 
+                products.Remove(itemToBeDeleted);
                 string json = JsonSerializer.Serialize(products);
                 _accessor.HttpContext.Response.Cookies.Append("ShoppingCart", json);
             }
         }
 
-
-        public KassaVM[] GetKassaVM()
+        public ShoppingCartVM[] GetShoppingCartVM()
         {
             List<ShoppingCartProduct> products;
 
@@ -213,16 +215,17 @@ namespace HoldYourHorses.Services.Implementations
             products = new List<ShoppingCartProduct>();
             products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
 
-            KassaVM[] kassaVM = products
-                .Select(o => new KassaVM
+            ShoppingCartVM[] shoppingCartVM = products
+                .Select(o => new ShoppingCartVM
                 {
-                    Antal = o.Antal,
-                    ArtikelNamn = o.Artikelnamn,
-                    Pris = decimal.ToInt32(o.Pris),
-                    ArtikelNr = o.ArtikelNr,
+                    Amount = o.Antal,
+                    ArticleName = o.Artikelnamn,
+                    Price = decimal.ToInt32(o.Pris),
+                    FormattedPrice = ShopUtils.FormatPrice(decimal.ToInt32(o.Pris)),
+                    ArticleNr = o.ArtikelNr,
                 }).ToArray();
 
-            return kassaVM;
+            return shoppingCartVM;
         }
 
         public async Task<IndexVM> GetIndexVMAsync(string search)

@@ -1,11 +1,12 @@
-﻿function rensakorg() {
-    fetch("/rensakorg",
+﻿function clearCart() {
+    fetch("/clear-cart",
         {
-            method: "GET",
+            method: "DELETE",
         })
         .then(o => {
             const numberofproducts = document.getElementById('number-of-products');
             numberofproducts.attributes[2].value = 0;
         })
 }
-rensakorg();
+
+clearCart();

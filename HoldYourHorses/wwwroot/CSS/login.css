@@ -52,10 +52,15 @@
 
     #login-button:hover,
     #login-button:focus,
-    #login-button:active,
     #login-button:focus-visible {
         outline: 0.3rem solid var(--navbar-logos);
         outline-offset: 0.4rem;
+    }
+
+    #login-button:active {
+        box-shadow: 0 0.2rem rgba(20, 20, 20, 0.966);
+        transform: translateY(0.2rem);
+        filter: contrast(110%);
     }
 
 #register-account-link {
