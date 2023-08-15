@@ -23,22 +23,7 @@ builder.Services.AddDbContext<SticksDBContext>(o => o.UseSqlServer(connString));
 builder.Services.AddDbContext<IdentityDbContext>(o => o.UseSqlServer(connString));
 builder.Services.AddSession();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<IdentityDbContext>()
-    .AddDefaultTokenProviders();
-builder.Services.ConfigureApplicationCookie(o => o.LoginPath = "/Index");
-
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    // Changed Password settings.
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 0;
-});
-
+ConfigureIdentity(builder);
 
 var app = builder.Build();
 
@@ -50,3 +35,26 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(o => o.MapControllers());
 app.Run();
+
+static void ConfigureIdentity(WebApplicationBuilder builder)
+{
+    builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+    })
+        .AddEntityFrameworkStores<IdentityDbContext>()
+        .AddDefaultTokenProviders();
+
+    builder.Services.ConfigureApplicationCookie(o => o.LoginPath = "/Index");
+
+    builder.Services.Configure<IdentityOptions>(options =>
+    {
+        // Changed Password settings.
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 6;
+        options.Password.RequiredUniqueChars = 0;
+    });
+}

@@ -7,25 +7,29 @@
 <div class="super-container">
     <div class="register-body">
         <h1>Registrera</h1>
-        <form asp-controller="Account" asp-action="Register">
+        <div asp-validation-summary="All"></div>
+        <form id="register-form" asp-controller="Account" asp-action="Register">
             <div class="info-div">
                 <label class="register-label" asp-for="Username"></label>
-                <input asp-for="Username" />
-                <span asp-validation-for="Username"></span>
+                <input class="text-input" asp-for="Username" />
             </div>
+
+            <div class="info-div">
+                <label class="register-label" asp-for="Email"></label>
+                <input class="text-input" asp-for="Email" />
+            </div>
+
             <div class="info-div">
                 <label class="register-label" asp-for="Password"></label>
-                <input asp-for="Password" />
-                <span asp-validation-for="Password"></span>
+                <input class="text-input" asp-for="Password" />
             </div>
+
             <div class="info-div">
                 <label class="register-label" asp-for="PasswordRepeat"></label>
-                <input asp-for="PasswordRepeat" />
-                <span asp-validation-for="PasswordRepeat"></span>
+                <input class="text-input" asp-for="PasswordRepeat" />
             </div>
-            <br />
-            <input type="submit" value="Registrera" />
+
+            <input id="register-button" class="default-button" type="submit" value="Registrera" />
         </form>
-        <div asp-validation-summary="All"></div>
     </div>
 </div>

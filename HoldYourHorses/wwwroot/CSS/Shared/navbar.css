@@ -66,13 +66,14 @@
 .search-div {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 50%;
 }
 
 #search-input {
     height: 6rem;
-    width: clamp(30rem, 80%, 60rem);
+    min-width: 30rem;
+    width: 100%;
     font-size: 2rem;
     border: none;
     outline: 0.3rem solid var(--navbar-logos);

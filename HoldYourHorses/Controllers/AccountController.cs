@@ -1,4 +1,5 @@
 ﻿using HoldYourHorses.Services.Interfaces;
+using HoldYourHorses.Utils;
 using HoldYourHorses.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace HoldYourHorses.Controllers
             var errorMessage = await dataService.TryRegisterAsync(viewModel);
             if (errorMessage != null)
             {
-                ModelState.AddModelError(string.Empty, errorMessage);
+                ModelState.AddModelError(string.Empty, AccountUtils.ConvertErrorMessageToSwedish(errorMessage));
                 return View();
             }
 

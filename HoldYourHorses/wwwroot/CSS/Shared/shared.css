@@ -13,11 +13,6 @@ body{
     font-size: 1.8rem;
 }
 
-.invalid-span {
-    color: red;
-    font-size: 2rem;
-}
-
 .default-button {
     background: var(--navbar-logos);
     color: white;
@@ -47,3 +42,16 @@ body{
         transform: translateY(0.2rem);
         filter: contrast(110%);
     }
+
+.validation-summary-errors ul{
+    padding: 0;
+    display:flex;
+    flex-direction:column;
+    gap: 2rem;
+}
+
+
+.invalid-span, .validation-summary-errors {
+    color: red;
+    font-size: 2rem;
+}

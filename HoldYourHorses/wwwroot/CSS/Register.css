@@ -1,79 +1,44 @@
-﻿.super-container{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-top:15px;
+﻿.super-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-
 .register-body {
-    margin-left: 20px;
-    min-height: 600px;
+    min-height: 60rem;
+    width: 35rem;
 }
 
     .register-body h1 {
-        margin: 10px 0;
+        margin: 1rem 0;
     }
+
+#register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
 
 .register-label {
-    font-size: 20px;
-    width: 180px;
-    display: inline-block;
-    margin-right: 20px;
+    font-size: 2rem;
+    display: block;
+    display: block;
+    margin: 1rem 0;
 }
 
-.info-div {
-    margin-bottom: 5px;
-}
-
-.register-body input[type=text], .register-body input[type=password] {
-    padding: 5px;
-    padding-left: 8px;
-    font-size: 17px;
-    height: 30px;
-    width: 250px;
-}
-
-.konto {
-    margin-top: 50px;
-    font-size: 20px;
-    width: 170px;
-}
-
-    .konto p {
-        margin-bottom: 7px;
-    }
-
-.register-body input[type=button], .register-body input[type=submit] {
-    background: var(--navbar-logos);
-    color: white;
-    outline: 3px solid var(--light-purple);
-    outline-offset: -8px;
-    border: none;
-    padding: 15px;
-    transition: outline 150ms ease-in;
-    border-radius: 5px;
+.text-input {
+    padding: 0.5rem 0.5rem 0.5rem 0.8rem;
+    font-size: 2rem;
+    height: 5.5rem;
+    width: 100%;
     box-sizing: border-box;
-    width: 170px;
-    font-size: 15px;
+
 }
 
-.register-body input[type=submit] {
-    margin-top: 15px;
-}
-
-    .register-body input[type=button]:hover, .register-body input[type=submit]:hover {
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
+    .text-input:focus, .text-input:focus-visible {
+        outline: 0.2rem solid var(--navbar-logos);
     }
 
-    .register-body input[type=button]:focus, .register-body input[type=submit] :focus {
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
-    }
-
-    .register-body input[type=button]:active, .register-body input[type=submit] :active {
-        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
-        transform: translateY(2px);
-        filter: contrast(110%);
+    #register-button {
+        margin-top: 1.5rem;
     }

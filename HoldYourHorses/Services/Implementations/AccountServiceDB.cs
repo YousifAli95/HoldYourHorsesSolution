@@ -49,7 +49,8 @@ namespace HoldYourHorses.Services.Implementations
         {
             var user = new IdentityUser
             {
-                UserName = viewModel.Username
+                UserName = viewModel.Username,
+                Email = viewModel.Email,
             };
 
             var createResult = await _userManager.CreateAsync(user, viewModel.Password);

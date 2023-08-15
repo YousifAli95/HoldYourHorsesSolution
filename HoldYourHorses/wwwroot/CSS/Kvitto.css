@@ -14,14 +14,6 @@
     padding: 10px 20px;
 }
 
-.super-container {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /*margin: 1rem;*/
-}
-
 .btn {
     background: var(--navbar-logos);
     color: white;
