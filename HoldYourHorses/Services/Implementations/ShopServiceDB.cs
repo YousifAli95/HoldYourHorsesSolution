@@ -100,16 +100,16 @@ namespace HoldYourHorses.Services.Implementations
                  .Where(o => o.Artikelnr == artikelNr)
                  .Select(o => new ArticleDetailsVM()
                  {
-                     Artikelnr = o.Artikelnr,
-                     Pris = o.Pris,
-                     Hästkrafter = o.Hästkrafter,
-                     Trädensitet = o.Trädensitet,
-                     Artikelnamn = o.Artikelnamn,
+                     ArticleNr = o.Artikelnr,
+                     Price = o.Pris,
+                     HorsePowers = o.Hästkrafter,
+                     WoodDensity = o.Trädensitet,
+                     ArticleName = o.Artikelnamn,
                      Material = o.Material.Namn,
-                     Kategori = o.Kategori.Namn,
-                     Beskrivning = o.Beskrivning,
-                     Tillverkningsland = o.Tillverkningsland.Namn,
-                     AbsBroms = o.AbsBroms,
+                     Category = o.Kategori.Namn,
+                     Description = o.Beskrivning,
+                     ProductionCountry = o.Tillverkningsland.Namn,
+                     AbsBrake = o.AbsBroms,
                  })
                  .Single();
         }
@@ -264,9 +264,9 @@ namespace HoldYourHorses.Services.Implementations
             || o.Artikelnamn.Contains(searchString))).
             Select(o => new IndexPartialVM
             {
-                Namn = o.Artikelnamn,
-                Pris = o.Pris,
-                ArtikelNr = o.Artikelnr,
+                Name = o.Artikelnamn,
+                Price = o.Pris,
+                ArticleNr = o.Artikelnr,
             });
             IndexPartialVM[] model;
             if (isAscending)

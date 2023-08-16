@@ -2,7 +2,7 @@
 {
     public class ShopUtils
     {
-        public static string FormatPrice(int price)
+        public static string FormatPrice(decimal price)
         {
             var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";

@@ -15,22 +15,22 @@ var maxPrice = toInput.value;
 var minPrice = fromInput.value;
 var maxHK = toInputHK.value;
 var minHK = fromInputHK.value;
-var sortOn = "Pris";
+var sortOn = selectElement.value.substr(1);
 var isAscending = true;
-var typer = "-";
+var types = "-";
 var materials = "-";
 var searchString = "";
 var numberOfCompares = 0;
 
 //event listeners
 allTypes.forEach((o) => {
-  typer += " " + o.value;
+  types += " " + o.value;
   o.addEventListener("change", function() {
     if (this.checked) {
-      typer += " " + this.value;
+      types += " " + this.value;
       getPartialView();
     } else {
-      typer = typer.replace(" " + this.value, "");
+      types = types.replace(" " + this.value, "");
       getPartialView();
     }
   });
@@ -54,7 +54,7 @@ const constMaxHK = maxHK;
 const constMinHK = minHK;
 const constIsAscending = isAscending;
 const constMaterials = materials;
-const constTyper = typer;
+const constTyper = types;
 selectElement.addEventListener("change", (event) => {
   sortOn = event.target.value.slice(1);
   isAscending = Boolean(parseInt(event.target.value.substr(0, 1)));
@@ -99,7 +99,7 @@ toInputHK.addEventListener("change", (event) => {
 async function getPartialView() {
   const superContainer = document.querySelector(".card-container");
   await fetch(
-    `/IndexPartial/?maxPrice=${maxPrice}&minPrice=${minPrice}&maxHK=${maxHK}&minHK=${minHK}&typer=${typer}&materials=${materials}&sortOn=${sortOn}&isAscending=${isAscending}`,
+    `/IndexPartial/?maxPrice=${maxPrice}&minPrice=${minPrice}&maxHK=${maxHK}&minHK=${minHK}&typer=${types}&materials=${materials}&sortOn=${sortOn}&isAscending=${isAscending}`,
     { method: "GET" }
   )
     .then((result) => result.text())
@@ -145,7 +145,7 @@ async function resetFilter() {
   minHK = constMinHK;
   isAscending = constIsAscending;
   materials = constMaterials;
-  typer = constTyper;
+  types = constTyper;
   getPartialView();
 }
 

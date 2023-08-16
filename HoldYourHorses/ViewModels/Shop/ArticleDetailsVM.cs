@@ -2,32 +2,24 @@
 {
     public class ArticleDetailsVM
     {
-        public int Artikelnr { get; set; }
-        public decimal Pris { get; set; }
-        public int Hästkrafter { get; set; }
-        public int Trädensitet { get; set; }
-        public string Artikelnamn { get; set; }
+        public int ArticleNr { get; set; }
+        public decimal Price { get; set; }
+        public int HorsePowers { get; set; }
+        public int WoodDensity { get; set; }
+        public string ArticleName { get; set; }
         public string Material { get; set; }
-        public string Kategori { get; set; }
-        public string Beskrivning { get; set; }
-        public string Tillverkningsland { get; set; }
-        public bool AbsBroms { get; set; }
-        public string Bild { get; set; } = "https://sisselblom.se/wp-content/uploads/2021/03/Kapphasten-Bruno.png";
+        public string Category { get; set; }
+        public string Description { get; set; }
+        public string ProductionCountry { get; set; }
+        public bool AbsBrake { get; set; }
 
-        public string getPriceFormatted()
+        public string GetAbsBrakeAsString()
         {
-            var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
-            nfi.NumberGroupSeparator = " ";
-            return Pris.ToString("#,0", nfi);
-        }
-
-        public string BoolCheck()
-        {
-            return AbsBroms ? "Ja" : "Nej";
+            return AbsBrake ? "Ja" : "Nej";
         }
         public string GetPictureUrl()
         {
-            return $"/Produktbilder/{Artikelnamn}.jpg";
+            return $"/Produktbilder/{ArticleName}.jpg";
         }
 
     }

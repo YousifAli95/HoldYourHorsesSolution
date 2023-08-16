@@ -11,14 +11,14 @@
 }
 <div class="super-container">
     <div id="top-container">
-        <h1 id="article-name">@Model.Artikelnamn</h1>
+        <h1 id="article-name">@Model.ArticleName</h1>
         
         <div id="image-div">
-            <img src="@Model.GetPictureUrl()" alt="@Model.Artikelnamn" />
+            <img src="@Model.GetPictureUrl()" alt="@Model.ArticleName" />
         </div>
 
         <div id="price-amount-div">
-            <h2 id="price"> @Model.getPriceFormatted() kr</h2>
+            <h2 id="price"> @ShopUtils.FormatPrice(Model.Price) kr</h2>
             <input type="number" max="99" min="1" value="1" id="number-of-items" />
         </div>
         <button id="add-to-cart-button" class="default-button" onclick="updateShoppingCart()">Lägg till i varukorgen</button>
@@ -27,24 +27,24 @@
     <div class="description-container">
         <div>
             <h1 id="description-h1">Beskrivning</h1>
-            <span>@Model.Beskrivning</span>
+            <span>@Model.Description</span>
         </div>
 
         <div class="grid-container">
             <div class="grid-item">ArtikelNr</div>
-            <div class="grid-item" id="article-nr">@Model.Artikelnr</div>
+            <div class="grid-item" id="article-nr">@Model.ArticleNr</div>
             <div class="grid-item">Hästkrafter</div>
-            <div class="grid-item">@Model.Hästkrafter hk</div>
+            <div class="grid-item">@Model.HorsePowers hk</div>
             <div class="grid-item">Trädensitet</div>
-            <div class="grid-item">@Model.Trädensitet cm<sup>3</sup></div>
+            <div class="grid-item">@Model.WoodDensity cm<sup>3</sup></div>
             <div class="grid-item">Material</div>
             <div class="grid-item">@Model.Material</div>
             <div class="grid-item">Kategori</div>
-            <div class="grid-item">@Model.Kategori</div>
+            <div class="grid-item">@Model.Category</div>
             <div class="grid-item">TIllverkningsland</div>
-            <div class="grid-item">@Model.Tillverkningsland</div>
+            <div class="grid-item">@Model.ProductionCountry</div>
             <div class="grid-item">ABS-broms</div>
-            <div class="grid-item">@Model.BoolCheck()</div>
+            <div class="grid-item">@Model.GetAbsBrakeAsString()</div>
         </div>
     </div>
 </div>

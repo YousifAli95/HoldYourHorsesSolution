@@ -8,11 +8,14 @@
 }
 
 .filter {
+    position: sticky;
+    top: 0px;
+    height: 100vh;
     min-width: var(--filter-width);
     background-color: var(--filter-background);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 0.4rem 0.4rem;
     border-top: none;
-    transition: min-width 300ms ease-in, background 300ms ease-in, border 300ms ease-in !important;
-    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.35);
+    transition: min-width 300ms ease-in 0s, background 300ms ease-in 0s, border 300ms ease-in 0s;
 }
 
     .filter > * {
