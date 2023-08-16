@@ -18,17 +18,15 @@
         </div>
 
         <div id="price-amount-div">
-            <h2 id="price"> @ShopUtils.FormatPrice(Model.Price) kr</h2>
+            <span id="price"> @ShopUtils.FormatPrice(Model.Price) kr/st</span>
             <input type="number" max="99" min="1" value="1" id="number-of-items" />
         </div>
         <button id="add-to-cart-button" class="default-button" onclick="updateShoppingCart()">Lägg till i varukorgen</button>
     </div>
 
     <div class="description-container">
-        <div>
             <h1 id="description-h1">Beskrivning</h1>
-            <span>@Model.Description</span>
-        </div>
+            <p id="description-p">@Model.Description</p>
 
         <div class="grid-container">
             <div class="grid-item">ArtikelNr</div>
