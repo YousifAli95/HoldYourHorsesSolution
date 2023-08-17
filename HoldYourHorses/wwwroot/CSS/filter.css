@@ -206,9 +206,9 @@ input::-webkit-inner-spin-button {
 }
 
 .filter button {
-    width: 240px;
-    margin-top: 30px;
-    padding: 10px 20px;
+    width: 24rem;
+    font-size: 1.8rem;
+    height: 8rem;
 }
 
 .filter-btn-div {
@@ -216,46 +216,9 @@ input::-webkit-inner-spin-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 1rem;
+    margin-top: 3rem;
+    gap: 2rem;
 }
-
-#last-filter-btn {
-    margin-bottom: 30px;
-}
-
-
-
-
-.filter button {
-    background: var(--navbar-logos);
-    color: white;
-    outline: 3px solid var(--light-purple);
-    outline-offset: -8px;
-    border: none;
-    padding: 15px;
-    transition: outline 150ms ease-in;
-    border-radius: 5px;
-    font-size: 15px;
-    height: 30px;
-    box-sizing: content-box;
-    font-family: inherit;
-}
-
-    .filter button:hover {
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
-    }
-
-    .filter button:focus {
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
-    }
-
-    .filter button:active {
-        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
-        transform: translateY(2px);
-        filter: contrast(110%);
-    }
 
 .div-plus {
     font-size: 2rem;

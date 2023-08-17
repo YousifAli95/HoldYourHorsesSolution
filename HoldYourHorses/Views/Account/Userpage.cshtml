@@ -12,8 +12,8 @@
         Välkommen tillbaka @Model.Username
 
         <div class="konto" id="buttons">
-            <input type='button' value='Logga ut' onClick='redirectOnClick()' />
-            <input type='button' value='Orderhistorik' onClick='redirectOnClick2()' />
+            <a asp-controller="Account" asp-action="Logout" class="default-button">Logga ut</a>
+            <a asp-controller="Account" asp-action="Logout" class="default-button">Orderhistorik</a>
         </div>
         <div>
             <div class="article-container">
@@ -43,14 +43,3 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function redirectOnClick() {
-            document.location = 'logout';
-        }
-    </script>
-    <script>
-        function redirectOnClick2() {
-            document.location = 'orderhistory';
-        }
-    </script>

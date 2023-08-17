@@ -10,7 +10,6 @@
 .filter {
     position: sticky;
     top: 0px;
-    height: 100vh;
     min-width: var(--filter-width);
     background-color: var(--filter-background);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 0.4rem 0.4rem;
@@ -194,32 +193,16 @@ footer {
     text-align: center;
 }
 
-.compare-btn {
-    background: var(--navbar-logos);
-    color: white;
-    outline: 0.3rem solid var(--light-purple);
-    outline-offset: -0.8rem;
-    border: none;
-    padding: 1.5rem;
-    width: 18rem;
-    transition: outline 150ms ease-in;
-    border-radius: 0.5rem;
+#compare-btn {
+    width: 21rem;
     font-size: 1.8rem;
-    height: 3rem;
-    box-sizing: content-box;
-    font-family: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-    .compare-btn:hover,
     .main-div select:hover,
-    .compare-btn:focus,
     .main-div select:focus {
         outline: 0.3rem solid var(--navbar-logos);
         outline-offset: 0.4rem;
-    }
-
-    .compare-btn:active {
-        box-shadow: 0 0.2rem rgba(20, 20, 20, 0.966);
-        transform: translateY(0.2rem);
-        filter: contrast(110%);
     }

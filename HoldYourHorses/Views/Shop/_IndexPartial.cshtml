@@ -8,7 +8,7 @@
 
         @if (User.Identity.IsAuthenticated)
         {
-            <partial name="~/Views/Shop/SVGs/Trashbin.cshtml" model="@card" />
+            <partial name="~/Views/Shop/SVGs/Heart.cshtml" model="@card" />
         }
 
         <a asp-controller="Shop" asp-action="ArticleDetails" asp-route-articleNr="@card.ArticleNr">

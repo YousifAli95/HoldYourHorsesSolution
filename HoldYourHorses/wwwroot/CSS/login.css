@@ -35,34 +35,6 @@
     box-sizing: border-box;
 }
 
-#login-button {
-    background: var(--navbar-logos);
-    color: white;
-    outline: 0.3rem solid var(--light-purple);
-    outline-offset: -0.8rem;
-    border: none;
-    padding: 1.5rem;
-    transition: outline 150ms ease-in;
-    border-radius: 0.5rem;
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 2rem;
-    margin-top: 1rem;
-}
-
-    #login-button:hover,
-    #login-button:focus,
-    #login-button:focus-visible {
-        outline: 0.3rem solid var(--navbar-logos);
-        outline-offset: 0.4rem;
-    }
-
-    #login-button:active {
-        box-shadow: 0 0.2rem rgba(20, 20, 20, 0.966);
-        transform: translateY(0.2rem);
-        filter: contrast(110%);
-    }
-
 #register-account-link {
     margin: 1rem;
 }
