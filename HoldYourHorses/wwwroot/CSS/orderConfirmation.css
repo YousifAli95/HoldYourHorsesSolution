@@ -1,0 +1,12 @@
+﻿.super-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 50rem;
+}
+
+#continue-shop-btn {
+    width: 30rem;
+    margin-top: 2rem;
+}

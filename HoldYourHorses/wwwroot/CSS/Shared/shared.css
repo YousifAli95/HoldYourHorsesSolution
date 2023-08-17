@@ -13,6 +13,10 @@ body{
     font-size: 1.8rem;
 }
 
+input:focus-visible, input:focus {
+    outline: 0.2rem solid var(--navbar-logos)
+}
+
 .default-button {
     background: var(--navbar-logos);
     color: white;

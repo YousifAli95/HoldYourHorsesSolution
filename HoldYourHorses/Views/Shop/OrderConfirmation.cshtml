@@ -1,0 +1,11 @@
+﻿@model OrderConfirmationVM
+
+@section CSS{
+     <link rel="stylesheet" href="~/CSS/kvitto.css">
+}
+
+<div class="super-container">
+<h1>Tack för köpet @Model.FirstName!</h1>
+<p>Vi skickar en bekräftelse till @Model.Email inom kort.</p>
+<a asp-controller="Shop" asp-action="Index" class="default-button" id="continue-shop-btn">Fortsätt handla</a>
+</div>

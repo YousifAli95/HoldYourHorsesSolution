@@ -27,9 +27,10 @@
             @foreach (var item in Model)
             {
                 <div class="article-div" id="article-@item.ArticleNr">
-                    <div class="img-div">
+
+                    <a asp-asp-controller="Shop" asp-action="ArticleDetails" asp-route-articleNr="@item.ArticleNr" class="img-a">
                         <img src="@item.GetPictureUrl()" />
-                    </div>
+                    </a>
 
                     <div class="price-name-div">
                         <p class="price-name-p">@item.ArticleName</p>

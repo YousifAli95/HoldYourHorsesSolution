@@ -1,69 +1,64 @@
-﻿
-.my-div{
-    margin-left:400px;
+﻿#checkout-form {
+    width: 42rem;
 }
 
+.invalid-span{
+    display: block;
+    margin-bottom: 1rem;
+}
 
 .mycredit {
     display: flex;
-    width: 800px;
 }
+
+.inside-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+    /* Chrome, Safari, Edge, Opera */
+    .inside-form
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    .inside-form input[type=number] {
+        -moz-appearance: textfield;
+    }
 
     .mycredit input, .inside-form input {
-        margin-top: 3px;
-        padding: 15px;
-        font-size: 16px;
+        padding: 1.5rem;
+        font-size: 1.6rem;
         width: 100%;
-        border-radius: 3px;
-        border: 1px solid #dcdcdc;
+        border-radius: 0.3rem;
+        border: 0.1rem solid #dcdcdc;
     }
-.div-first-form{
-    width:420px;
-    box-sizing:border-box;
-    box-sizing:border-box;
+
+.div-first-form {
+    width: 42rem;
+    box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-.input {
-    padding-bottom: 10px;
-    display:flex;
-    justify-content:space-between;
+.form-row {
+    display: flex;
+    justify-content: space-between;
 }
-#last {
-    padding-bottom: 0;
+
+.form-row input {
+    box-sizing: border-box;
+    padding-right: 0;
 }
-.input input{
-    box-sizing:border-box;
-    padding-right:0;
+
+.one-part {
+    width: 100%
 }
-.one-part{
-    width:100%
-}
+
 .two-part {
     width: 45%;
-}
-body {
-    /*    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-line-pack: center;
-    align-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    min-height: 100vh;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    font-family: 'Raleway';*/
-}
-
-.payment-title {
-    width: 100%;
 }
 
 .form-container .field-container:first-of-type {
@@ -93,18 +88,16 @@ body {
 
 .form-container {
     display: grid;
-    grid-column-gap: 10px;
+    grid-column-gap: 10%;
+    grid-row-gap: 2rem;
     grid-template-columns: auto auto;
-    grid-template-rows: 90px 90px 90px;
+    grid-template-rows: 9rem 9rem 9rem;
     grid-template-areas: "name name""number number""expiration security";
-    max-width: 400px;
-
 }
 
 label {
-    padding-bottom: 5px;
-    font-size: 16px;
-    color: black;
+    margin-bottom: 0.8rem;
+    display: inline-block;
 }
 
 
@@ -125,11 +118,8 @@ label {
 }
 
 .container {
-    width: 100%;
-    max-width: 400px;
-    max-height: 251px;
-    height: 54vw;
-    padding: 20px;
+    height: 25rem;
+    margin: 2rem 0 5.5rem 0;
 }
 
 #ccsingle {
@@ -251,13 +241,14 @@ label {
     fill: #FFFFFF;
 }
 
+
 #cardfront .st3 {
     font-family: 'Source Code Pro', monospace;
     font-weight: 600;
 }
 
 #cardfront .st4 {
-    font-size: 54.7817px;
+    font-size: 5.47817rem;
 }
 
 #cardfront .st5 {
@@ -266,7 +257,7 @@ label {
 }
 
 #cardfront .st6 {
-    font-size: 33.1112px;
+    font-size: 3.31112rem;
 }
 
 #cardfront .st7 {
@@ -275,11 +266,11 @@ label {
 }
 
 #cardfront .st8 {
-    font-size: 24px;
+    font-size: 2.4rem;
 }
 
 #cardfront .st9 {
-    font-size: 36.5498px;
+    font-size: 3.65498rem;
 }
 
 #cardfront .st10 {
@@ -288,7 +279,7 @@ label {
 }
 
 #cardfront .st11 {
-    font-size: 16.1716px;
+    font-size: 1.61716rem;
 }
 
 #cardfront .st12 {
@@ -358,7 +349,6 @@ label {
 
 .creditcard {
     width: 100%;
-    max-width: 400px;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
     transition: -webkit-transform 0.6s;
@@ -372,7 +362,6 @@ label {
     .creditcard .back {
         position: absolute;
         width: 100%;
-        max-width: 400px;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         -webkit-font-smoothing: antialiased;
@@ -394,47 +383,9 @@ label {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    min-height: 390px;
+    min-height: 39rem;
 }
 
-.confirm-btn {
-    width: 240px;
-    margin-top: 30px;
-    padding: 10px 20px;
+#cchip path:not(.st12) {
+    fill: #fdbd37 !important;
 }
-
-.confirm-btn {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /*margin: 1rem;*/
-}
-
-.confirm-btn {
-    background: var(--navbar-logos);
-    color: white;
-    outline: 3px solid var(--light-purple);
-    outline-offset: -8px;
-    border: none;
-    padding: 20px;
-    transition: outline 150ms ease-in;
-    border-radius: 5px;
-    font-size: 15px;
-}
-
-    .confirm-btn:hover {
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
-    }
-
-    .confirm-btn:focus {
-        outline: 3px solid var(--navbar-logos);
-        outline-offset: 4px;
-    }
-
-    .confirm-btn:active {
-        box-shadow: 0 2px rgba(20, 20, 20, 0.966);
-        transform: translateY(2px);
-        filter: contrast(110%);
-    }

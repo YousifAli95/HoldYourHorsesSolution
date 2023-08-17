@@ -168,7 +168,7 @@ function hideProperty(id, minus) {
 
 async function compare(artikelnr, artikelNamn) {
   var didAdd;
-  await fetch(`/compareAdd/?artikelnr=${artikelnr}`)
+  await fetch(`/compare-add/?artikelnr=${artikelnr}`)
     .then((o) => o.text())
     .then((o) => (didAdd = o));
   console.log(didAdd);
@@ -188,7 +188,7 @@ async function compare(artikelnr, artikelNamn) {
   }
 }
 async function getCompare() {
-  var articleList = await fetch("/getCompare");
+  var articleList = await fetch("/get-compare");
   try {
     articleList = await articleList.json();
     numberOfCompares = articleList.length;
@@ -248,7 +248,7 @@ window.onbeforeunload = function(e) {
 };
 
 async function removeCompare() {
-  await fetch(`/removeCompare`, { method: "GET" });
+  await fetch(`/remove-compare`, { method: "GET" });
   var articles = document.querySelectorAll(".compare-svg");
   articles.forEach((e) => (e.style.fill = ""));
   numberOfCompares = 0;
@@ -267,7 +267,7 @@ function ShowOrHideCompareButton() {
 
 async function addHeart(svg, artikelNr) {
   var didAddHeart;
-  await fetch(`/addFavourite/?artikelnr=${artikelNr}`)
+  await fetch(`/add-favourite/?artikelnr=${artikelNr}`)
     .then((o) => o.text())
     .then((o) => (didAddHeart = o));
   console.log(didAddHeart);
@@ -279,7 +279,7 @@ async function addHeart(svg, artikelNr) {
 }
 
 async function getHearts() {
-  var articleNumbers = await fetch(`/getFavourites`);
+  var articleNumbers = await fetch(`/get-favourites`);
   console.log(articleNumbers);
   try {
     articleNumbers = await articleNumbers.json();

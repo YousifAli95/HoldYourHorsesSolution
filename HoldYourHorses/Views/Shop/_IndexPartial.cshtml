@@ -11,7 +11,7 @@
             <partial name="~/Views/Shop/SVGs/Trashbin.cshtml" model="@card" />
         }
 
-        <a href="Product/@card.ArticleNr">
+        <a asp-controller="Shop" asp-action="ArticleDetails" asp-route-articleNr="@card.ArticleNr">
             <div class="article-card">
                 <img src="@card.GetPictureUrl()"
                  alt="@card.Name" />
