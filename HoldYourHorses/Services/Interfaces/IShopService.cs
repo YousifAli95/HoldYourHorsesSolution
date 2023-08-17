@@ -8,7 +8,7 @@ namespace HoldYourHorses.Services.Interfaces
 
         ArticleDetailsVM GetArticleDetailsVM(int artikelNr);
 
-        KvittoVM GetReceipt();
+        OrderConfirmationVM GetOrderConfirmationVM();
 
         void AddToCart(int artikelNr, int antalVaror, string arikelNamn, int pris);
 

@@ -1,8 +1,8 @@
 ﻿namespace HoldYourHorses.ViewModels.Shop
 {
-    public class KvittoVM
+    public class OrderConfirmationVM
     {
         public string FirstName { get; set; }
-        public string Epost { get; set; }
+        public string Email { get; set; }
     }
 }

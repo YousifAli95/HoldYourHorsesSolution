@@ -1,5 +1,4 @@
-﻿using HoldYourHorses.Exceptions;
-using HoldYourHorses.Services.Interfaces;
+﻿using HoldYourHorses.Services.Interfaces;
 using HoldYourHorses.ViewModels.Shop;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +21,7 @@ namespace HoldYourHorses.Controllers
             return View(model);
         }
 
-        [HttpGet("product/{articleNr}")]
+        [HttpGet("article/{articleNr}")]
         public IActionResult ArticleDetails(int articleNr)
         {
             ArticleDetailsVM model = dataService.GetArticleDetailsVM(articleNr);
@@ -40,51 +39,11 @@ namespace HoldYourHorses.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
-            else
-                dataService.SaveOrder(checkoutVM);
-            return RedirectToAction(nameof(Kvitto));
+
+            dataService.SaveOrder(checkoutVM);
+            dataService.ClearCart();
+            return RedirectToAction(nameof(OrderConfirmation));
         }
-
-        [HttpGet("update-shopping-cart")]
-        public IActionResult updateShoppingCart(int articleNr, int amount, string articleName, string price)
-        {
-            // Remove all non-numeric characters from the price string
-            string sanitizedPrice = new string(price.Where(char.IsDigit).ToArray());
-
-            if (string.IsNullOrEmpty(sanitizedPrice))
-            {
-                return BadRequest("Invalid price parameter.");
-            }
-
-            if (!int.TryParse(sanitizedPrice, out int priceInt))
-            {
-                return BadRequest("Invalid price parameter format.");
-            }
-
-            if (amount < 0 || amount > 100)
-            {
-                return BadRequest("Invalid amount parameter. Amount must be between 1 and 99.");
-            }
-
-            dataService.AddToCart(articleNr, amount, articleName, priceInt);
-            return Ok();
-        }
-
-
-        [HttpDelete("remove-from-shopping-cart/{articleNr}")]
-        public IActionResult Kassa(int articleNr)
-        {
-            try
-            {
-                dataService.RemoveItemFromShoppingCart(articleNr);
-                return Ok();
-            }
-            catch (BadRequestException)
-            {
-                return NotFound();
-            }
-        }
-
 
         [HttpGet("IndexPartial")]
         public IActionResult IndexPartial(int minPrice, int maxPrice, int maxHK, int minHK, string typer, string materials, bool isAscending, string sortOn)
@@ -100,54 +59,17 @@ namespace HoldYourHorses.Controllers
             return View(model);
         }
 
-        [HttpDelete("clear-cart")]
-        public IActionResult ClearCart()
+        [HttpGet("order-confirmation")]
+        public IActionResult OrderConfirmation()
         {
-            dataService.ClearCart();
-            return Ok();
+            return View(dataService.GetOrderConfirmationVM());
         }
 
-        [HttpGet("kvitto")]
-        public IActionResult Kvitto()
-        {
-            return View(dataService.GetReceipt());
-        }
-        [HttpGet("jämför")]
+        [HttpGet("Compare")]
         public async Task<IActionResult> CompareAsync()
         {
             CompareVM[] model = await dataService.getCompareVMAsync();
             return View(model);
-        }
-
-        [HttpGet("compareAdd")]
-        public IActionResult CompareAdd(int artikelnr)
-        {
-            return Content(dataService.addCompare(artikelnr).ToString());
-        }
-        [HttpGet("getCompare")]
-        public IActionResult GetCompare()
-        {
-            string model = dataService.getCompare();
-            return Content(model);
-        }
-        [HttpGet("removeCompare")]
-        public IActionResult removeCompare()
-        {
-            dataService.removeCompare();
-            return Ok();
-        }
-
-        [HttpGet("addFavourite")]
-        public IActionResult AddFavourite(int artikelnr)
-        {
-            return Content(dataService.AddFavourite(artikelnr).ToString());
-        }
-
-        [HttpGet("getFavourites")]
-        public IActionResult GetFavourites()
-        {
-            var model = dataService.GetFavourites();
-            return Content(model);
         }
     }
 }

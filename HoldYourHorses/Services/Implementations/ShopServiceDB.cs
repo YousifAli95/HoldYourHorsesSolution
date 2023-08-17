@@ -70,8 +70,8 @@ namespace HoldYourHorses.Services.Implementations
                 _shopContext.SaveChanges();
 
             }
-            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(KvittoVM.FirstName)] = o.FirstName;
-            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(KvittoVM.Epost)] = o.Email;
+            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.FirstName)] = o.FirstName;
+            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.Email)] = o.Email;
         }
 
         public void AddToOrderrader(int id)
@@ -115,12 +115,12 @@ namespace HoldYourHorses.Services.Implementations
         }
 
 
-        public KvittoVM GetReceipt()
+        public OrderConfirmationVM GetOrderConfirmationVM()
         {
-            return new KvittoVM
+            return new OrderConfirmationVM
             {
-                FirstName = (string)_tempFactory.GetTempData(_accessor.HttpContext)[nameof(KvittoVM.FirstName)],
-                Epost = (string)_tempFactory.GetTempData(_accessor.HttpContext)[nameof(KvittoVM.Epost)]
+                FirstName = (string)_tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.FirstName)],
+                Email = (string)_tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.Email)]
             };
         }
 

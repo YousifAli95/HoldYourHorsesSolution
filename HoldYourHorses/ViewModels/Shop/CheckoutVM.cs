@@ -12,8 +12,9 @@ namespace HoldYourHorses.ViewModels.Shop
         [Required(ErrorMessage = "Var vänlig och mata in ditt efternamn")]
         public string LastName { get; set; }
 
-        [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "E-postadress")]
+        [Required(ErrorMessage = "Var vänlig och mata in din E-postadress")]
+
         [EmailAddress]
         public string Email { get; set; }
 
