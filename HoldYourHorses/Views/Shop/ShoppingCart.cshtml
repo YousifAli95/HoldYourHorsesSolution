@@ -29,7 +29,7 @@
                 <div class="article-div" id="article-@item.ArticleNr">
 
                     <a asp-asp-controller="Shop" asp-action="ArticleDetails" asp-route-articleNr="@item.ArticleNr" class="img-a">
-                        <img src="@item.GetPictureUrl()" />
+                        <img src="@ShopUtils.GetPictureUrl(item.ArticleName)" />
                     </a>
 
                     <div class="price-name-div">

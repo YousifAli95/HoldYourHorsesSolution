@@ -17,10 +17,6 @@
         {
             return AbsBrake ? "Ja" : "Nej";
         }
-        public string GetPictureUrl()
-        {
-            return $"/Produktbilder/{ArticleName}.jpg";
-        }
 
     }
 }

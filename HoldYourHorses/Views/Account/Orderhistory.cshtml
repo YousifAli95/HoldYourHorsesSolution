@@ -20,9 +20,9 @@
 
 							<li>
 								<div class="orderinfo">
-									@item.Antal st
-									@item.ArtikelNamn
-									@Model.getPriceFormatted(@item.Pris*item.Antal) kr
+									@item.Amount st
+									@item.ArticleName
+									@Model.getPriceFormatted(@item.Price*item.Amount) kr
 								</div>
 							</li>
 
@@ -30,7 +30,7 @@
 					}
 				</ul>
 				<div>
-					<strong>Totalsumma:  @Model.getPriceFormatted(@Model.Historik.Where(o => o.OrderId == hejhej).Select(o => o.Pris*o.Antal).Sum()) kr</strong>
+					<strong>Totalsumma:  @Model.getPriceFormatted(@Model.Historik.Where(o => o.OrderId == hejhej).Select(o => o.Price*o.Amount).Sum()) kr</strong>
 				</div>
 			</div>
 		}

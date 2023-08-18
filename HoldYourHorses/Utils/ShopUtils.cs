@@ -8,5 +8,10 @@
             nfi.NumberGroupSeparator = " ";
             return price.ToString("#,0", nfi);
         }
+
+        public static string GetPictureUrl(string articleName)
+        {
+            return $"/Produktbilder/{articleName}.jpg";
+        }
     }
 }

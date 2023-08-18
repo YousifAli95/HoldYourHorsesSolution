@@ -16,9 +16,5 @@
         public int Price { get; set; }
         public int ArticleNr { get; set; }
 
-        public string GetPictureUrl()
-        {
-            return $"/Produktbilder/{ArticleName}.jpg";
-        }
     }
 }

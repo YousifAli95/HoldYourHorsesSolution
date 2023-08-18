@@ -8,9 +8,5 @@
         public string FormattedPrice { get; set; }
         public int Amount { get; set; }
         public int ArticleNr { get; set; }
-        public string GetPictureUrl()
-        {
-            return $"/Produktbilder/{ArticleName}.jpg";
-        }
     }
 }

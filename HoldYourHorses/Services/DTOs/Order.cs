@@ -2,9 +2,9 @@
 {
     public class Order
     {
-        public int Antal { get; set; }
-        public string ArtikelNamn { get; set; }
-        public decimal Pris { get; set; }
+        public int Amount { get; set; }
+        public string ArticleName { get; set; }
+        public decimal Price { get; set; }
         public int OrderId { get; set; }
     }
 }

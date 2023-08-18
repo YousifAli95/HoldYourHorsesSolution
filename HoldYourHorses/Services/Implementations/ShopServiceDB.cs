@@ -264,7 +264,7 @@ namespace HoldYourHorses.Services.Implementations
             || o.Artikelnamn.Contains(searchString))).
             Select(o => new IndexPartialVM
             {
-                Name = o.Artikelnamn,
+                ArticleName = o.Artikelnamn,
                 Price = o.Pris,
                 ArticleNr = o.Artikelnr,
             });
@@ -339,13 +339,13 @@ namespace HoldYourHorses.Services.Implementations
             var compareList = JsonSerializer.Deserialize<List<int>>(compareString);
             var model = await _shopContext.Sticks.Where(o => compareList.Contains(o.Artikelnr)).Select(o => new CompareVM
             {
-                ArtikelNamn = o.Artikelnamn,
-                ArtikelNr = o.Artikelnr,
-                Hästkrafter = o.Hästkrafter,
-                Land = o.Tillverkningsland.Namn,
+                ArticleName = o.Artikelnamn,
+                ArticleNr = o.Artikelnr,
+                HorsePowers = o.Hästkrafter,
+                Country = o.Tillverkningsland.Namn,
                 Material = o.Material.Namn,
-                Kategori = o.Kategori.Namn,
-                Trädensitet = o.Trädensitet
+                Category = o.Kategori.Namn,
+                WoodDensity = o.Trädensitet
             }).ToArrayAsync();
 
             return model;

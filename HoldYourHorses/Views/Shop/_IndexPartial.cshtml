@@ -13,10 +13,10 @@
 
         <a asp-controller="Shop" asp-action="ArticleDetails" asp-route-articleNr="@card.ArticleNr">
             <div class="article-card">
-                <img src="@card.GetPictureUrl()"
-                 alt="@card.Name" />
+                <img src="@ShopUtils.GetPictureUrl(card.ArticleName)"
+                 alt="@card.ArticleName" />
                 <div id="price-name-container">
-                    <p class="name">@card.Name</p>
+                    <p class="name">@card.ArticleName</p>
                     <div class="arrow-div">
                         <div class="price"><span class="price-span"> @ShopUtils.FormatPrice(card.Price) kr</span></div>
                         <div class="arrow-right"></div>

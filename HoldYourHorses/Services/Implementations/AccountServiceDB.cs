@@ -95,9 +95,9 @@ namespace HoldYourHorses.Services.Implementations
                 .Where(o => ordersQuery.Contains(o.OrderId))
                 .Select(o => new Order
                 {
-                    Antal = o.Antal,
-                    Pris = o.Pris,
-                    ArtikelNamn = o.ArtikelNamn,
+                    Amount = o.Antal,
+                    Price = o.Pris,
+                    ArticleName = o.ArtikelNamn,
                     OrderId = o.OrderId
                 })
                 .ToListAsync();

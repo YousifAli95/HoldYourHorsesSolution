@@ -2,24 +2,18 @@
 {
     public class CompareVM
     {
-        public string ArtikelNamn { get; set; }
-        public int Pris { get; set; }
-        public int ArtikelNr { get; set; }
+        public string ArticleName { get; set; }
+        public int Price { get; set; }
+        public int ArticleNr { get; set; }
 
         public string Material { get; set; }
 
-        public string Kategori { get; set; }
-        public string Land { get; set; }
+        public string Category { get; set; }
+        public string Country { get; set; }
 
-        public int Hästkrafter { get; set; }
+        public int HorsePowers { get; set; }
 
-        public int Trädensitet { get; set; }
-
-
-        public string GetPictureUrl()
-        {
-            return $"/Produktbilder/{ArtikelNamn}.jpg";
-        }
+        public int WoodDensity { get; set; }
 
     }
 }
