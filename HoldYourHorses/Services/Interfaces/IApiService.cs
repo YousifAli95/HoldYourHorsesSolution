@@ -2,14 +2,14 @@
 {
     public interface IApiService
     {
-        void AddToCart(int articleNr, int amount, string articleName, int price);
+        void AddToCart(int articleNr, int amount);
         void RemoveItemFromShoppingCart(int articleNr);
         bool AddCompare(int articleNr);
         string GetCompare();
-        void RemoveCompare();
+        void RemoveAllComparisons();
         bool AddFavourite(int articleNr);
         string GetFavourites();
-        int GetCart();
+        int GetNumberOfItemsInCart();
         void ClearCart();
 
     }

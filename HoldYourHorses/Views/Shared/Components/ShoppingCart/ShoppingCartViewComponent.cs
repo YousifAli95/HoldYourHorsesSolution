@@ -14,7 +14,7 @@ namespace HoldYourHorses.Views.Shared.Components.ShoppingCart
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View(dataService.GetCart());
+            return View(dataService.GetNumberOfItemsInCart());
         }
     }
 }

@@ -18,14 +18,12 @@ namespace HoldYourHorses.Services.Implementations
             _accessor = accessor;
         }
 
-        public void AddToCart(int articleNr, int amount, string articleName, int price)
+        public void AddToCart(int articleNr, int amount)
         {
             List<ShoppingCartProduct> products;
 
             var newItem = new ShoppingCartProduct()
             {
-                ArticleName = articleName,
-                Price = price,
                 ArticleNr = articleNr,
                 Amount = amount
             };
@@ -72,18 +70,10 @@ namespace HoldYourHorses.Services.Implementations
 
         public void ClearCart()
         {
-            if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies[_shoppingCart]))
-            {
-                var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-                var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
-                products.Clear();
-
-                string json = JsonSerializer.Serialize(products);
-                _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
-            }
+            _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, "");
         }
 
-        public int GetCart()
+        public int GetNumberOfItemsInCart()
         {
             var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
@@ -142,7 +132,7 @@ namespace HoldYourHorses.Services.Implementations
         }
 
 
-        public void RemoveCompare()
+        public void RemoveAllComparisons()
         {
             _accessor.HttpContext.Response.Cookies.Append(_compareString, "");
         }

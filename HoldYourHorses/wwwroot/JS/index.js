@@ -249,7 +249,7 @@ window.onbeforeunload = function (e) {
 };
 
 async function removeCompare() {
-    await fetch(`/remove-compare`, { method: "GET" });
+    await fetch(`/remove-all-comparisons`, { method: "DELETE" });
     var articles = document.querySelectorAll(".compare-svg");
     articles.forEach((e) => (e.style.fill = ""));
     numberOfCompares = 0;

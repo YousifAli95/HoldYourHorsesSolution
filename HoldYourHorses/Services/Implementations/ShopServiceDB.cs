@@ -1,7 +1,6 @@
 ﻿using HoldYourHorses.Models.Entities;
 using HoldYourHorses.Services.DTOs;
 using HoldYourHorses.Services.Interfaces;
-using HoldYourHorses.Utils;
 using HoldYourHorses.ViewModels.Shop;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
@@ -126,29 +125,38 @@ namespace HoldYourHorses.Services.Implementations
 
         public ShoppingCartVM[] GetShoppingCartVM()
         {
-            List<ShoppingCartProduct> products;
+            var model = new List<ShoppingCartVM>();
 
             var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
-            if (cookieContent == null)
+            if (string.IsNullOrEmpty(cookieContent))
             {
-                return null;
+                return model.ToArray();
             }
 
-            products = new List<ShoppingCartProduct>();
-            products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
+            var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
 
-            ShoppingCartVM[] shoppingCartVM = products
-                .Select(o => new ShoppingCartVM
+            var articleNumbers = products.Select(p => p.ArticleNr).ToList();
+            var articles = _shopContext.Sticks
+                .Where(article => articleNumbers.Contains(article.Artikelnr))
+                .ToList();
+
+            foreach (var item in products)
+            {
+                var article = articles.FirstOrDefault(a => a.Artikelnr == item.ArticleNr);
+                if (article != null)
                 {
-                    Amount = o.Amount,
-                    ArticleName = o.ArticleName,
-                    Price = decimal.ToInt32(o.Price),
-                    FormattedPrice = ShopUtils.FormatPrice(decimal.ToInt32(o.Price)),
-                    ArticleNr = o.ArticleNr,
-                }).ToArray();
+                    model.Add(new ShoppingCartVM
+                    {
+                        ArticleNr = article.Artikelnr,
+                        ArticleName = article.Artikelnamn,
+                        Price = article.Pris,
+                        Amount = item.Amount
+                    });
+                }
+            }
 
-            return shoppingCartVM;
+            return model.ToArray();
         }
 
         public async Task<IndexVM> GetIndexVMAsync(string search)

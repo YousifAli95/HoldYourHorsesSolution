@@ -15,28 +15,15 @@ namespace HoldYourHorses.Controllers
         }
 
         [HttpGet("update-shopping-cart")]
-        public IActionResult UpdateShoppingCart(int articleNr, int amount, string articleName, string price)
+        public IActionResult UpdateShoppingCart(int articleNr, int amount)
         {
-            // Remove all non-numeric characters from the price string
-            string sanitizedPrice = new string(price.Where(char.IsDigit).ToArray());
-
-            if (string.IsNullOrEmpty(sanitizedPrice))
-            {
-                return BadRequest("Invalid price parameter.");
-            }
-
-            if (!int.TryParse(sanitizedPrice, out int priceInt))
-            {
-                return BadRequest("Invalid price parameter format.");
-            }
-
             if (amount < 0 || amount > 100)
             {
                 return BadRequest("Invalid amount parameter. Amount must be between 1 and 99.");
             }
 
-            _apiService.AddToCart(articleNr, amount, articleName, priceInt);
-            return Ok();
+            _apiService.AddToCart(articleNr, amount);
+            return Ok(new { message = "Shopping cart updated successfully." });
         }
 
         [HttpDelete("remove-from-shopping-cart/{articleNr}")]
@@ -50,14 +37,15 @@ namespace HoldYourHorses.Controllers
             {
                 return NotFound();
             }
-            return Ok();
+            return Ok(new { message = "Article removed from shopping cart." });
         }
 
         [HttpDelete("clear-cart")]
         public IActionResult ClearCart()
         {
             _apiService.ClearCart();
-            return Ok();
+            return Ok(new { message = "Shopping Cart cleared successfully" });
+
         }
 
         [HttpGet("compare-add")]
@@ -72,11 +60,12 @@ namespace HoldYourHorses.Controllers
             string model = _apiService.GetCompare();
             return Content(model);
         }
-        [HttpGet("remove-compare")]
-        public IActionResult RemoveCompare()
+        [HttpDelete("remove-all-comparisons")]
+        public IActionResult RemoveAllComparisons()
         {
-            _apiService.RemoveCompare();
-            return Ok();
+            _apiService.RemoveAllComparisons();
+            return Ok(new { message = "All comparison markings removed successfully" });
+
         }
 
         [HttpGet("add-favourite")]

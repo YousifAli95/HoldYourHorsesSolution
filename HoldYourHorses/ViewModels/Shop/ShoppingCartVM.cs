@@ -4,8 +4,7 @@
     {
 
         public string ArticleName { get; set; }
-        public int Price { get; set; }
-        public string FormattedPrice { get; set; }
+        public decimal Price { get; set; }
         public int Amount { get; set; }
         public int ArticleNr { get; set; }
     }
