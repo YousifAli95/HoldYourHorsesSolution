@@ -6,6 +6,7 @@
     --filter-background: #e2d7f7;
     --price-tag: #7b63ad;
     --light-pink: #E8A0BF;
+    --navbar-height: 16rem;
     font-size: 62.5%;
 }
 
@@ -34,6 +35,11 @@ input:focus-visible, input:focus {
     text-align: center;
 }
 
+a.default-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
     .default-button:hover,
     .default-button:focus,
     .default-button:focus-visible {

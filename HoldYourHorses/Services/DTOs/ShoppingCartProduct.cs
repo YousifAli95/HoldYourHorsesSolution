@@ -2,10 +2,10 @@
 {
     public class ShoppingCartProduct
     {
-        public decimal Pris { get; set; }
-        public string Artikelnamn { get; set; }
-        public int Antal { get; set; }
-        public int ArtikelNr { get; set; }
+        public decimal Price { get; set; }
+        public string ArticleName { get; set; }
+        public int Amount { get; set; }
+        public int ArticleNr { get; set; }
 
     }
 }

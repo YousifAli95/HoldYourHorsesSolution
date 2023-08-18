@@ -5,9 +5,9 @@ namespace HoldYourHorses.Views.Shared.Components.ShoppingCart
 {
     public class ShoppingCartViewComponent : ViewComponent
     {
-        private readonly IShopService dataService;
+        private readonly IApiService dataService;
 
-        public ShoppingCartViewComponent(IShopService dataService)
+        public ShoppingCartViewComponent(IApiService dataService)
         {
             this.dataService = dataService;
         }

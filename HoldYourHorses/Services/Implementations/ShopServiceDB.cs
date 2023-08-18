@@ -83,11 +83,11 @@ namespace HoldYourHorses.Services.Implementations
             {
                 Orderrader orderrad = new Orderrader()
                 {
-                    Antal = item.Antal,
-                    ArtikelNr = item.ArtikelNr,
-                    Pris = item.Pris,
+                    Antal = item.Amount,
+                    ArtikelNr = item.ArticleNr,
+                    Pris = item.Price,
                     OrderId = id,
-                    ArtikelNamn = item.Artikelnamn
+                    ArtikelNamn = item.ArticleName
                 };
 
                 _shopContext.Orderraders.Add(orderrad);
@@ -124,71 +124,6 @@ namespace HoldYourHorses.Services.Implementations
             };
         }
 
-        public void AddToCart(int articleNr, int amount, string articleName, int price)
-        {
-            List<ShoppingCartProduct> products;
-
-            var newItem = new ShoppingCartProduct()
-            {
-                Artikelnamn = articleName,
-                Pris = price,
-                ArtikelNr = articleNr,
-                Antal = amount
-            };
-
-            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-
-            if (string.IsNullOrEmpty(cookieContent))
-                products = new List<ShoppingCartProduct> { newItem };
-
-            else
-            {
-                products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
-                var article = products.SingleOrDefault(p => p.ArtikelNr == articleNr);
-
-                if (article == null)
-                    products.Add(newItem);
-                else
-                    article.Antal += amount;
-            }
-
-            string json = JsonSerializer.Serialize(products);
-            _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
-        }
-
-        public void ClearCart()
-        {
-            if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies[_shoppingCart]))
-            {
-                var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-                var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
-                products.Clear();
-
-                string json = JsonSerializer.Serialize(products);
-                _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
-            }
-        }
-
-        public void RemoveItemFromShoppingCart(int articleNr)
-        {
-            if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies[_shoppingCart]))
-            {
-                var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-                var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
-
-                var itemToBeDeleted = products.SingleOrDefault(p => p.ArtikelNr == articleNr);
-
-                if (itemToBeDeleted == null)
-                {
-                    throw new BadHttpRequestException("ArticleNr not found");
-                }
-
-                products.Remove(itemToBeDeleted);
-                string json = JsonSerializer.Serialize(products);
-                _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
-            }
-        }
-
         public ShoppingCartVM[] GetShoppingCartVM()
         {
             List<ShoppingCartProduct> products;
@@ -206,11 +141,11 @@ namespace HoldYourHorses.Services.Implementations
             ShoppingCartVM[] shoppingCartVM = products
                 .Select(o => new ShoppingCartVM
                 {
-                    Amount = o.Antal,
-                    ArticleName = o.Artikelnamn,
-                    Price = decimal.ToInt32(o.Pris),
-                    FormattedPrice = ShopUtils.FormatPrice(decimal.ToInt32(o.Pris)),
-                    ArticleNr = o.ArtikelNr,
+                    Amount = o.Amount,
+                    ArticleName = o.ArticleName,
+                    Price = decimal.ToInt32(o.Price),
+                    FormattedPrice = ShopUtils.FormatPrice(decimal.ToInt32(o.Price)),
+                    ArticleNr = o.ArticleNr,
                 }).ToArray();
 
             return shoppingCartVM;
@@ -281,57 +216,7 @@ namespace HoldYourHorses.Services.Implementations
             return model;
         }
 
-        public int GetCart()
-        {
-            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
-            if (string.IsNullOrEmpty(cookieContent))
-            {
-                return 0;
-            }
-            var shoppingCart = new List<ShoppingCartProduct>();
-            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
-
-
-            return shoppingCart.Sum(o => o.Antal);
-        }
-
-        public bool addCompare(int artikelnr)
-        {
-            var key = "compareString";
-            var compareString = _accessor.HttpContext.Request.Cookies[key];
-            if (string.IsNullOrEmpty(compareString))
-            {
-                var compareList = new List<int> { artikelnr };
-                string json = JsonSerializer.Serialize(compareList);
-                _accessor.HttpContext.Response.Cookies.Append(key, json);
-                return true;
-
-            }
-            else
-            {
-                var compareList = JsonSerializer.Deserialize<List<int>>(compareString);
-                if (compareList.Contains(artikelnr))
-                {
-                    compareList.Remove(artikelnr);
-                    string json = JsonSerializer.Serialize(compareList);
-                    _accessor.HttpContext.Response.Cookies.Append(key, json);
-                    return false;
-
-                }
-                else
-                {
-                    if (compareList.Count < 4)
-                    {
-                        compareList.Add(artikelnr);
-                        string json = JsonSerializer.Serialize(compareList);
-                        _accessor.HttpContext.Response.Cookies.Append(key, json);
-                    }
-                    return true;
-                }
-            }
-
-        }
         public async Task<CompareVM[]> getCompareVMAsync()
         {
             var key = "compareString";
@@ -349,52 +234,6 @@ namespace HoldYourHorses.Services.Implementations
             }).ToArrayAsync();
 
             return model;
-        }
-        public string getCompare()
-        {
-            return _accessor.HttpContext.Request.Cookies["compareString"];
-        }
-
-
-        public void removeCompare()
-        {
-            _accessor.HttpContext.Response.Cookies.Append("compareString", "");
-        }
-
-        public bool AddFavourite(int artikelnr)
-        {
-            var userName = _accessor.HttpContext.User.Identity.Name;
-            string id = _shopContext.AspNetUsers.Where(o => o.UserName == userName).Select(o => o.Id).Single();
-            var article = _shopContext.Favourites.SingleOrDefault(o => o.User == id && o.Artikelnr == artikelnr);
-            if (article == null)
-            {
-                _shopContext.Favourites.Add(new Favourite
-                {
-                    Artikelnr = artikelnr,
-                    User = id
-                }); ;
-                _shopContext.SaveChanges();
-                return true;
-            }
-            else
-            {
-                _shopContext.Favourites.Remove(article);
-                _shopContext.SaveChanges();
-                return false;
-            }
-        }
-
-        public string GetFavourites()
-        {
-            var userName = _accessor.HttpContext.User.Identity.Name;
-            if (string.IsNullOrEmpty(userName))
-            {
-                return "";
-            }
-
-            string id = _shopContext.AspNetUsers.Where(o => o.UserName == userName).Select(o => o.Id).Single();
-            var favourites = _shopContext.Favourites.Where(o => o.User == id).Select(o => o.Artikelnr).ToList();
-            return JsonSerializer.Serialize(favourites);
         }
 
     }

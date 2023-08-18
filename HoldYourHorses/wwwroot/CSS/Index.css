@@ -196,9 +196,6 @@ footer {
 #compare-btn {
     width: 21rem;
     font-size: 1.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
     .main-div select:hover,

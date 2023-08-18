@@ -11,6 +11,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<IShopService, ShopServiceDB>();
 builder.Services.AddTransient<IAccountService, AccountServiceDB>();
+builder.Services.AddTransient<IApiService, ApiServiceDB>();
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {

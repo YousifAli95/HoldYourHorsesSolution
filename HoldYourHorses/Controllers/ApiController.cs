@@ -7,15 +7,15 @@ namespace HoldYourHorses.Controllers
     [ApiController]
     public class ApiController : ControllerBase
     {
-        private readonly IShopService dataService;
+        private readonly IApiService _apiService;
 
-        public ApiController(IShopService dataService)
+        public ApiController(IApiService dataService)
         {
-            this.dataService = dataService;
+            this._apiService = dataService;
         }
 
         [HttpGet("update-shopping-cart")]
-        public IActionResult updateShoppingCart(int articleNr, int amount, string articleName, string price)
+        public IActionResult UpdateShoppingCart(int articleNr, int amount, string articleName, string price)
         {
             // Remove all non-numeric characters from the price string
             string sanitizedPrice = new string(price.Where(char.IsDigit).ToArray());
@@ -35,7 +35,7 @@ namespace HoldYourHorses.Controllers
                 return BadRequest("Invalid amount parameter. Amount must be between 1 and 99.");
             }
 
-            dataService.AddToCart(articleNr, amount, articleName, priceInt);
+            _apiService.AddToCart(articleNr, amount, articleName, priceInt);
             return Ok();
         }
 
@@ -44,7 +44,7 @@ namespace HoldYourHorses.Controllers
         {
             try
             {
-                dataService.RemoveItemFromShoppingCart(articleNr);
+                _apiService.RemoveItemFromShoppingCart(articleNr);
             }
             catch (BadRequestException)
             {
@@ -56,39 +56,39 @@ namespace HoldYourHorses.Controllers
         [HttpDelete("clear-cart")]
         public IActionResult ClearCart()
         {
-            dataService.ClearCart();
+            _apiService.ClearCart();
             return Ok();
         }
 
         [HttpGet("compare-add")]
-        public IActionResult CompareAdd(int artikelnr)
+        public IActionResult CompareAdd(int articleNr)
         {
-            return Content(dataService.addCompare(artikelnr).ToString());
+            return Content(_apiService.AddCompare(articleNr).ToString());
         }
 
         [HttpGet("get-compare")]
         public IActionResult GetCompare()
         {
-            string model = dataService.getCompare();
+            string model = _apiService.GetCompare();
             return Content(model);
         }
         [HttpGet("remove-compare")]
-        public IActionResult removeCompare()
+        public IActionResult RemoveCompare()
         {
-            dataService.removeCompare();
+            _apiService.RemoveCompare();
             return Ok();
         }
 
         [HttpGet("add-favourite")]
-        public IActionResult AddFavourite(int artikelnr)
+        public IActionResult AddFavourite(int articleNr)
         {
-            return Content(dataService.AddFavourite(artikelnr).ToString());
+            return Content(_apiService.AddFavourite(articleNr).ToString());
         }
 
         [HttpGet("get-favourites")]
         public IActionResult GetFavourites()
         {
-            var model = dataService.GetFavourites();
+            var model = _apiService.GetFavourites();
             return Content(model);
         }
     }
