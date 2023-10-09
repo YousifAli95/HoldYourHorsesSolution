@@ -1,5 +1,4 @@
 ﻿<div class="navbar-container">
-
     <div class="navbar">
         <a id="a-company-name" asp-controller="Shop" asp-action="Index">
             <div id="company-logo">@Html.Partial("_CompanyLogo")</div>
@@ -8,8 +7,8 @@
             </div>
         </a>
 
-        <div class="search-div">
-                <input id="search-input" type="text" placeholder="Sök" name="search">
+        <div id="search-div-row-1" class="search-div">
+                <input class="search-input" type="text" placeholder="Sök" name="search">
                 <button onclick="searchFunction()" id="search-btn" type="submit">
                 <partial name="~/Views/Shared/SVGs/SearchIcon.cshtml" />
                 </button>
@@ -32,12 +31,20 @@
             }
 
             <a id="a-cart" class="navbar-svg-navigation" asp-controller="Shop" asp-action="ShoppingCart">
+                <div id="shopping-cart-container">
                 <span id="number-of-products" class="fa badge fa-lg" value="@await Component.InvokeAsync("ShoppingCart")">
-                    <partial name="~/Views/Shared/SVGs/ShoppingCartIcon.cshtml" />
                 </span>
+                    <partial name="~/Views/Shared/SVGs/ShoppingCartIcon.cshtml" />
+                </div>
                 <p class="logo-p"> Kundvagn</p>
             </a>
 
         </div>
+    </div>
+    <div id="search-div-row-2" class="search-div">
+        <input class="search-input" type="text" placeholder="Sök" name="search">
+        <button onclick="searchFunction()" id="search-btn" type="submit">
+            <partial name="~/Views/Shared/SVGs/SearchIcon.cshtml" />
+        </button>
     </div>
 </div>

@@ -19,10 +19,9 @@ var sortOn = selectElement.value.substr(1);
 var isAscending = true;
 var types = "-";
 var materials = "-";
-var searchString = "";
 var numberOfCompares = 0;
 
-//event listeners
+// EventListeners
 allTypes.forEach((o) => {
     types += " " + o.value;
     o.addEventListener("change", function () {
@@ -55,41 +54,50 @@ const constMinHK = minHK;
 const constIsAscending = isAscending;
 const constMaterials = materials;
 const constTyper = types;
+
 selectElement.addEventListener("change", (event) => {
     sortOn = event.target.value.slice(1);
     isAscending = Boolean(parseInt(event.target.value.substr(0, 1)));
     getPartialView();
 });
+
 //price  event listener
 fromSlider.addEventListener("change", (event) => {
     minPrice = event.target.value;
     getPartialView();
 });
+
 toSlider.addEventListener("change", (event) => {
     maxPrice = event.target.value;
     getPartialView();
 });
+
 fromInput.addEventListener("change", (event) => {
     minPrice = event.target.value;
     getPartialView();
 });
+
 toInput.addEventListener("change", (event) => {
     maxPrice = event.target.value;
     getPartialView();
 });
+
 //Hästkrafter event listener
 fromSliderHK.addEventListener("change", (event) => {
     minHK = event.target.value;
     getPartialView();
 });
+
 toSliderHK.addEventListener("change", (event) => {
     maxHK = event.target.value;
     getPartialView();
 });
+
 fromInputHK.addEventListener("change", (event) => {
     minHK = event.target.value;
     getPartialView();
 });
+
 toInputHK.addEventListener("change", (event) => {
     maxHK = event.target.value;
     getPartialView();
@@ -166,14 +174,14 @@ function hideProperty(id, minus) {
     }
 }
 
-async function compare(articleNr, articleName) {
-    var didAdd;
-    await fetch(`/compare-add/?articleNr=${articleNr}`)
-        .then((o) => o.text())
-        .then((o) => (didAdd = o));
-    console.log(didAdd);
+async function compare(articleNr) {
+    let added;
+    await fetch(`/add-or-remove-compare/?articleNr=${articleNr}`)
+        .then((response) => response.json())
+        .then((data) => added = data.added);
+    console.log(added);
     const svg = document.querySelector("#svg-" + articleNr);
-    if (didAdd == "True") {
+    if (added == "True") {
         if (numberOfCompares < 4) {
             svg.style.fill = "#7b63ad";
             numberOfCompares++;
@@ -188,9 +196,10 @@ async function compare(articleNr, articleName) {
     }
 }
 async function getCompare() {
-    var articleList = await fetch("/get-compare");
+    let articleList = await fetch("/get-compare");
     try {
-        articleList = await articleList.json();
+        let data = await articleList.json();
+        articleList = data.compareData;
         numberOfCompares = articleList.length;
         for (let index = 0; index < articleList.length; index++) {
             const svg = document.querySelector("#svg-" + articleList[index]);
@@ -294,7 +303,7 @@ async function getHearts() {
     } catch (error) { }
 }
 
-///// Slider JAvascript code /////
+///// Slider Javascript code /////
 function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
     const [from, to] = getParsed(fromInput, toInput);
     fillSlider(fromInput, toInput, "black", "#7b63ad", controlSlider);

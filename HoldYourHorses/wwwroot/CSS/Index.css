@@ -1,5 +1,5 @@
 :root {
-    --filter-width: 35rem;
+    --filter-width: 33rem;
 }
 
 .super-container {
@@ -203,3 +203,10 @@ footer {
         outline: 0.3rem solid var(--navbar-logos);
         outline-offset: 0.4rem;
     }
+
+/*@media (max-width: 700px) {
+    .filter {
+        min-width: 33rem;
+        width: 100%;
+    }
+}*/
