@@ -88,36 +88,35 @@ namespace HoldYourHorses.Services.Implementations
             return shoppingCart.Sum(o => o.Amount);
         }
 
-        public bool AddCompare(int artikelnr)
+        public bool AddOrRemoveCompare(int articleNr)
         {
-            var key = "compareString";
-            var compareString = _accessor.HttpContext.Request.Cookies[key];
+            var compareString = _accessor.HttpContext.Request.Cookies[_compareString];
+            List<int> compareList;
+
             if (string.IsNullOrEmpty(compareString))
             {
-                var compareList = new List<int> { artikelnr };
+                compareList = new List<int> { articleNr };
                 string json = JsonSerializer.Serialize(compareList);
-                _accessor.HttpContext.Response.Cookies.Append(key, json);
+                _accessor.HttpContext.Response.Cookies.Append(_compareString, json);
                 return true;
-
             }
             else
             {
-                var compareList = JsonSerializer.Deserialize<List<int>>(compareString);
-                if (compareList.Contains(artikelnr))
+                compareList = JsonSerializer.Deserialize<List<int>>(compareString);
+                if (compareList.Contains(articleNr))
                 {
-                    compareList.Remove(artikelnr);
+                    compareList.Remove(articleNr);
                     string json = JsonSerializer.Serialize(compareList);
-                    _accessor.HttpContext.Response.Cookies.Append(key, json);
+                    _accessor.HttpContext.Response.Cookies.Append(_compareString, json);
                     return false;
-
                 }
                 else
                 {
                     if (compareList.Count < 4)
                     {
-                        compareList.Add(artikelnr);
+                        compareList.Add(articleNr);
                         string json = JsonSerializer.Serialize(compareList);
-                        _accessor.HttpContext.Response.Cookies.Append(key, json);
+                        _accessor.HttpContext.Response.Cookies.Append(_compareString, json);
                     }
                     return true;
                 }
@@ -126,9 +125,23 @@ namespace HoldYourHorses.Services.Implementations
         }
 
 
-        public string GetCompare()
+        public int[] GetCompare()
         {
-            return _accessor.HttpContext.Request.Cookies[_compareString];
+            string compareArticles = _accessor.HttpContext.Request.Cookies[_compareString];
+            if (!string.IsNullOrEmpty(compareArticles))
+            {
+                try
+                {
+                    int[] intValues = JsonSerializer.Deserialize<int[]>(compareArticles);
+                    return intValues;
+                }
+                catch (JsonException)
+                {
+                    // Handle the case where the JSON data cannot be deserialized into an int array
+                }
+            }
+
+            return new int[] { };
         }
 
 
@@ -137,7 +150,7 @@ namespace HoldYourHorses.Services.Implementations
             _accessor.HttpContext.Response.Cookies.Append(_compareString, "");
         }
 
-        public bool AddFavourite(int artikelnr)
+        public bool AddOrRemoveFavourite(int artikelnr)
         {
             var userName = _accessor.HttpContext.User.Identity.Name;
             string id = _shopContext.AspNetUsers.Where(o => o.UserName == userName).Select(o => o.Id).Single();

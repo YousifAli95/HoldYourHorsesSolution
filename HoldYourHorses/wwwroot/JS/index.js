@@ -10,6 +10,9 @@ const allTypes = document.querySelectorAll(".kategori");
 const allMaterials = document.querySelectorAll(".material");
 const selectElement = document.querySelector("#sort");
 
+const SVG_COMPARE_FILL_CLASS = "svg-compare-fill"
+const HEART_FILL_CLASS = "heart-fill"
+
 var maxPrice = toInput.value;
 
 var minPrice = fromInput.value;
@@ -181,30 +184,31 @@ async function compare(articleNr) {
         .then((data) => added = data.added);
     console.log(added);
     const svg = document.querySelector("#svg-" + articleNr);
-    if (added == "True") {
+    if (added === true) {
         if (numberOfCompares < 4) {
-            svg.style.fill = "#7b63ad";
+            svg.classList.add(SVG_COMPARE_FILL_CLASS);
             numberOfCompares++;
         } else {
             alert("Du kan inte jämföra fler än fyra käpphästar samtidigt!");
         }
-        ShowOrHideCompareButton();
     } else {
-        svg.style.fill = "";
+        svg.classList.remove(SVG_COMPARE_FILL_CLASS);
         numberOfCompares--;
-        ShowOrHideCompareButton();
     }
+
+    ShowOrHideCompareButton();
 }
 async function getCompare() {
-    let articleList = await fetch("/get-compare");
+    const fetchedArticleList = await fetch("/get-compare");
     try {
-        let data = await articleList.json();
-        articleList = data.compareData;
+        const data = await fetchedArticleList.json();
+        const articleList = data.compareData;
         numberOfCompares = articleList.length;
+
         for (let index = 0; index < articleList.length; index++) {
             const svg = document.querySelector("#svg-" + articleList[index]);
             if (svg != null) {
-                svg.style.fill = "#7b63ad";
+                svg.classList.add(SVG_COMPARE_FILL_CLASS);
             }
         }
     } catch (error) {
@@ -230,7 +234,7 @@ function showHideFilter() {
         }
         isShown = false;
         console.log(filter);
-        filter.style.minWidth = "6rem";
+        filter.style.minWidth = "8rem";
         filter.style.border = "0px solid black";
         svg.style.transform = "rotate(0)";
     } else {
@@ -260,7 +264,8 @@ window.onbeforeunload = function (e) {
 async function removeCompare() {
     await fetch(`/remove-all-comparisons`, { method: "DELETE" });
     var articles = document.querySelectorAll(".compare-svg");
-    articles.forEach((e) => (e.style.fill = ""));
+    articles.forEach((svg) => (svg.classList.remove(SVG_COMPARE_FILL_CLASS)));
+
     numberOfCompares = 0;
     ShowOrHideCompareButton();
 }
@@ -276,28 +281,28 @@ function ShowOrHideCompareButton() {
 }
 
 async function addHeart(svg, artikelNr) {
-    var didAddHeart;
-    await fetch(`/add-favourite/?artikelnr=${artikelNr}`)
-        .then((o) => o.text())
-        .then((o) => (didAddHeart = o));
+    let didAddHeart;
+    await fetch(`/add-or-remove-favourite/${artikelNr}`)
+        .then((o) => o.json())
+        .then((o) => (didAddHeart = o.added));
     console.log(didAddHeart);
-    if (didAddHeart == "True") {
-        svg.style.fill = "rgb(248,48,95)";
+
+    if (didAddHeart === true) {
+        svg.classList.add(HEART_FILL_CLASS);
     } else {
-        svg.style.fill = "";
+        svg.classList.remove(HEART_FILL_CLASS);
     }
 }
 
 async function getHearts() {
-    var articleNumbers = await fetch(`/get-favourites`);
-    console.log(articleNumbers);
+    const fetchedArticleNumbers = await fetch(`/get-favourites`);
     try {
-        articleNumbers = await articleNumbers.json();
+        articleNumbers = await fetchedArticleNumbers.json();
         console.log(articleNumbers);
         for (let index = 0; index < articleNumbers.length; index++) {
             const svg = document.querySelector("#svg2-" + articleNumbers[index]);
             if (svg != null) {
-                svg.style.fill = "rgb(248,48,95)";
+                svg.classList.add(HEART_FILL_CLASS);
             }
         }
     } catch (error) { }

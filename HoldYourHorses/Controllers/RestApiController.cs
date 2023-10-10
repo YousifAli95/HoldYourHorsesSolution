@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace HoldYourHorses.Controllers
 {
     [ApiController]
-    public class ApiController : ControllerBase
+    public class RestApiController : ControllerBase
     {
-        private readonly IApiService _apiService;
+        private readonly IApiService _restApiService;
 
-        public ApiController(IApiService dataService)
+        public RestApiController(IApiService dataService)
         {
-            this._apiService = dataService;
+            this._restApiService = dataService;
         }
 
         [HttpGet("update-shopping-cart")]
@@ -22,7 +22,7 @@ namespace HoldYourHorses.Controllers
                 return BadRequest("Invalid amount parameter. Amount must be between 1 and 99.");
             }
 
-            _apiService.AddToCart(articleNr, amount);
+            _restApiService.AddToCart(articleNr, amount);
             return Ok(new { message = "Shopping cart updated successfully." });
         }
 
@@ -31,7 +31,7 @@ namespace HoldYourHorses.Controllers
         {
             try
             {
-                _apiService.RemoveItemFromShoppingCart(articleNr);
+                _restApiService.RemoveItemFromShoppingCart(articleNr);
             }
             catch (BadRequestException)
             {
@@ -43,41 +43,46 @@ namespace HoldYourHorses.Controllers
         [HttpDelete("clear-cart")]
         public IActionResult ClearCart()
         {
-            _apiService.ClearCart();
+            _restApiService.ClearCart();
             return Ok(new { message = "Shopping Cart cleared successfully" });
 
         }
 
-        [HttpGet("compare-add")]
-        public IActionResult CompareAdd(int articleNr)
+        [HttpGet("add-or-remove-compare")]
+        public IActionResult AddOrRemoveCompare(int articleNr)
         {
-            return Content(_apiService.AddCompare(articleNr).ToString());
+            bool added = _restApiService.AddOrRemoveCompare(articleNr);
+            string message = added ? "Item added successfully." : "Item removed successfully.";
+
+            return Ok(new { added = added, message = message });
         }
 
         [HttpGet("get-compare")]
         public IActionResult GetCompare()
         {
-            string model = _apiService.GetCompare();
-            return Content(model);
+            var model = _restApiService.GetCompare();
+            return Ok(new { compareData = model });
         }
         [HttpDelete("remove-all-comparisons")]
         public IActionResult RemoveAllComparisons()
         {
-            _apiService.RemoveAllComparisons();
+            _restApiService.RemoveAllComparisons();
             return Ok(new { message = "All comparison markings removed successfully" });
-
         }
 
-        [HttpGet("add-favourite")]
+        [HttpGet("add-or-remove-favourite/{articleNr}")]
         public IActionResult AddFavourite(int articleNr)
         {
-            return Content(_apiService.AddFavourite(articleNr).ToString());
+            bool added = _restApiService.AddOrRemoveFavourite(articleNr);
+            string message = added ? "Favourite item added successfully." : "Favourite item removed successfully.";
+
+            return Ok(new { added = added, message = message });
         }
 
         [HttpGet("get-favourites")]
         public IActionResult GetFavourites()
         {
-            var model = _apiService.GetFavourites();
+            var model = _restApiService.GetFavourites();
             return Content(model);
         }
     }

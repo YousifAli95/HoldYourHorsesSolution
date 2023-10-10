@@ -1,5 +1,6 @@
 :root {
-    --filter-width: 33rem;
+    --filter-width: 35rem;
+    --heart-fill: rgb(248, 48, 95);
 }
 
 .super-container {
@@ -15,6 +16,8 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 0.4rem 0.4rem;
     border-top: none;
     transition: min-width 300ms ease-in 0s, background 300ms ease-in 0s, border 300ms ease-in 0s;
+    box-sizing: border-box;
+    padding: 1rem;
 }
 
     .filter > * {
@@ -146,8 +149,9 @@ footer {
 .compare-select {
     margin: 2.5rem 0 3rem 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 4rem;
+    flex-wrap: wrap;
 }
 
 
@@ -166,8 +170,12 @@ footer {
 }
 
     .heart:hover {
-        fill: rgb(248,48,95);
+        fill: var(--heart-fill);
     }
+
+.heart-fill {
+    fill: var(--heart-fill);
+}
 
 .div-img {
     position: relative;
@@ -178,24 +186,31 @@ footer {
 #index-header {
     font-size: 4rem;
     color: var(--navbar-logos);
+    text-align: center;
 }
 
 .main-div select {
-    height: 3rem;
+    height: 6rem;
     font-size: 1.8rem;
     background: var(--navbar-logos);
     color: white;
     border: var(--navbar-logos);
     border-radius: 0.5rem;
-    width: 18rem;
+    width: 25rem;
     padding: 1.5rem;
-    box-sizing: content-box;
+    box-sizing: border-box;
     text-align: center;
 }
 
+.svg-compare-fill{
+    fill: var(--navbar-logos);
+}
+
 #compare-btn {
-    width: 21rem;
+    width: 25rem;
+    height: 6rem;
     font-size: 1.8rem;
+    box-sizing: border-box;
 }
 
     .main-div select:hover,
@@ -204,9 +219,8 @@ footer {
         outline-offset: 0.4rem;
     }
 
-/*@media (max-width: 700px) {
+@media (max-width: 600px) {
     .filter {
-        min-width: 33rem;
-        width: 100%;
+        min-width: 100vw;
     }
-}*/
+}

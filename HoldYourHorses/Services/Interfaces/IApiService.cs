@@ -4,10 +4,10 @@
     {
         void AddToCart(int articleNr, int amount);
         void RemoveItemFromShoppingCart(int articleNr);
-        bool AddCompare(int articleNr);
-        string GetCompare();
+        bool AddOrRemoveCompare(int articleNr);
+        int[] GetCompare();
         void RemoveAllComparisons();
-        bool AddFavourite(int articleNr);
+        bool AddOrRemoveFavourite(int articleNr);
         string GetFavourites();
         int GetNumberOfItemsInCart();
         void ClearCart();

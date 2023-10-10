@@ -212,6 +212,7 @@ namespace HoldYourHorses.Services.Implementations
                 ArticleNr = o.Artikelnr,
             });
             IndexPartialVM[] model;
+
             if (isAscending)
             {
                 model = cards.ToList().OrderBy(o => o.GetType().GetProperty(sortOn).GetValue(o, null)).ToArray();
