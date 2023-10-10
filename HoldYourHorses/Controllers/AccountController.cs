@@ -76,20 +76,20 @@ namespace HoldYourHorses.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        [Authorize]
-        [HttpGet("orderhistory")]
-        public IActionResult Orderhistory()
-        {
-            return View(dataService.GetOrderHistory());
-        }
+        //[Authorize]
+        //[HttpGet("orderhistory")]
+        //public IActionResult Orderhistory()
+        //{
+        //    return View(dataService.GetOrderHistory());
+        //}
 
-        [Authorize]
-        [HttpGet("orderhistoryget")]
-        public IActionResult Orderhistoryget()
-        {
-            var order = dataService.GetOrderHistory();
+        //[Authorize]
+        //[HttpGet("orderhistoryget")]
+        //public IActionResult Orderhistoryget()
+        //{
+        //    var order = dataService.GetOrderHistory();
 
-            return View(order);
-        }
+        //    return View(order);
+        //}
     }
 }

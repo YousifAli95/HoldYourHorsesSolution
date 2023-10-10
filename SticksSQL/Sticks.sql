@@ -6,8 +6,8 @@
     [Trädensitet] INT NOT NULL, 
     [Artikelnamn] NVARCHAR(50) NOT NULL unique, 
     [MaterialId] INT NOT NULL REFERENCES Material(Id), 
-    [KategoriId] INT NOT NULL REFERENCES Kategorier(Id), 
+    [KategoriId] INT NOT NULL REFERENCES Categories(Id), 
     [Beskrivning] NVARCHAR(1000) NOT NULL, 
-    [TillverkningslandId] INT NOT NULL REFERENCES Tillverkningsländer(Id), 
+    [TillverkningslandId] INT NOT NULL REFERENCES OriginCountry(Id), 
     [AbsBroms] BIT NOT NULL
 )

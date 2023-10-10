@@ -9,13 +9,13 @@ namespace HoldYourHorses.Services.Implementations
 {
     public class AccountServiceDB : IAccountService
     {
-        readonly SticksDBContext _shopContext;
+        readonly ShopDBContext _shopContext;
         readonly UserManager<IdentityUser> _userManager;
         readonly SignInManager<IdentityUser> _signInManager;
 
         readonly IHttpContextAccessor _accessor;
 
-        public AccountServiceDB(SticksDBContext shopContext, IHttpContextAccessor accessor, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManagere, ITempDataDictionaryFactory tempFactory)
+        public AccountServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManagere, ITempDataDictionaryFactory tempFactory)
         {
             this._shopContext = shopContext;
             this._accessor = accessor;
@@ -29,16 +29,16 @@ namespace HoldYourHorses.Services.Implementations
 
             var articleNumbers = await _shopContext.Favourites
                 .Where(fav => fav.User == userId)
-                .Select(fav => fav.Artikelnr)
+                .Select(fav => fav.ArticleNr)
                 .ToListAsync();
 
-            var cards = await _shopContext.Sticks
-                .Where(stick => articleNumbers.Contains(stick.Artikelnr))
+            var cards = await _shopContext.Articles
+                .Where(stick => articleNumbers.Contains(stick.ArticleNr))
                 .Select(stick => new Card
                 {
-                    ArticleName = stick.Artikelnamn,
-                    ArticleNr = stick.Artikelnr,
-                    Price = decimal.ToInt32(stick.Pris)
+                    ArticleName = stick.ArticleName,
+                    ArticleNr = stick.ArticleNr,
+                    Price = decimal.ToInt32(stick.Price)
                 })
                 .ToArrayAsync();
 
@@ -83,35 +83,36 @@ namespace HoldYourHorses.Services.Implementations
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<OrderhistoryVM> GetOrderHistory()
-        {
-            string? userId = await GetUserId();
+        //public async Task<OrderhistoryVM> GetOrderHistory()
+        //{
+        //    string? userId = await GetUserId();
 
-            var ordersQuery = _shopContext.Ordrars
-                .Where(o => o.User == userId)
-                .Select(o => o.Id);
+        //    var ordersQuery = _shopContext.Orders
+        //        .Where(o => o.User == userId)
+        //        .Select(o => o.Id);
 
-            var orderItems = await _shopContext.Orderraders
-                .Where(o => ordersQuery.Contains(o.OrderId))
-                .Select(o => new Order
-                {
-                    Amount = o.Antal,
-                    Price = o.Pris,
-                    ArticleName = o.ArtikelNamn,
-                    OrderId = o.OrderId
-                })
-                .ToListAsync();
+        //    var orderItems = await _shopContext.OrderLines
+        //        .Where(o => ordersQuery.Contains(o.OrderId))
+        //        .Select(o => new Order
+        //        {
+        //            Amount = o.Amount,
+        //            Price = o.Price,
+        //            ArticleName = o.ArticleName,
+        //            OrderId = o.OrderId
+        //        })
+        //        .ToListAsync();
 
-            var uniqueOrderIds = orderItems.Select(o => o.OrderId).Distinct().ToArray();
+        //    var uniqueOrderIds = orderItems.Select(o => o.OrderId).Distinct().ToArray();
 
-            var orderhistoryVM = new OrderhistoryVM
-            {
-                Historik = orderItems.ToArray(),
-                OrderHej = uniqueOrderIds
-            };
+        //    var orderhistoryVM = new OrderhistoryVM
+        //    {
+        //        //{
+        //        //    Historik = orderItems.ToArray(),
+        //        //    OrderHej = uniqueOrderIds
+        //    };
 
-            return orderhistoryVM;
-        }
+        //    return orderhistoryVM;
+        //}
 
         private async Task<string> GetUserId()
         {

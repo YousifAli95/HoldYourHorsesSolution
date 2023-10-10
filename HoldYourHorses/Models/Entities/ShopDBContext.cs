@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace HoldYourHorses.Models.Entities
 {
-    public partial class SticksDBContext : DbContext
+    public partial class ShopDBContext : DbContext
     {
-        public SticksDBContext()
+        public ShopDBContext()
         {
         }
 
-        public SticksDBContext(DbContextOptions<SticksDBContext> options)
+        public ShopDBContext(DbContextOptions<ShopDBContext> options)
             : base(options)
         {
         }
@@ -23,12 +20,12 @@ namespace HoldYourHorses.Models.Entities
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; } = null!;
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; } = null!;
         public virtual DbSet<Favourite> Favourites { get; set; } = null!;
-        public virtual DbSet<Kategorier> Kategoriers { get; set; } = null!;
+        public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Material> Materials { get; set; } = null!;
-        public virtual DbSet<Orderrader> Orderraders { get; set; } = null!;
-        public virtual DbSet<Ordrar> Ordrars { get; set; } = null!;
-        public virtual DbSet<Stick> Sticks { get; set; } = null!;
-        public virtual DbSet<Tillverkningsländer> Tillverkningsländers { get; set; } = null!;
+        public virtual DbSet<OrderLine> OrderLines { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
+        public virtual DbSet<Article> Articles { get; set; } = null!;
+        public virtual DbSet<OriginCountry> OriginCountries { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -117,135 +114,101 @@ namespace HoldYourHorses.Models.Entities
             {
                 entity.Property(e => e.User).HasMaxLength(450);
 
-                entity.HasOne(d => d.ArtikelnrNavigation)
+                entity.HasOne(d => d.ArticleNrNavigation)
                     .WithMany(p => p.Favourites)
-                    .HasForeignKey(d => d.Artikelnr)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Favourite__Artik__5DCAEF64");
+                    .HasForeignKey(d => d.ArticleNr)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.UserNavigation)
                     .WithMany(p => p.Favourites)
                     .HasForeignKey(d => d.User)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Favourites__User__6E01572D");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Kategorier>(entity =>
+            modelBuilder.Entity<Category>(entity =>
             {
-                entity.ToTable("Kategorier");
-
-                entity.HasIndex(e => e.Namn, "UQ__Kategori__737584FDBBE7B298")
-                    .IsUnique();
-
-                entity.Property(e => e.Namn).HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Material>(entity =>
             {
-                entity.ToTable("Material");
-
-                entity.HasIndex(e => e.Id, "UQ__Material__3214EC0628D961DF")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Namn, "UQ__Material__737584FD7817BA5F")
-                    .IsUnique();
-
-                entity.Property(e => e.Namn).HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Orderrader>(entity =>
+            modelBuilder.Entity<OrderLine>(entity =>
             {
-                entity.ToTable("Orderrader");
+                entity.Property(e => e.ArticleName).HasMaxLength(50);
 
-                entity.Property(e => e.ArtikelNamn).HasMaxLength(50);
+                entity.Property(e => e.Price).HasColumnType("money");
 
-                entity.Property(e => e.Pris).HasColumnType("money");
+                entity.HasOne(d => d.ArticleNameNavigation)
+                    .WithMany(p => p.OrderLineArticleNameNavigations)
+                    .HasPrincipalKey(p => p.ArticleName)
+                    .HasForeignKey(d => d.ArticleName)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.ArtikelNamnNavigation)
-                    .WithMany(p => p.OrderraderArtikelNamnNavigations)
-                    .HasPrincipalKey(p => p.Artikelnamn)
-                    .HasForeignKey(d => d.ArtikelNamn)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orderrade__Artik__47DBAE45");
-
-                entity.HasOne(d => d.ArtikelNrNavigation)
-                    .WithMany(p => p.OrderraderArtikelNrNavigations)
-                    .HasForeignKey(d => d.ArtikelNr)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orderrade__Artik__46E78A0C");
+                entity.HasOne(d => d.ArticleNrNavigation)
+                    .WithMany(p => p.OrderLineArticleNrNavigations)
+                    .HasForeignKey(d => d.ArticleNr)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Order)
-                    .WithMany(p => p.Orderraders)
+                    .WithMany(p => p.OrderLines)
                     .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orderrade__Order__45F365D3");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Ordrar>(entity =>
+            modelBuilder.Entity<Order>(entity =>
             {
-                entity.ToTable("Ordrar");
+                entity.Property(e => e.Address).HasMaxLength(50);
 
-                entity.Property(e => e.Adress).HasMaxLength(50);
+                entity.Property(e => e.LastName).HasMaxLength(50);
 
-                entity.Property(e => e.Efternamn).HasMaxLength(50);
+                entity.Property(e => e.Email).HasMaxLength(50);
 
-                entity.Property(e => e.Epost).HasMaxLength(50);
+                entity.Property(e => e.FirstName).HasMaxLength(50);
 
-                entity.Property(e => e.Förnamn).HasMaxLength(50);
+                entity.Property(e => e.Country).HasMaxLength(50);
 
-                entity.Property(e => e.Land).HasMaxLength(50);
-
-                entity.Property(e => e.Stad).HasMaxLength(50);
+                entity.Property(e => e.City).HasMaxLength(50);
 
                 entity.Property(e => e.User).HasMaxLength(450);
 
                 entity.HasOne(d => d.UserNavigation)
                     .WithMany(p => p.Ordrars)
-                    .HasForeignKey(d => d.User)
-                    .HasConstraintName("FK__Ordrar__User__48CFD27E");
+                    .HasForeignKey(d => d.User);
             });
 
-            modelBuilder.Entity<Stick>(entity =>
+            modelBuilder.Entity<Article>(entity =>
             {
-                entity.HasKey(e => e.Artikelnr)
-                    .HasName("PK__Sticks__CB7A9C835A425E7F");
+                entity.HasKey(e => e.ArticleNr);
 
-                entity.HasIndex(e => e.Artikelnamn, "UQ__Sticks__6A6FEA843E50DB06")
-                    .IsUnique();
+                entity.Property(e => e.ArticleName).HasMaxLength(50);
 
-                entity.Property(e => e.Artikelnamn).HasMaxLength(50);
+                entity.Property(e => e.Description).HasMaxLength(1000);
 
-                entity.Property(e => e.Beskrivning).HasMaxLength(1000);
+                entity.Property(e => e.Price).HasColumnType("money");
 
-                entity.Property(e => e.Pris).HasColumnType("money");
-
-                entity.HasOne(d => d.Kategori)
-                    .WithMany(p => p.Sticks)
-                    .HasForeignKey(d => d.KategoriId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Sticks__Kategori__4AB81AF0");
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Articles)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Material)
-                    .WithMany(p => p.Sticks)
+                    .WithMany(p => p.Articles)
                     .HasForeignKey(d => d.MaterialId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Sticks__Material__49C3F6B7");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Tillverkningsland)
-                    .WithMany(p => p.Sticks)
-                    .HasForeignKey(d => d.TillverkningslandId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Sticks__Tillverk__4BAC3F29");
+                entity.HasOne(d => d.OriginCountry)
+                    .WithMany(p => p.Articles)
+                    .HasForeignKey(d => d.OriginCountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Tillverkningsländer>(entity =>
+            modelBuilder.Entity<OriginCountry>(entity =>
             {
-                entity.ToTable("Tillverkningsländer");
 
-                entity.HasIndex(e => e.Namn, "UQ__Tillverk__737584FD3469E8DD")
-                    .IsUnique();
-
-                entity.Property(e => e.Namn).HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

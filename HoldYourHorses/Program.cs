@@ -20,7 +20,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 });
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<SticksDBContext>(o => o.UseSqlServer(connString));
+builder.Services.AddDbContext<ShopDBContext>(o => o.UseSqlServer(connString));
 builder.Services.AddDbContext<IdentityDbContext>(o => o.UseSqlServer(connString));
 builder.Services.AddSession();
 

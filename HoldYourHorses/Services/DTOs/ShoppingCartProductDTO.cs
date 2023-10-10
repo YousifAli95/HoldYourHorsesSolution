@@ -1,6 +1,6 @@
 ﻿namespace HoldYourHorses.Services.DTOs
 {
-    public class ShoppingCartProduct
+    public class ShoppingCartProductDTO
     {
         public decimal Price { get; set; }
         public string ArticleName { get; set; }

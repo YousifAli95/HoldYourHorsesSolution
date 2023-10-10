@@ -3,22 +3,24 @@
 --truncate table Material
 
 --Sätter in värden i tabellerna
-insert into Material(Namn)
+insert into Materials(Name)
 values
 ('Furu'), ('Ek'), ('Mahogony'), ('Gran')
 go
 
-insert into Kategorier(Namn)
-values
-('Sport'), ('Fritid'), ('Barn')
-go
-
-insert into Tillverkningsländer(Namn)
+insert into OriginCountries(Name)
 values
 ('Sverige'), ('Norge'), ('Danmark'), ('Finland')
 go
 
-insert into Sticks (Pris, Hästkrafter, Trädensitet, Artikelnamn, MaterialId, KategoriId, Beskrivning, TillverkningslandId, AbsBroms)
+insert into Categories(Name)
+values
+('Sport'), ('Fritid'), ('Barn')
+go
+
+
+
+insert into Articles (Price, HorsePowers, TreeDensity, ArticleName, MaterialId, CategoryId, Description, OriginCountryID, AbsBrake)
 values
 (1337, 250, 230,'Inzanity', 2, 1, 'Käpphäst med mjuk hårrem i polyester, med garnman som går att fläta. Mun som kan öppnas och stängas med kardborre, så att bettet ligger bra på plats.', 1, 1),
 (1200, 180, 260,'Cloudberry Castle Budget', 1, 2, 'En rolig käpphäst med mjuk päls med lång man och ett fint träns.',2, 0),
@@ -46,8 +48,8 @@ go
 --visa tabellerna
 select * from Sticks
 select * from Material
-select * from Kategorier
-select * from Tillverkningsländer
+select * from Categories
+select * from OriginCountry
 
 select 
 	Artikelnr,
@@ -58,13 +60,13 @@ select
 	--material.id as MaterialId,
 	material.Namn as MaterialNamn,
 	--Kategorier.id as KategoriId,
-	kategorier.namn as KategoriNamn,
-	Tillverkningsländer.namn as TillverkningslandNamn
+	Categories.namn as KategoriNamn,
+	OriginCountry.namn as TillverkningslandNamn
 	--Tillverkningsländer.Id as TillverkningslandId
 from Sticks
 left join Material on sticks.MaterialId=material.Id
-left join Kategorier on sticks.KategoriId=Kategorier.Id
-left join Tillverkningsländer on sticks.TillverkningslandId = Tillverkningsländer.Id
+left join Categories on sticks.KategoriId=Categories.Id
+left join OriginCountry on sticks.TillverkningslandId = OriginCountry.Id
 go
 
 -- om man vill radera alla poster i Sticks

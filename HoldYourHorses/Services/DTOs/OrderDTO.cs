@@ -1,6 +1,6 @@
 ﻿namespace HoldYourHorses.ViewModels.Account
 {
-    public class Order
+    public class OrderDTO
     {
         public int Amount { get; set; }
         public string ArticleName { get; set; }

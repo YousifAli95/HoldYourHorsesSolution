@@ -1,8 +1,8 @@
 ﻿namespace HoldYourHorses.Models.Entities
 {
-    public partial class Material
+    public partial class Category
     {
-        public Material()
+        public Category()
         {
             Articles = new HashSet<Article>();
         }

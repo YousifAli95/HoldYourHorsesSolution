@@ -10,12 +10,12 @@ namespace HoldYourHorses.Services.Implementations
 {
     public class ShopServiceDB : IShopService
     {
-        readonly SticksDBContext _shopContext;
+        readonly ShopDBContext _shopContext;
         readonly ITempDataDictionaryFactory _tempFactory;
         readonly IHttpContextAccessor _accessor;
         readonly string _shoppingCart = "ShoppingCart";
 
-        public ShopServiceDB(SticksDBContext shopContext, IHttpContextAccessor accessor, ITempDataDictionaryFactory tempFactory)
+        public ShopServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor, ITempDataDictionaryFactory tempFactory)
         {
             this._shopContext = shopContext;
             this._accessor = accessor;
@@ -32,38 +32,38 @@ namespace HoldYourHorses.Services.Implementations
                 var clientInfo = _shopContext.AspNetUsers.Where(o => o.UserName == userId)
                     .Select(o => o.Id)
                     .Single();
-                _shopContext.Ordrars.Add(
-                new Ordrar
+                _shopContext.Orders.Add(
+                new Order
                 {
-                    Förnamn = o.FirstName,
-                    Efternamn = o.LastName,
-                    Epost = o.Email,
-                    Stad = o.City,
-                    Postnummer = o.ZipCode,
-                    Adress = o.Address,
-                    Land = o.Country,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    Email = o.Email,
+                    City = o.City,
+                    ZipCode = o.ZipCode,
+                    Address = o.Address,
+                    Country = o.Country,
                     User = clientInfo
                 });
 
                 _shopContext.SaveChanges();
 
-                AddToOrderrader(_shopContext.Ordrars.OrderBy(o => o.Id)
+                AddToOrderrader(_shopContext.Orders.OrderBy(o => o.Id)
                     .Select(o => o.Id)
                     .Last());
                 _shopContext.SaveChanges();
             }
             else
             {
-                _shopContext.Ordrars.Add(
-                new Ordrar
+                _shopContext.Orders.Add(
+                new Order
                 {
-                    Förnamn = o.FirstName,
-                    Efternamn = o.LastName,
-                    Epost = o.Email,
-                    Stad = o.City,
-                    Postnummer = o.ZipCode,
-                    Adress = o.Address,
-                    Land = o.Country
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    Email = o.Email,
+                    City = o.City,
+                    ZipCode = o.ZipCode,
+                    Address = o.Address,
+                    Country = o.Country
                 });
 
                 _shopContext.SaveChanges();
@@ -75,40 +75,40 @@ namespace HoldYourHorses.Services.Implementations
 
         public void AddToOrderrader(int id)
         {
-            List<ShoppingCartProduct> products;
+            List<ShoppingCartProductDTO> products;
             var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-            products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
+            products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
             foreach (var item in products)
             {
-                Orderrader orderrad = new Orderrader()
+                OrderLine orderrad = new OrderLine()
                 {
-                    Antal = item.Amount,
-                    ArtikelNr = item.ArticleNr,
-                    Pris = item.Price,
+                    Amount = item.Amount,
+                    ArticleNr = item.ArticleNr,
+                    Price = item.Price,
                     OrderId = id,
-                    ArtikelNamn = item.ArticleName
+                    ArticleName = item.ArticleName
                 };
 
-                _shopContext.Orderraders.Add(orderrad);
+                _shopContext.OrderLines.Add(orderrad);
             }
         }
 
         public ArticleDetailsVM GetArticleDetailsVM(int artikelNr)
         {
-            return _shopContext.Sticks
-                 .Where(o => o.Artikelnr == artikelNr)
+            return _shopContext.Articles
+                 .Where(o => o.ArticleNr == artikelNr)
                  .Select(o => new ArticleDetailsVM()
                  {
-                     ArticleNr = o.Artikelnr,
-                     Price = o.Pris,
-                     HorsePowers = o.Hästkrafter,
-                     WoodDensity = o.Trädensitet,
-                     ArticleName = o.Artikelnamn,
-                     Material = o.Material.Namn,
-                     Category = o.Kategori.Namn,
-                     Description = o.Beskrivning,
-                     ProductionCountry = o.Tillverkningsland.Namn,
-                     AbsBrake = o.AbsBroms,
+                     ArticleNr = o.ArticleNr,
+                     Price = o.Price,
+                     HorsePowers = o.HorsePowers,
+                     WoodDensity = o.TreeDensity,
+                     ArticleName = o.ArticleName,
+                     Material = o.Material.Name,
+                     Category = o.Category.Name,
+                     Description = o.Description,
+                     ProductionCountry = o.OriginCountry.Name,
+                     AbsBrake = o.AbsBrake,
                  })
                  .Single();
         }
@@ -134,23 +134,23 @@ namespace HoldYourHorses.Services.Implementations
                 return model.ToArray();
             }
 
-            var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
+            var products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
 
             var articleNumbers = products.Select(p => p.ArticleNr).ToList();
-            var articles = _shopContext.Sticks
-                .Where(article => articleNumbers.Contains(article.Artikelnr))
+            var articles = _shopContext.Articles
+                .Where(article => articleNumbers.Contains(article.ArticleNr))
                 .ToList();
 
             foreach (var item in products)
             {
-                var article = articles.FirstOrDefault(a => a.Artikelnr == item.ArticleNr);
+                var article = articles.FirstOrDefault(a => a.ArticleNr == item.ArticleNr);
                 if (article != null)
                 {
                     model.Add(new ShoppingCartVM
                     {
-                        ArticleNr = article.Artikelnr,
-                        ArticleName = article.Artikelnamn,
-                        Price = article.Pris,
+                        ArticleNr = article.ArticleNr,
+                        ArticleName = article.ArticleName,
+                        Price = article.Price,
                         Amount = item.Amount
                     });
                 }
@@ -169,24 +169,22 @@ namespace HoldYourHorses.Services.Implementations
             {
                 _accessor.HttpContext.Session.SetString("search", string.Empty);
             }
-            var sticks = await _shopContext.Sticks.Select(o => new
+            var articles = await _shopContext.Articles.Select(o => new
             {
-                o.Artikelnamn,
-                o.Pris,
-                o.Artikelnr,
-                o.Hästkrafter,
+                o.Price,
+                o.HorsePowers,
                 o.Material,
-                Typ = o.Kategori.Namn
+                Typ = o.Category.Name
             }).ToArrayAsync();
 
             var indexVM = new IndexVM
             {
-                PrisMax = decimal.ToInt32(sticks.Max(o => o.Pris)),
-                PrisMin = decimal.ToInt32(sticks.Min(o => o.Pris)),
-                HästkrafterMax = sticks.Max(o => o.Hästkrafter),
-                HästkrafterMin = sticks.Min(o => o.Hästkrafter),
-                Material = sticks.DistinctBy(o => o.Material.Namn).Select(o => o.Material.Namn).ToArray(),
-                Kategorier = sticks.DistinctBy(o => o.Typ).Select(o => o.Typ).ToArray(),
+                PrisMax = decimal.ToInt32(articles.Max(o => o.Price)),
+                PrisMin = decimal.ToInt32(articles.Min(o => o.Price)),
+                HästkrafterMax = articles.Max(o => o.HorsePowers),
+                HästkrafterMin = articles.Min(o => o.HorsePowers),
+                Material = articles.DistinctBy(o => o.Material.Name).Select(o => o.Material.Name).ToArray(),
+                Kategorier = articles.DistinctBy(o => o.Typ).Select(o => o.Typ).ToArray(),
             };
             return indexVM;
         }
@@ -196,20 +194,20 @@ namespace HoldYourHorses.Services.Implementations
         {
             string searchString = _accessor.HttpContext.Session.GetString("search");
 
-            var cards = _shopContext.Sticks.Where(o =>
-            o.Pris >= minPrice &&
-            o.Pris <= maxPrice &&
-            o.Hästkrafter >= minHK &&
-            o.Hästkrafter <= maxHK &&
-            typer.Contains(o.Kategori.Namn) &&
-            materials.Contains(o.Material.Namn)
+            var cards = _shopContext.Articles.Where(o =>
+            o.Price >= minPrice &&
+            o.Price <= maxPrice &&
+            o.HorsePowers >= minHK &&
+            o.HorsePowers <= maxHK &&
+            typer.Contains(o.Category.Name) &&
+            materials.Contains(o.Material.Name)
             && (string.IsNullOrEmpty(searchString)
-            || o.Artikelnamn.Contains(searchString))).
+            || o.ArticleName.Contains(searchString))).
             Select(o => new IndexPartialVM
             {
-                ArticleName = o.Artikelnamn,
-                Price = o.Pris,
-                ArticleNr = o.Artikelnr,
+                ArticleName = o.ArticleName,
+                Price = o.Price,
+                ArticleNr = o.ArticleNr,
             });
             IndexPartialVM[] model;
 
@@ -231,15 +229,15 @@ namespace HoldYourHorses.Services.Implementations
             var key = "compareString";
             var compareString = _accessor.HttpContext.Request.Cookies[key];
             var compareList = JsonSerializer.Deserialize<List<int>>(compareString);
-            var model = await _shopContext.Sticks.Where(o => compareList.Contains(o.Artikelnr)).Select(o => new CompareVM
+            var model = await _shopContext.Articles.Where(o => compareList.Contains(o.ArticleNr)).Select(o => new CompareVM
             {
-                ArticleName = o.Artikelnamn,
-                ArticleNr = o.Artikelnr,
-                HorsePowers = o.Hästkrafter,
-                Country = o.Tillverkningsland.Namn,
-                Material = o.Material.Namn,
-                Category = o.Kategori.Namn,
-                WoodDensity = o.Trädensitet
+                ArticleName = o.ArticleName,
+                ArticleNr = o.ArticleNr,
+                HorsePowers = o.HorsePowers,
+                Country = o.OriginCountry.Name,
+                Material = o.Material.Name,
+                Category = o.Category.Name,
+                WoodDensity = o.TreeDensity
             }).ToArrayAsync();
 
             return model;

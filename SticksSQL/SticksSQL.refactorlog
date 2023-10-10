@@ -7,4 +7,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Adress" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="ee6e5205-b390-4674-a004-bfbc3c7e8877" ChangeDateTime="10/10/2023 13:51:13">
+    <Property Name="ElementName" Value="[dbo].[Kategorier]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="Categories" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a4f6c0ae-b4a2-4f16-94f2-b296927173a0" ChangeDateTime="10/10/2023 13:51:38">
+    <Property Name="ElementName" Value="[dbo].[Tillverkningsländer]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="OriginCountry" />
+  </Operation>
 </Operations>

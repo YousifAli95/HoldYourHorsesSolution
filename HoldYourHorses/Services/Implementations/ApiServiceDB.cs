@@ -7,12 +7,12 @@ namespace HoldYourHorses.Services.Implementations
 {
     public class ApiServiceDB : IApiService
     {
-        readonly SticksDBContext _shopContext;
+        readonly ShopDBContext _shopContext;
         readonly IHttpContextAccessor _accessor;
         readonly string _shoppingCart = "ShoppingCart";
         readonly string _compareString = "compareString";
 
-        public ApiServiceDB(SticksDBContext shopContext, IHttpContextAccessor accessor)
+        public ApiServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor)
         {
             _shopContext = shopContext;
             _accessor = accessor;
@@ -20,9 +20,9 @@ namespace HoldYourHorses.Services.Implementations
 
         public void AddToCart(int articleNr, int amount)
         {
-            List<ShoppingCartProduct> products;
+            List<ShoppingCartProductDTO> products;
 
-            var newItem = new ShoppingCartProduct()
+            var newItem = new ShoppingCartProductDTO()
             {
                 ArticleNr = articleNr,
                 Amount = amount
@@ -31,11 +31,11 @@ namespace HoldYourHorses.Services.Implementations
             var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
             if (string.IsNullOrEmpty(cookieContent))
-                products = new List<ShoppingCartProduct> { newItem };
+                products = new List<ShoppingCartProductDTO> { newItem };
 
             else
             {
-                products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
+                products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
                 var article = products.SingleOrDefault(p => p.ArticleNr == articleNr);
 
                 if (article == null)
@@ -53,7 +53,7 @@ namespace HoldYourHorses.Services.Implementations
             if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies[_shoppingCart]))
             {
                 var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-                var products = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
+                var products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
 
                 var itemToBeDeleted = products.SingleOrDefault(p => p.ArticleNr == articleNr);
 
@@ -81,8 +81,8 @@ namespace HoldYourHorses.Services.Implementations
             {
                 return 0;
             }
-            var shoppingCart = new List<ShoppingCartProduct>();
-            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartProduct>>(cookieContent);
+            var shoppingCart = new List<ShoppingCartProductDTO>();
+            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
 
 
             return shoppingCart.Sum(o => o.Amount);
@@ -154,12 +154,12 @@ namespace HoldYourHorses.Services.Implementations
         {
             var userName = _accessor.HttpContext.User.Identity.Name;
             string id = _shopContext.AspNetUsers.Where(o => o.UserName == userName).Select(o => o.Id).Single();
-            var article = _shopContext.Favourites.SingleOrDefault(o => o.User == id && o.Artikelnr == artikelnr);
+            var article = _shopContext.Favourites.SingleOrDefault(o => o.User == id && o.ArticleNr == artikelnr);
             if (article == null)
             {
                 _shopContext.Favourites.Add(new Favourite
                 {
-                    Artikelnr = artikelnr,
+                    ArticleNr = artikelnr,
                     User = id
                 }); ;
                 _shopContext.SaveChanges();
@@ -182,7 +182,7 @@ namespace HoldYourHorses.Services.Implementations
             }
 
             string id = _shopContext.AspNetUsers.Where(o => o.UserName == userName).Select(o => o.Id).Single();
-            var favourites = _shopContext.Favourites.Where(o => o.User == id).Select(o => o.Artikelnr).ToList();
+            var favourites = _shopContext.Favourites.Where(o => o.User == id).Select(o => o.ArticleNr).ToList();
             return JsonSerializer.Serialize(favourites);
         }
 

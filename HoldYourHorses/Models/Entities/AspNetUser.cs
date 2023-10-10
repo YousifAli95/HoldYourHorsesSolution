@@ -11,7 +11,7 @@ namespace HoldYourHorses.Models.Entities
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
             AspNetUserTokens = new HashSet<AspNetUserToken>();
             Favourites = new HashSet<Favourite>();
-            Ordrars = new HashSet<Ordrar>();
+            Ordrars = new HashSet<Order>();
             Roles = new HashSet<AspNetRole>();
         }
 
@@ -35,7 +35,7 @@ namespace HoldYourHorses.Models.Entities
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
         public virtual ICollection<Favourite> Favourites { get; set; }
-        public virtual ICollection<Ordrar> Ordrars { get; set; }
+        public virtual ICollection<Order> Ordrars { get; set; }
 
         public virtual ICollection<AspNetRole> Roles { get; set; }
     }

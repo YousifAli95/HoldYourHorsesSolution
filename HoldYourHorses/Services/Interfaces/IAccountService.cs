@@ -12,6 +12,6 @@ namespace HoldYourHorses.Services.Interfaces
 
         Task LogOutUserAsync();
 
-        Task<OrderhistoryVM> GetOrderHistory();
+        //Task<OrderhistoryVM> GetOrderHistory();
     }
 }
