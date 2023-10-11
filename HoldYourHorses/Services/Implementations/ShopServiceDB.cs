@@ -45,7 +45,8 @@ namespace HoldYourHorses.Services.Implementations
                 ZipCode = model.ZipCode,
                 Address = model.Address,
                 Country = model.Country,
-                User = userId
+                User = userId,
+                OrderDate = DateTime.Now
             };
 
             using (var transaction = _shopContext.Database.BeginTransaction())

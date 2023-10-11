@@ -16,6 +16,7 @@
         public string Address { get; set; } = null!;
         public string Country { get; set; } = null!;
         public string? User { get; set; }
+        public DateTime OrderDate { get; set; }
 
         public virtual AspNetUser? UserNavigation { get; set; }
         public virtual ICollection<OrderLine> OrderLines { get; set; }
