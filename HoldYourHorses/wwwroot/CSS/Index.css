@@ -225,6 +225,13 @@ footer {
         outline-offset: 0.4rem;
     }
 
+@media (max-width: 800px) {
+    .article-card img {
+        height: 15rem;
+    }
+}
+
+
 @media (max-width: 600px) {
     .filter {
         min-width: 100%;
@@ -236,5 +243,15 @@ footer {
 
     .main-div-closed{
         display: none;
+    }
+    .article-card{
+        width: 15rem;
+    }
+    .article-card  img{
+        width: 15rem;
+    }
+
+    .compare-select * {
+        width: 20rem !important;
     }
 }

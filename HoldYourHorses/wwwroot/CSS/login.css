@@ -14,6 +14,10 @@
     width: 35rem;
 }
 
+#login-button{
+    margin-top: 1.5rem;
+}
+
 .login-label {
     font-size: 2rem;
 }

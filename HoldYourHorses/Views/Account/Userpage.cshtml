@@ -7,32 +7,35 @@
 }
 <div class="user-body">
 
-    <div style="min-height: 400px">
-        <h3 id="Norden2">Mitt Konto</h3>
+    <div>
+        <h1>Mitt Konto</h1>
         Välkommen tillbaka @Model.Username
 
-        <div class="konto" id="buttons">
-            <a asp-controller="Account" asp-action="Logout" class="default-button">Logga ut</a>
+        <div id="button-container">
             <a asp-controller="Account" asp-action="Logout" class="default-button">Orderhistorik</a>
+            <a asp-controller="Account" asp-action="Logout" class="default-button">Logga ut</a>
         </div>
         <div>
-            <div class="article-container">
-                <h1 class="dina-f">Dina favoriter</h1>
+            <div id="article-container">
+                <h1>Dina favoriter</h1>
                 @if (Model.Cards.Length == 0)
                 {
-                    <p>Du har inga favoritmarkerade käpphästar :( </p>
+                    <div>
+                        <p>Du har inga favoritmarkerade käpphästar :( </p>
+                        <a id="go-to-products-a" asp-controller="Shop" asp-action="Index">Gå till våra produkter</a><span> och tryck på hjärtikonen för att favoritmarkera en produkt</span>
+                    </div>
                 }
                 else
                 {
                     foreach (var card in Model.Cards)
                     {
-                        <a href="/product/@card.ArticleNr">
-                            <div class="artikel" id="@card.ArticleName">
+                        <a class="favourite-a" asp-controller="Shop" asp-action="ArticleDetails" asp-route-articleNr="@card.ArticleNr">
+                            <div class="article" id="@card.ArticleName">
                                 <div class="img-div">
                                     <img src="@ShopUtils.GetPictureUrl(card.ArticleName)" />
                                 </div>
-                                <div class="pris-namn">
-                                    <p class="p-namn">@card.ArticleName</p>
+                                <div class="price-name">
+                                    <p class="p-name">@card.ArticleName</p>
                                     <p>@ShopUtils.FormatPrice(card.Price) kr</p>
 
                                 </div>
@@ -43,3 +46,5 @@
             </div>
         </div>
     </div>
+
+</div>

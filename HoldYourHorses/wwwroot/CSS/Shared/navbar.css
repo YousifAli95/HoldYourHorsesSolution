@@ -30,7 +30,8 @@
 }
 
 .navbar-container {
-    width: 100%;
+    min-width: 100%;
+    width: fit-content;
     box-sizing: border-box;
     background: white;
     display: flex;
@@ -232,7 +233,7 @@ input, select, button, option {
     }
 
     .logo-p {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 
     .search-input {
