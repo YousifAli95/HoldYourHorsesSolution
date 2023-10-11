@@ -104,7 +104,7 @@
 
 #article-container .default-button {
     padding: 2rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 #empty-shopping-cart-div .default-button {
@@ -134,5 +134,9 @@
         height: 6rem;
         width: 6rem;
         margin-right: 10px;
+    }
+
+    #article-container .default-button {
+        font-size: 1.6rem;
     }
 }
