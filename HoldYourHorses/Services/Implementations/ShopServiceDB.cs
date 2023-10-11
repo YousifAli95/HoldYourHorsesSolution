@@ -22,74 +22,69 @@ namespace HoldYourHorses.Services.Implementations
             this._tempFactory = tempFactory;
         }
 
-        public void SaveOrder(CheckoutVM checkoutVM)
+        public void SaveOrder(CheckoutVM model)
         {
-            var o = checkoutVM;
+            Order order;
+            string? userId = null;
 
+            // if User is logged in
             if (_accessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                var userId = _accessor.HttpContext.User.Identity.Name;
-                var clientInfo = _shopContext.AspNetUsers.Where(o => o.UserName == userId)
+                var userName = _accessor.HttpContext.User.Identity.Name;
+                userId = _shopContext.AspNetUsers.Where(o => o.UserName == userName)
                     .Select(o => o.Id)
                     .Single();
-                _shopContext.Orders.Add(
-                new Order
-                {
-                    FirstName = o.FirstName,
-                    LastName = o.LastName,
-                    Email = o.Email,
-                    City = o.City,
-                    ZipCode = o.ZipCode,
-                    Address = o.Address,
-                    Country = o.Country,
-                    User = clientInfo
-                });
-
-                _shopContext.SaveChanges();
-
-                AddToOrderrader(_shopContext.Orders.OrderBy(o => o.Id)
-                    .Select(o => o.Id)
-                    .Last());
-                _shopContext.SaveChanges();
             }
-            else
+
+            order = new Order
             {
-                _shopContext.Orders.Add(
-                new Order
-                {
-                    FirstName = o.FirstName,
-                    LastName = o.LastName,
-                    Email = o.Email,
-                    City = o.City,
-                    ZipCode = o.ZipCode,
-                    Address = o.Address,
-                    Country = o.Country
-                });
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                City = model.City,
+                ZipCode = model.ZipCode,
+                Address = model.Address,
+                Country = model.Country,
+                User = userId
+            };
 
+            using (var transaction = _shopContext.Database.BeginTransaction())
+            {
+                _shopContext.Orders.Add(order);
                 _shopContext.SaveChanges();
 
+                AddOrderLines(order.Id);
+
+                transaction.Commit();
             }
-            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.FirstName)] = o.FirstName;
-            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.Email)] = o.Email;
+
+            // Saving temporary data 
+            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.FirstName)] = model.FirstName;
+            _tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.Email)] = model.Email;
         }
 
-        public void AddToOrderrader(int id)
+
+
+        public void AddOrderLines(int id)
         {
-            List<ShoppingCartProductDTO> products;
+            List<ShoppingCartDTO> shoppingCart;
             var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-            products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
-            foreach (var item in products)
+            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
+            foreach (var item in shoppingCart)
             {
-                OrderLine orderrad = new OrderLine()
+                var article = _shopContext.Articles.Find(item.ArticleNr);
+
+                OrderLine orderLine = new OrderLine()
                 {
                     Amount = item.Amount,
-                    ArticleNr = item.ArticleNr,
-                    Price = item.Price,
+                    ArticleNr = article.ArticleNr,
+                    Price = article.Price,
                     OrderId = id,
-                    ArticleName = item.ArticleName
+                    ArticleName = article.ArticleName
                 };
 
-                _shopContext.OrderLines.Add(orderrad);
+                _shopContext.OrderLines.Add(orderLine);
+                _shopContext.SaveChanges();
             }
         }
 
@@ -134,7 +129,7 @@ namespace HoldYourHorses.Services.Implementations
                 return model.ToArray();
             }
 
-            var products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
+            var products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
 
             var articleNumbers = products.Select(p => p.ArticleNr).ToList();
             var articles = _shopContext.Articles

@@ -26,7 +26,7 @@ namespace HoldYourHorses.ViewModels.Shop
         [Required(ErrorMessage = "Var vänlig och mata in din stad")]
         public string City { get; set; }
 
-        [Display(Name = "Postkod")]
+        [Display(Name = "Postnummer")]
         [Required(ErrorMessage = "Var vänlig och mata in ditt postnummer")]
         public int ZipCode { get; set; }
 

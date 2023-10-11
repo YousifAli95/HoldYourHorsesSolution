@@ -37,12 +37,12 @@ namespace HoldYourHorses.Controllers
         }
 
         [HttpPost("checkout")]
-        public IActionResult Checkout(CheckoutVM checkoutVM)
+        public IActionResult Checkout(CheckoutVM model)
         {
             if (!ModelState.IsValid)
                 return View();
 
-            _shopService.SaveOrder(checkoutVM);
+            _shopService.SaveOrder(model);
             _ApiService.ClearCart();
             return RedirectToAction(nameof(OrderConfirmation));
         }

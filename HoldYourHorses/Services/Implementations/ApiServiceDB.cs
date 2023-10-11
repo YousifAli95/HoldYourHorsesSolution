@@ -20,9 +20,9 @@ namespace HoldYourHorses.Services.Implementations
 
         public void AddToCart(int articleNr, int amount)
         {
-            List<ShoppingCartProductDTO> products;
+            List<ShoppingCartDTO> products;
 
-            var newItem = new ShoppingCartProductDTO()
+            var newItem = new ShoppingCartDTO()
             {
                 ArticleNr = articleNr,
                 Amount = amount
@@ -31,11 +31,11 @@ namespace HoldYourHorses.Services.Implementations
             var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
             if (string.IsNullOrEmpty(cookieContent))
-                products = new List<ShoppingCartProductDTO> { newItem };
+                products = new List<ShoppingCartDTO> { newItem };
 
             else
             {
-                products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
+                products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
                 var article = products.SingleOrDefault(p => p.ArticleNr == articleNr);
 
                 if (article == null)
@@ -53,7 +53,7 @@ namespace HoldYourHorses.Services.Implementations
             if (!string.IsNullOrEmpty(_accessor.HttpContext.Request.Cookies[_shoppingCart]))
             {
                 var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-                var products = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
+                var products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
 
                 var itemToBeDeleted = products.SingleOrDefault(p => p.ArticleNr == articleNr);
 
@@ -81,8 +81,8 @@ namespace HoldYourHorses.Services.Implementations
             {
                 return 0;
             }
-            var shoppingCart = new List<ShoppingCartProductDTO>();
-            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartProductDTO>>(cookieContent);
+            var shoppingCart = new List<ShoppingCartDTO>();
+            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
 
 
             return shoppingCart.Sum(o => o.Amount);
