@@ -14,8 +14,8 @@
 }
 
     .article-div img {
-        height: 10rem;
-        width: 10rem;
+        height: 100%;
+        width:  100%;
         object-fit: contain;
         background: white;
     }
@@ -24,7 +24,7 @@
     background: white;
     width: 10rem;
     height: 10rem;
-    margin-right: 3rem;
+    margin-right: 30px;
 }
 
 .article-div p {
@@ -42,9 +42,13 @@
     gap: 2rem;
 }
 
-.amount-span {
-    font-size: 2rem;
-}
+    .amount-div path:hover{
+        fill: var(--navbar-logos);
+    }
+
+    .amount-span {
+        font-size: 2rem;
+    }
 
 .price-name-div {
     display: flex;
@@ -115,4 +119,20 @@
 
 .hide {
     display: none;
+}
+
+@media (max-width: 550px) {
+    #article-container {
+        width: 30rem;
+    }
+
+    .article-div p {
+        width: 12rem;
+    }
+
+    .img-a{
+        height: 6rem;
+        width: 6rem;
+        margin-right: 10px;
+    }
 }
