@@ -9,6 +9,9 @@ const toInputHK = document.querySelector("#toInputHK");
 const allTypes = document.querySelectorAll(".kategori");
 const allMaterials = document.querySelectorAll(".material");
 const selectElement = document.querySelector("#sort");
+const filterElement = document.querySelector(".filter");
+const mainElement = document.querySelector(".main-div");
+const hamburgerMenuSVG = document.querySelector("#hamburger");
 
 const SVG_COMPARE_FILL_CLASS = "svg-compare-fill"
 const HEART_FILL_CLASS = "heart-fill"
@@ -218,42 +221,41 @@ async function getCompare() {
     ShowOrHideCompareButton();
 }
 
-var isShown = true;
+let isShown = true;
 
-var filterstyle = document.querySelector(".filter").style;
 function showHideFilter() {
-    const filter = document.querySelector(".filter");
-    const listItems = filter.children;
-    const listArray = [...listItems];
-    listArray.shift();
-    const svg = document.querySelector("#hamburger");
-    console.log(svg);
-    if (isShown) {
-        for (var i = 0; i < listArray.length; i++) {
-            listArray[i].style.display = "none";
+    const FILTER_CLOSE_CLASS = "filter-closed";
+    const SVG_ROTATED = "hamburger-rotated";
+    const MAIN_DIV_CLOSED = "main-div-closed";
+
+    const listItems = filterElement.children;
+
+    for (var i = 1; i < listItems.length; i++) {
+        if (isShown) {
+            listItems[i].style.display = "none";
         }
-        isShown = false;
-        console.log(filter);
-        filter.style.minWidth = "8rem";
-        filter.style.border = "0px solid black";
-        svg.style.transform = "rotate(0)";
-    } else {
-        isShown = true;
-        filter.style = filterstyle;
-
-        svg.style.transform = "rotate(90deg)";
-
-        for (var i = 0; i < listArray.length; i++) {
+        else {
             setTimeout(
                 function (a) {
                     a.style.display = "block";
                 },
                 300,
-                listArray[i]
+                listItems[i]
             );
-            console.log(listArray[i]);
         }
     }
+
+    isShown = !isShown;
+    filterElement.classList.toggle(FILTER_CLOSE_CLASS);
+    if (isShown) {
+        hamburgerMenuSVG.style.transform = "";
+        mainElement.classList.add(MAIN_DIV_CLOSED);
+    }
+    else {
+        mainElement.classList.remove(MAIN_DIV_CLOSED);
+        hamburgerMenuSVG.style.transform = "rotate(0)"
+    }
+
 }
 
 window.onbeforeunload = function (e) {
@@ -405,5 +407,11 @@ fromInputHK.oninput = () =>
 toInputHK.oninput = () =>
     controlToInput(toSliderHK, fromInputHK, toInputHK, toSliderHK);
 
-///script starts here
+/////// Script starts here ///////
 getPartialView();
+
+// Closes the filter sidebar if the site is opened on a screen smaller than 700px.
+const windowWidth = window.innerWidth;
+console.log(windowWidth);
+if (windowWidth < 700)
+    showHideFilter();

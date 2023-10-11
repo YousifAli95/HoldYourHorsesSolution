@@ -3,12 +3,17 @@
     flex-direction: row;
     justify-content: start;
     align-items: center;
+    gap: 40px;
 }
 
+
+.footer-container{
+    flex-wrap: wrap;
+    padding: 0 3rem;
+}
 .foot-div {
     display: inline-block;
     height:150px;
-    margin-right:40px;
 }
 
     .foot-div > div *{
@@ -19,11 +24,11 @@
     }
 
     .footer-container b {
-        font-size: 20px;
+        font-size: 2rem;
     }
 
 #info a {
-    font-size: 18px;
+    font-size: 1.8rem;
     text-decoration: none;
     color: var(--light-purple)
 }
@@ -45,4 +50,19 @@ footer {
 footer svg{
     fill: var(--light-purple);
     cursor:pointer;
+}
+
+#footer-bottom-p{
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .foot-div > div *{
+        max-width: 30px;
+        height: 30px;
+    }
+
+    .foot-div > div{
+        gap: 20px;
+    }
 }

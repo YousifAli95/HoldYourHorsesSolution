@@ -24,19 +24,19 @@
             <div class="min-max-slider">
                 <div id="min-int" class="form_control_container">
                     <div class="form_control_container__time">Min</div>
-                    <input class="form_control_container__time__input" type="number" id="fromInput" value="@Model.PrisMin" min="@Model.PrisMin" max="@Model.PrisMax" />
+                    <input class="form_control_container__time__input" type="number" id="fromInput" value="@Model.PriceMin" min="@Model.PriceMin" max="@Model.PriceMax" />
                 </div>
 
                 <div class="range_container">
                     <div class="sliders_control">
-                        <input id="fromSlider" type="range" value="@Model.PrisMin" min="@Model.PrisMin" max="@Model.PrisMax" />
-                        <input id="toSlider" type="range" value="@Model.PrisMax" min="@Model.PrisMin" max="@Model.PrisMax" />
+                        <input id="fromSlider" type="range" value="@Model.PriceMin" min="@Model.PriceMin" max="@Model.PriceMax" />
+                        <input id="toSlider" type="range" value="@Model.PriceMax" min="@Model.PriceMin" max="@Model.PriceMax" />
                     </div>
                 </div>
 
                 <div id="max-int" class="form_control_container">
                     <div class="form_control_container__time">Max</div>
-                    <input class="form_control_container__time__input" type="number" id="toInput" value="@Model.PrisMax" min="@Model.PrisMin" max="@Model.PrisMax" />
+                    <input class="form_control_container__time__input" type="number" id="toInput" value="@Model.PriceMax" min="@Model.PriceMin" max="@Model.PriceMax" />
                 </div>
             </div>
         </div>
@@ -59,19 +59,19 @@
             <div class="min-max-slider">
                 <div id="min-int" class="form_control_container">
                     <div class="form_control_container__time">Min</div>
-                    <input class="form_control_container__time__input" type="number" id="fromInputHK" value="@Model.HästkrafterMin" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
+                    <input class="form_control_container__time__input" type="number" id="fromInputHK" value="@Model.HorsePowersMin" min="@Model.HorsePowersMin" max="@Model.HorsePowersMax" />
                 </div>
 
                 <div class="range_container">
                     <div class="sliders_control">
-                        <input id="fromSliderHK" type="range" value="@Model.HästkrafterMin" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
-                        <input id="toSliderHK" type="range" value="@Model.HästkrafterMax" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
+                        <input id="fromSliderHK" type="range" value="@Model.HorsePowersMin" min="@Model.HorsePowersMin" max="@Model.HorsePowersMax" />
+                        <input id="toSliderHK" type="range" value="@Model.HorsePowersMax" min="@Model.HorsePowersMin" max="@Model.HorsePowersMax" />
                     </div>
                 </div>
 
                 <div id="max-int" class="form_control_container">
                     <div class="form_control_container__time">Max</div>
-                    <input class="form_control_container__time__input" type="number" id="toInputHK" value="@Model.HästkrafterMax" min="@Model.HästkrafterMin" max="@Model.HästkrafterMax" />
+                    <input class="form_control_container__time__input" type="number" id="toInputHK" value="@Model.HorsePowersMax" min="@Model.HorsePowersMin" max="@Model.HorsePowersMax" />
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
 
         <div id="kategori" class="kategori-container">
             <div class="checkboxes">
-                @foreach (var item in @Model.Kategorier)
+                @foreach (var item in @Model.Categories)
                 {
                     <div>
                         <input type="checkbox" class="kategori" id="@item" name="@item" value="@item" checked> <label for="@item">@item</label>

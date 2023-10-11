@@ -11,7 +11,6 @@
 
 <div class="super-container">
     @Html.Partial("_FilterPartial", Model)
-
    <div class="main-div">
         <h1 id="index-header">Nordens största butik för käpphästar</h1>
         <div class="compare-select">
@@ -19,8 +18,8 @@
                 <select name="sort" id="sort">
                     <option value="1Price">Pris Stigande</option>
                     <option value="0Price">Pris Fallande</option>
-                    <option value="1Name">Namn (A-Ö)</option>
-                    <option value="0Name">Namn (Ö-A)</option>
+                    <option value="1ArticleName">Namn (A-Ö)</option>
+                    <option value="0ArticleName">Namn (Ö-A)</option>
                 </select>
             </div>
             <a asp-controller="Shop" asp-action="Compare" class="default-button" id="compare-btn">Jämför Käpphästar</a>

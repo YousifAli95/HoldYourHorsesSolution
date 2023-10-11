@@ -141,9 +141,9 @@ namespace HoldYourHorses.Services.Implementations
                 .Where(article => articleNumbers.Contains(article.ArticleNr))
                 .ToList();
 
-            foreach (var item in products)
+            foreach (var product in products)
             {
-                var article = articles.FirstOrDefault(a => a.ArticleNr == item.ArticleNr);
+                var article = articles.FirstOrDefault(a => a.ArticleNr == product.ArticleNr);
                 if (article != null)
                 {
                     model.Add(new ShoppingCartVM
@@ -151,7 +151,7 @@ namespace HoldYourHorses.Services.Implementations
                         ArticleNr = article.ArticleNr,
                         ArticleName = article.ArticleName,
                         Price = article.Price,
-                        Amount = item.Amount
+                        Amount = product.Amount
                     });
                 }
             }
@@ -169,6 +169,7 @@ namespace HoldYourHorses.Services.Implementations
             {
                 _accessor.HttpContext.Session.SetString("search", string.Empty);
             }
+
             var articles = await _shopContext.Articles.Select(o => new
             {
                 o.Price,
@@ -179,48 +180,44 @@ namespace HoldYourHorses.Services.Implementations
 
             var indexVM = new IndexVM
             {
-                PrisMax = decimal.ToInt32(articles.Max(o => o.Price)),
-                PrisMin = decimal.ToInt32(articles.Min(o => o.Price)),
-                HästkrafterMax = articles.Max(o => o.HorsePowers),
-                HästkrafterMin = articles.Min(o => o.HorsePowers),
+                PriceMax = decimal.ToInt32(articles.Max(o => o.Price)),
+                PriceMin = decimal.ToInt32(articles.Min(o => o.Price)),
+                HorsePowersMax = articles.Max(o => o.HorsePowers),
+                HorsePowersMin = articles.Min(o => o.HorsePowers),
                 Material = articles.DistinctBy(o => o.Material.Name).Select(o => o.Material.Name).ToArray(),
-                Kategorier = articles.DistinctBy(o => o.Typ).Select(o => o.Typ).ToArray(),
+                Categories = articles.DistinctBy(o => o.Typ).Select(o => o.Typ).ToArray(),
             };
+
             return indexVM;
         }
 
-        public IndexPartialVM[] GetIndexPartial(int minPrice, int maxPrice, int minHK, int maxHK, string typer,
+        public IndexPartialVM[] GetIndexPartial(int minPrice, int maxPrice, int minHorsePowers, int maxHorsePowers, string category,
             string materials, bool isAscending, string sortOn)
         {
             string searchString = _accessor.HttpContext.Session.GetString("search");
 
-            var cards = _shopContext.Articles.Where(o =>
-            o.Price >= minPrice &&
-            o.Price <= maxPrice &&
-            o.HorsePowers >= minHK &&
-            o.HorsePowers <= maxHK &&
-            typer.Contains(o.Category.Name) &&
-            materials.Contains(o.Material.Name)
-            && (string.IsNullOrEmpty(searchString)
-            || o.ArticleName.Contains(searchString))).
-            Select(o => new IndexPartialVM
-            {
-                ArticleName = o.ArticleName,
-                Price = o.Price,
-                ArticleNr = o.ArticleNr,
-            });
-            IndexPartialVM[] model;
+            var articlesQuery = _shopContext.Articles
+                .Where(o => o.Price >= minPrice && o.Price <= maxPrice)
+                .Where(o => o.HorsePowers >= minHorsePowers && o.HorsePowers <= maxHorsePowers)
+                .Where(o => category.Contains(o.Category.Name) && materials.Contains(o.Material.Name))
+                .Where(o => string.IsNullOrEmpty(searchString) || o.ArticleName.Contains(searchString))
+                .Select(o => new IndexPartialVM
+                {
+                    ArticleName = o.ArticleName,
+                    Price = o.Price,
+                    ArticleNr = o.ArticleNr,
+                })
+                .AsEnumerable();
 
+            IEnumerable<IndexPartialVM> sortedQuery;
+
+            // Sort the query using reflection based on the property name 
             if (isAscending)
-            {
-                model = cards.ToList().OrderBy(o => o.GetType().GetProperty(sortOn).GetValue(o, null)).ToArray();
-            }
+                sortedQuery = articlesQuery.OrderBy(o => o.GetType().GetProperty(sortOn).GetValue(o, null));
             else
-            {
-                model = cards.ToList().OrderByDescending(o => o.GetType().GetProperty(sortOn).GetValue(o, null)).ToArray();
-            }
+                sortedQuery = articlesQuery.OrderByDescending(o => o.GetType().GetProperty(sortOn).GetValue(o, null));
 
-            return model;
+            return sortedQuery.ToArray();
         }
 
 
