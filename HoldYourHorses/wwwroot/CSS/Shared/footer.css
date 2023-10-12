@@ -52,8 +52,9 @@ footer svg{
     cursor:pointer;
 }
 
-#footer-bottom-p{
+.footer-bottom-p{
     text-align: center;
+    padding: 0 20px;
 }
 
 @media (max-width: 600px) {
