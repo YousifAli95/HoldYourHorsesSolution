@@ -85,5 +85,12 @@ namespace HoldYourHorses.Controllers
             var model = _restApiService.GetFavourites();
             return Content(model);
         }
+
+        [HttpGet("articles")]
+        public async Task<IActionResult> GetArticleAsync()
+        {
+            var articles = await _restApiService.GetArticles();
+            return Ok(articles);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using HoldYourHorses.Models.Entities;
 using HoldYourHorses.Services.DTOs;
 using HoldYourHorses.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace HoldYourHorses.Services.Implementations
@@ -184,6 +185,11 @@ namespace HoldYourHorses.Services.Implementations
             string id = _shopContext.AspNetUsers.Where(o => o.UserName == userName).Select(o => o.Id).Single();
             var favourites = _shopContext.Favourites.Where(o => o.User == id).Select(o => o.ArticleNr).ToList();
             return JsonSerializer.Serialize(favourites);
+        }
+
+        public async Task<string[]> GetArticles()
+        {
+            return await _shopContext.Articles.Select(o => o.ArticleName).ToArrayAsync();
         }
 
     }

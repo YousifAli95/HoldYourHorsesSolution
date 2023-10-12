@@ -12,5 +12,7 @@
         int GetNumberOfItemsInCart();
         void ClearCart();
 
+        Task<string[]> GetArticles();
+
     }
 }

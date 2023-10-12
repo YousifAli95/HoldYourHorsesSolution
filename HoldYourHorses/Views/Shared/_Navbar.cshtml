@@ -8,7 +8,7 @@
         </a>
 
         <div id="search-div-row-1" class="search-div">
-                <input class="search-input" type="text" placeholder="Sök" name="search">
+            <input class="search-input" type="text" placeholder="Sök" name="search" list="article-choice">
                 <button onclick="searchFunction()" id="search-btn" type="submit">
                 <partial name="~/Views/Shared/SVGs/SearchIcon.cshtml" />
                 </button>
@@ -42,9 +42,10 @@
         </div>
     </div>
     <div id="search-div-row-2" class="search-div">
-        <input class="search-input" type="text" placeholder="Sök" name="search">
+        <input class="search-input" type="text" placeholder="Sök" name="search" list="article-choice" />
         <button onclick="searchFunction()" id="search-btn" type="submit">
             <partial name="~/Views/Shared/SVGs/SearchIcon.cshtml" />
         </button>
     </div>
+    <datalist id="article-choice"></datalist>
 </div>
