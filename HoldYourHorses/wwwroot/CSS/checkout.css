@@ -38,6 +38,11 @@
     width: 45%;
 }
 
+.mycredit {
+    margin-top: 15px;
+}
+
+
 
 .field-container input {
     -webkit-box-sizing: border-box;
@@ -74,7 +79,7 @@ label {
         width: 30rem;
     }
 
-    .small-label{
+    .small-label {
         min-height: 4.5rem;
         vertical-align: bottom;
     }
