@@ -83,36 +83,34 @@ namespace HoldYourHorses.Services.Implementations
             await _signInManager.SignOutAsync();
         }
 
-        //public async Task<OrderhistoryVM> GetOrderHistory()
-        //{
-        //    string? userId = await GetUserId();
+        public async Task<OrderhistoryVM> GetOrderHistoryVM()
+        {
+            string? userId = await GetUserId();
 
-        //    var ordersQuery = _shopContext.Orders
-        //        .Where(o => o.User == userId)
-        //        .Select(o => o.Id);
+            var ordersQuery = _shopContext.Orders
+                .Include(o => o.OrderLines)
+                .Where(o => o.User == userId)
+                .Select(o => new OrderDTO
+                {
+                    OrderId = o.Id,
+                    orderDate = o.OrderDate,
+                    OrderLines = o.OrderLines.Select(orderLine => new OrderLineDTO
+                    {
+                        ArticleName = orderLine.ArticleName,
+                        Amount = orderLine.Amount,
+                        Price = orderLine.Price,
+                        ArticleNr = orderLine.ArticleNr,
 
-        //    var orderItems = await _shopContext.OrderLines
-        //        .Where(o => ordersQuery.Contains(o.OrderId))
-        //        .Select(o => new Order
-        //        {
-        //            Amount = o.Amount,
-        //            Price = o.Price,
-        //            ArticleName = o.ArticleName,
-        //            OrderId = o.OrderId
-        //        })
-        //        .ToListAsync();
+                    }).ToArray()
+                });
 
-        //    var uniqueOrderIds = orderItems.Select(o => o.OrderId).Distinct().ToArray();
+            var orderHistoryVM = new OrderhistoryVM()
+            {
+                Orders = await ordersQuery.ToArrayAsync()
+            };
 
-        //    var orderhistoryVM = new OrderhistoryVM
-        //    {
-        //        //{
-        //        //    Historik = orderItems.ToArray(),
-        //        //    OrderHej = uniqueOrderIds
-        //    };
-
-        //    return orderhistoryVM;
-        //}
+            return orderHistoryVM;
+        }
 
         private async Task<string> GetUserId()
         {

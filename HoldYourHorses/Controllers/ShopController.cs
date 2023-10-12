@@ -70,7 +70,7 @@ namespace HoldYourHorses.Controllers
         [HttpGet("Compare")]
         public async Task<IActionResult> CompareAsync()
         {
-            CompareVM[] model = await _shopService.getCompareVMAsync();
+            CompareVM[] model = await _shopService.GetCompareVMAsync();
             return View(model);
         }
     }

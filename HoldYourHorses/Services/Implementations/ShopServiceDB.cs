@@ -217,7 +217,7 @@ namespace HoldYourHorses.Services.Implementations
         }
 
 
-        public async Task<CompareVM[]> getCompareVMAsync()
+        public async Task<CompareVM[]> GetCompareVMAsync()
         {
             var key = "compareString";
             var compareString = _accessor.HttpContext.Request.Cookies[key];

@@ -6,90 +6,80 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HoldYourHorses.Controllers
 {
-    public class AccountController : Controller
-    {
-        private readonly IAccountService dataService;
+	public class AccountController : Controller
+	{
+		private readonly IAccountService _accountService;
 
-        public AccountController(IAccountService dataService)
-        {
-            this.dataService = dataService;
-            Console.WriteLine("account");
+		public AccountController(IAccountService accountService)
+		{
+			this._accountService = accountService;
+		}
 
-        }
+		[HttpGet("register")]
+		public IActionResult Register()
+		{
+			return View();
+		}
 
-        [HttpGet("register")]
-        public IActionResult Register()
-        {
-            return View();
-        }
+		[HttpPost("register")]
+		public async Task<IActionResult> Register(RegisterVM viewModel)
+		{
+			if (!ModelState.IsValid)
+				return View();
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterVM viewModel)
-        {
-            if (!ModelState.IsValid)
-                return View();
+			var errorMessage = await _accountService.TryRegisterAsync(viewModel);
+			if (errorMessage != null)
+			{
+				ModelState.AddModelError(string.Empty, AccountUtils.ConvertErrorMessageToSwedish(errorMessage));
+				return View();
+			}
 
-            var errorMessage = await dataService.TryRegisterAsync(viewModel);
-            if (errorMessage != null)
-            {
-                ModelState.AddModelError(string.Empty, AccountUtils.ConvertErrorMessageToSwedish(errorMessage));
-                return View();
-            }
+			return RedirectToAction(nameof(Userpage));
+		}
 
-            return RedirectToAction(nameof(Userpage));
-        }
+		[HttpGet("login")]
+		public IActionResult Login()
+		{
+			return View();
+		}
 
-        [HttpGet("login")]
-        public IActionResult Login()
-        {
-            return View();
-        }
+		[HttpPost("login")]
+		public async Task<IActionResult> Login(LoginVM viewModel)
+		{
+			if (!ModelState.IsValid)
+				return View();
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginVM viewModel)
-        {
-            if (!ModelState.IsValid)
-                return View();
+			var success = await _accountService.TryLogin(viewModel);
+			if (!success)
+			{
+				ModelState.AddModelError(nameof(LoginVM.Username), "Felaktigt användarnamn eller lösernord");
+				return View();
+			}
 
-            var success = await dataService.TryLogin(viewModel);
-            if (!success)
-            {
-                ModelState.AddModelError(nameof(LoginVM.Username), "Felaktigt användarnamn eller lösernord");
-                return View();
-            }
+			return RedirectToAction(nameof(Userpage));
+		}
 
-            return RedirectToAction(nameof(Userpage));
-        }
+		[Authorize]
+		[HttpGet("Userpage")]
+		public async Task<IActionResult> Userpage()
+		{
+			UserpageVM model = await _accountService.GetUserPageVMAsync(User.Identity.Name);
+			return View(model);
+		}
+		[Authorize]
+		[HttpGet("logout")]
+		public async Task<IActionResult> LogoutAsync()
+		{
+			await _accountService.LogOutUserAsync();
+			return RedirectToAction(nameof(Login));
+		}
 
-        [Authorize]
-        [HttpGet("Userpage")]
-        public async Task<IActionResult> Userpage()
-        {
-            UserpageVM model = await dataService.GetUserPageVMAsync(User.Identity.Name);
-            return View(model);
-        }
-        [Authorize]
-        [HttpGet("logout")]
-        public async Task<IActionResult> LogoutAsync()
-        {
-            await dataService.LogOutUserAsync();
-            return RedirectToAction(nameof(Login));
-        }
-
-        //[Authorize]
-        //[HttpGet("orderhistory")]
-        //public IActionResult Orderhistory()
-        //{
-        //    return View(dataService.GetOrderHistory());
-        //}
-
-        //[Authorize]
-        //[HttpGet("orderhistoryget")]
-        //public IActionResult Orderhistoryget()
-        //{
-        //    var order = dataService.GetOrderHistory();
-
-        //    return View(order);
-        //}
-    }
+		[Authorize]
+		[HttpGet("orderhistory")]
+		public async Task<IActionResult> OrderhistoryAsync()
+		{
+			var model = await _accountService.GetOrderHistoryVM();
+			return View(model);
+		}
+	}
 }

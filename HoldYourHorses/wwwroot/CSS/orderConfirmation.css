@@ -15,3 +15,8 @@
 .super-container * {
     text-align: center;
 }
+
+#email-confirmation-p{
+    width: 100%;
+    word-break:break-word;
+}
