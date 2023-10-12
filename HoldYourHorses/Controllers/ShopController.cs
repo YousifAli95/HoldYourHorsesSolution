@@ -67,7 +67,7 @@ namespace HoldYourHorses.Controllers
             return View(_shopService.GetOrderConfirmationVM());
         }
 
-        [HttpGet("Compare")]
+        [HttpGet("compare")]
         public async Task<IActionResult> CompareAsync()
         {
             CompareVM[] model = await _shopService.GetCompareVMAsync();
