@@ -5,9 +5,9 @@
     const articleName = encodeURIComponent(document.getElementById('article-name').innerHTML);
     const numberofproducts = document.getElementById('number-of-products');
 
-    const url = `/update-shopping-cart/?articleNr=${articleNr}&amount=${amount}&price=${price}&articleName=${articleName}`;
+    const updateCartUrl = `/api/update-shopping-cart/?articleNr=${articleNr}&amount=${amount}`;
 
-    fetch(url)
+    fetch(updateCartUrl)
         .then(response => {
             if (!response.ok) {
                 console.log(response.text)

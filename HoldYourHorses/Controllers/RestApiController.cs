@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HoldYourHorses.Controllers
 {
     [ApiController]
+    [Route("api")]
     public class RestApiController : ControllerBase
     {
         private readonly IApiService _restApiService;
@@ -48,7 +49,7 @@ namespace HoldYourHorses.Controllers
 
         }
 
-        [HttpGet("add-or-remove-compare")]
+        [HttpGet("add-or-remove-compare/{articleNr}")]
         public IActionResult AddOrRemoveCompare(int articleNr)
         {
             bool added = _restApiService.AddOrRemoveCompare(articleNr);
@@ -60,9 +61,10 @@ namespace HoldYourHorses.Controllers
         [HttpGet("get-compare")]
         public IActionResult GetCompare()
         {
-            var model = _restApiService.GetCompare();
-            return Ok(new { compareData = model });
+            var articleNrList = _restApiService.GetCompare();
+            return Ok(new { compareData = articleNrList });
         }
+
         [HttpDelete("remove-all-comparisons")]
         public IActionResult RemoveAllComparisons()
         {
@@ -79,11 +81,11 @@ namespace HoldYourHorses.Controllers
             return Ok(new { added = added, message = message });
         }
 
-        [HttpGet("get-favourites")]
+        [HttpGet("favourites")]
         public IActionResult GetFavourites()
         {
-            var model = _restApiService.GetFavourites();
-            return Content(model);
+            var favourites = _restApiService.GetFavourites();
+            return Ok(favourites);
         }
 
         [HttpGet("articles")]

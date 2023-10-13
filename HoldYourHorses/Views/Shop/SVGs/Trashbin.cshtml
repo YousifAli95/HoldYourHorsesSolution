@@ -1,6 +1,6 @@
 ﻿@model ShoppingCartVM
 
-<svg onclick="deleteItem(@Model.ArticleNr, @Model.Price, @Model.Amount)" class="trash" x="0px" y="0px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+<svg onclick="deleteItem(@Model.ArticleNr, @((double)Model.Price), @Model.Amount)" class="trash" x="0px" y="0px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
 <path fill="#1D1D1B" d="M459.232,60.687h-71.955c-1.121-17.642-15.631-31.657-33.553-31.657H161.669
     c-17.921,0-32.441,14.015-33.553,31.657H64.579c-18.647,0-33.767,15.12-33.767,33.768v8.442c0,18.648,15.12,33.768,33.767,33.768
     h21.04v342.113c0,13.784,11.179,24.963,24.963,24.963h308.996c13.784,0,24.964-11.179,24.964-24.963V136.665h14.691

@@ -3,8 +3,8 @@ const totalSumElement = document.getElementById('total-sum-span');
 
 function deleteItem(articleNr, price, amount) {
     const articleContainer = document.getElementById("article-container");
-
-    fetch(`/remove-from-shopping-cart/${articleNr}`,
+    const url = `/api/remove-from-shopping-cart/${articleNr}`;
+    fetch(url,
         {
             method: "DELETE",
         }).then(() => {
@@ -33,7 +33,8 @@ function checkIfEmptyShoppingCart() {
 }
 
 function clearShoppingCart() {
-    fetch("/clear-cart",
+    const url = "/api/clear-cart";
+    fetch(url,
         {
             method: "DELETE",
         })

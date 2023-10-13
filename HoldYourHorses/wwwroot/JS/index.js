@@ -112,8 +112,8 @@ toInputHK.addEventListener("change", (event) => {
 //functions
 async function getPartialView() {
     const superContainer = document.querySelector(".card-container");
-    await fetch(
-        `/IndexPartial/?maxPrice=${maxPrice}&minPrice=${minPrice}&maxHK=${maxHK}&minHK=${minHK}&typer=${types}&materials=${materials}&sortOn=${sortOn}&isAscending=${isAscending}`,
+    const url = `/IndexPartial/?maxPrice=${maxPrice}&minPrice=${minPrice}&maxHK=${maxHK}&minHK=${minHK}&typer=${types}&materials=${materials}&sortOn=${sortOn}&isAscending=${isAscending}`;
+    await fetch(url,
         { method: "GET" }
     )
         .then((result) => result.text())
@@ -182,7 +182,8 @@ function hideProperty(id, minus) {
 
 async function compare(articleNr) {
     let added;
-    await fetch(`/add-or-remove-compare/?articleNr=${articleNr}`)
+    const url = `/api/add-or-remove-compare/${articleNr}`
+    await fetch(url, { method: "GET" })
         .then((response) => response.json())
         .then((data) => added = data.added);
     console.log(added);
@@ -202,7 +203,8 @@ async function compare(articleNr) {
     ShowOrHideCompareButton();
 }
 async function getCompare() {
-    const fetchedArticleList = await fetch("/get-compare");
+    const url = "/api/get-compare";
+    const fetchedArticleList = await fetch(url, { method: "GET" });
     try {
         const data = await fetchedArticleList.json();
         const articleList = data.compareData;
@@ -225,7 +227,6 @@ let isShown = true;
 
 function showHideFilter() {
     const FILTER_CLOSE_CLASS = "filter-closed";
-    const SVG_ROTATED = "hamburger-rotated";
     const MAIN_DIV_CLOSED = "main-div-closed";
 
     const listItems = filterElement.children;
@@ -264,7 +265,8 @@ window.onbeforeunload = function (e) {
 };
 
 async function removeCompare() {
-    await fetch(`/remove-all-comparisons`, { method: "DELETE" });
+    url = `/api/remove-all-comparisons`;
+    await fetch(url, { method: "DELETE" });
     var articles = document.querySelectorAll(".compare-svg");
     articles.forEach((svg) => (svg.classList.remove(SVG_COMPARE_FILL_CLASS)));
 
@@ -284,7 +286,8 @@ function ShowOrHideCompareButton() {
 
 async function addHeart(svg, artikelNr) {
     let didAddHeart;
-    await fetch(`/add-or-remove-favourite/${artikelNr}`)
+    const url = `/api/add-or-remove-favourite/${artikelNr}`
+    await fetch(url, { method: "GET" })
         .then((o) => o.json())
         .then((o) => (didAddHeart = o.added));
     console.log(didAddHeart);
@@ -297,7 +300,7 @@ async function addHeart(svg, artikelNr) {
 }
 
 async function getHearts() {
-    const fetchedArticleNumbers = await fetch(`/get-favourites`);
+    const fetchedArticleNumbers = await fetch(`/api/favourites`);
     try {
         articleNumbers = await fetchedArticleNumbers.json();
         console.log(articleNumbers);

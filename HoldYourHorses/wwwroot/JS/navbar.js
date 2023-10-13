@@ -23,20 +23,24 @@ function searchFunction() {
     window.location.href = `/?search=${searchString}`;
 }
 
-const url = "/articles";
-const datalistId = "article-choice";
-const datalistElement = document.getElementById(datalistId);
 
-fetch(url)
-    .then(response => response.json())
-    .then(optionArray => {
-        // OptionArray is an array of article titles as strings
-        optionArray.forEach(articleTitle => {
-            const optionElement = document.createElement("option");
-            optionElement.value = articleTitle; // Set the option's value to the article title
-            datalistElement.appendChild(optionElement);
+function fetchDatalist() {
+    const url = "/api/articles";
+    const datalistId = "article-choice";
+    const datalistElement = document.getElementById(datalistId);
+    fetch(url, { method: "GET" })
+        .then(response => response.json())
+        .then(optionArray => {
+            // OptionArray is an array of article titles as strings
+            optionArray.forEach(articleTitle => {
+                const optionElement = document.createElement("option");
+                optionElement.value = articleTitle; // Set the option's value to the article title
+                datalistElement.appendChild(optionElement);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching articles:", error);
         });
-    })
-    .catch(error => {
-        console.error("Error fetching articles:", error);
-    });
+}
+
+fetchDatalist();
