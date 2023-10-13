@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showDialog = !consentFeature?.CanTrack ?? false;
+}
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -9,20 +13,26 @@
     <link rel="stylesheet" href="~/CSS/Shared/navbar.css">
     <link rel="stylesheet" href="~/CSS/Shared/footer.css">
     <link rel="stylesheet" href="~/CSS/Shared/shared.css">
-    <link rel="stylesheet" href="~/CSS/Shared/cookies.css">
     @RenderSection("CSS", false)
 
-    <script src="~/JS/cookies.js" defer></script>
     <script src="~/JS/navbar.js" defer></script>
     @RenderSection("JS", false)
+
+    @if (showDialog)
+    {
+        <link rel="stylesheet" href="~/CSS/Shared/cookies.css">
+        <script src="~/JS/cookies.js" defer></script>
+    }
 </head>
 <body>
+    @if (showDialog)
+    {
+        var cookieString = consentFeature?.CreateConsentCookie();
+        ViewData["consentCookie"] = cookieString;
+        <partial name="_CookieConsentPartial" />
+    }
     @Html.Partial("_Navbar")
-        @RenderBody()
-        <div id="overlay"></div>
-        <div id="popup">
-            <partial name="_CookieConsentPartial" />
-        </div>
+    @RenderBody()
 
     @Html.Partial("_Footer")
 

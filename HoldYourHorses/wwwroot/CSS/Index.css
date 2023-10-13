@@ -142,7 +142,7 @@ footer {
     opacity: 50;
     fill: var(--light-purple);
     height: 3rem;
-    z-index: 100;
+    z-index: 1;
     top: 1rem;
     left: 1rem;
     cursor: pointer;
