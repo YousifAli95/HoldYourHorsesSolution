@@ -3,7 +3,7 @@
     public class OrderDTO
     {
         public OrderLineDTO[] OrderLines { get; set; }
-        public DateTime orderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
         public int OrderId { get; set; }
     }

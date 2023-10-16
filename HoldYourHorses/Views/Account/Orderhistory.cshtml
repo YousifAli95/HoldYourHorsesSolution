@@ -12,7 +12,7 @@
 <div id="main-container">
     <div>
         <h1 id="h1-order">Orderhistorik</h1>
-        @foreach (var order in Model.Orders.OrderByDescending(o => o.orderDate))
+        @foreach (var order in Model.Orders.OrderByDescending(o => o.OrderDate))
         {
             <div class="order-container">
                 @{
@@ -20,7 +20,7 @@
                 }
                 <div class="plus-title-container">
                     <h2 class="order-title">
-                        Ordernummer: @order.OrderId.ToString("D6") - Orderdatum: @order.orderDate.ToShortDateString()
+                        Ordernummer: @order.OrderId.ToString("D6") - Orderdatum: @order.OrderDate.ToShortDateString()
                     </h2>
                     <div class="div-plus" onclick="openOrCloseOrder(this, @order.OrderId)">
                         <svg id="svg1" class="svg-plus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 9h-9v-9h-6v9h-9v6h9v9h6v-9h9z"></path><path class="hide" d="M0 10h24v4h-24z" /></svg>
