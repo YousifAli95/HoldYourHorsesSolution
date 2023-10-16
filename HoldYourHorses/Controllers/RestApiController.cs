@@ -18,9 +18,12 @@ namespace HoldYourHorses.Controllers
         [HttpGet("update-shopping-cart")]
         public IActionResult UpdateShoppingCart(int articleNr, int amount)
         {
-            if (amount < 0 || amount > 100)
+            const int maxAmount = 100;
+            const int minAmount = 0;
+
+            if (amount < minAmount || amount > maxAmount)
             {
-                return BadRequest("Invalid amount parameter. Amount must be between 1 and 99.");
+                return BadRequest($"Invalid amount parameter. Amount must be between {minAmount + 1} and {maxAmount - 1}.");
             }
 
             _restApiService.AddToCart(articleNr, amount);
@@ -53,7 +56,7 @@ namespace HoldYourHorses.Controllers
         public IActionResult AddOrRemoveCompare(int articleNr)
         {
             bool added = _restApiService.AddOrRemoveCompare(articleNr);
-            string message = added ? "Item added successfully." : "Item removed successfully.";
+            string message = added ? "Item added successfully." : "Item was removed successfully.";
 
             return Ok(new { added = added, message = message });
         }
@@ -73,23 +76,23 @@ namespace HoldYourHorses.Controllers
         }
 
         [HttpGet("add-or-remove-favourite/{articleNr}")]
-        public IActionResult AddFavourite(int articleNr)
+        public async Task<IActionResult> AddFavourite(int articleNr)
         {
-            bool added = _restApiService.AddOrRemoveFavourite(articleNr);
+            bool added = await _restApiService.AddOrRemoveFavourite(articleNr);
             string message = added ? "Favourite item added successfully." : "Favourite item removed successfully.";
 
             return Ok(new { added = added, message = message });
         }
 
         [HttpGet("favourites")]
-        public IActionResult GetFavourites()
+        public async Task<IActionResult> GetFavourites()
         {
-            var favourites = _restApiService.GetFavourites();
+            var favourites = await _restApiService.GetFavourites();
             return Ok(favourites);
         }
 
         [HttpGet("articles")]
-        public async Task<IActionResult> GetArticleAsync()
+        public async Task<IActionResult> GetArticle()
         {
             var articles = await _restApiService.GetArticles();
             return Ok(articles);

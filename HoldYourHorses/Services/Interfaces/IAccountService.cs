@@ -4,14 +4,16 @@ namespace HoldYourHorses.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<UserpageVM> GetUserPageVMAsync(string name);
+        Task<UserpageVM> GetUserPageVM(string name);
 
-        Task<string> TryRegisterAsync(RegisterVM viewModel);
+        Task<string> TryRegister(RegisterVM viewModel);
 
         Task<bool> TryLogin(LoginVM viewModel);
 
         Task LogOutUserAsync();
 
         Task<OrderhistoryVM> GetOrderHistoryVM();
+
+        Task<string> GetUserId();
     }
 }

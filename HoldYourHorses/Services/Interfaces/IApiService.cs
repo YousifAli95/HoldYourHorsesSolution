@@ -7,8 +7,8 @@
         bool AddOrRemoveCompare(int articleNr);
         int[] GetCompare();
         void RemoveAllComparisons();
-        bool AddOrRemoveFavourite(int articleNr);
-        string GetFavourites();
+        Task<bool> AddOrRemoveFavourite(int articleNr);
+        Task<string> GetFavourites();
         int GetNumberOfItemsInCart();
         void ClearCart();
 

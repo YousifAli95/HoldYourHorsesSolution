@@ -181,20 +181,28 @@ function hideProperty(id, minus) {
 }
 
 async function compare(articleNr) {
+    const svg = document.querySelector("#svg-" + articleNr);
+    const MAX_ALLOWED_COMPARES = 4;
+
+    // Check if the article will be added to the compare list and if the compare list can add one more article
+    if (numberOfCompares >= MAX_ALLOWED_COMPARES && !svg.classList.contains(SVG_COMPARE_FILL_CLASS)) {
+        // Don't allow the the article to be added to the compare list
+        alert("Du kan inte jämföra fler än fyra käpphästar samtidigt!");
+        return;
+    }
+
     let added;
     const url = `/api/add-or-remove-compare/${articleNr}`
+
+    // Add or remove the article from the compare list inside a cookie
     await fetch(url, { method: "GET" })
         .then((response) => response.json())
         .then((data) => added = data.added);
-    console.log(added);
-    const svg = document.querySelector("#svg-" + articleNr);
+
+    // Check if the article was removed or added, then update the SVG filling accordingly
     if (added === true) {
-        if (numberOfCompares < 4) {
-            svg.classList.add(SVG_COMPARE_FILL_CLASS);
-            numberOfCompares++;
-        } else {
-            alert("Du kan inte jämföra fler än fyra käpphästar samtidigt!");
-        }
+        svg.classList.add(SVG_COMPARE_FILL_CLASS);
+        numberOfCompares++;
     } else {
         svg.classList.remove(SVG_COMPARE_FILL_CLASS);
         numberOfCompares--;

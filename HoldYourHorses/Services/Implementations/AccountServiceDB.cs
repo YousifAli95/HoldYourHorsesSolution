@@ -23,7 +23,7 @@ namespace HoldYourHorses.Services.Implementations
             this._signInManager = signInManagere;
         }
 
-        public async Task<UserpageVM> GetUserPageVMAsync(string name)
+        public async Task<UserpageVM> GetUserPageVM(string name)
         {
             string? userId = await GetUserId();
 
@@ -45,7 +45,7 @@ namespace HoldYourHorses.Services.Implementations
             return new UserpageVM { Cards = cards, Username = name };
         }
 
-        public async Task<string> TryRegisterAsync(RegisterVM viewModel)
+        public async Task<string> TryRegister(RegisterVM viewModel)
         {
             var user = new IdentityUser
             {
@@ -112,7 +112,7 @@ namespace HoldYourHorses.Services.Implementations
             return orderHistoryVM;
         }
 
-        private async Task<string> GetUserId()
+        public async Task<string> GetUserId()
         {
             var userName = _accessor.HttpContext.User.Identity.Name;
             var userId = await _shopContext.AspNetUsers
