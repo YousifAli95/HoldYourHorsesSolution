@@ -1,7 +1,12 @@
-﻿let searchString = "";
-const searchInputs = document.getElementsByClassName("search-input");
+﻿const searchInputs = document.getElementsByClassName("search-input");
+const initialSearchValue = document.getElementById("hidden-search-input")?.value;
+let searchString = initialSearchValue ?? "";
+
 
 Array.from(searchInputs).forEach(input => {
+    // Sets the the intial value of the input
+    input.value = searchString;
+
     // Sync all the search input fields with each other so that they have the same value
     input.addEventListener("input", (event) => {
         searchString = event.target.value;
@@ -18,11 +23,9 @@ Array.from(searchInputs).forEach(input => {
 
 })
 
-
 function searchFunction() {
     window.location.href = `/?search=${searchString}`;
 }
-
 
 function fetchDatalist() {
     const url = "/api/articles";
