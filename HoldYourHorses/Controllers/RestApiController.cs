@@ -1,5 +1,4 @@
-﻿using HoldYourHorses.Exceptions;
-using HoldYourHorses.Services.Interfaces;
+﻿using HoldYourHorses.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HoldYourHorses.Controllers
@@ -37,10 +36,11 @@ namespace HoldYourHorses.Controllers
             {
                 _restApiService.RemoveItemFromShoppingCart(articleNr);
             }
-            catch (BadRequestException)
+            catch (BadHttpRequestException)
             {
                 return NotFound();
             }
+
             return Ok(new { message = "Article removed from shopping cart." });
         }
 

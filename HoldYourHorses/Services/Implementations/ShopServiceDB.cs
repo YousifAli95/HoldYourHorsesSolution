@@ -11,31 +11,35 @@ namespace HoldYourHorses.Services.Implementations
     public class ShopServiceDB : IShopService
     {
         readonly ShopDBContext _shopContext;
+        readonly IAccountService _accountService;
         readonly ITempDataDictionaryFactory _tempFactory;
         readonly IHttpContextAccessor _accessor;
         readonly string _shoppingCart = "ShoppingCart";
+        readonly string _sessionSearchKey = "search";
+        readonly string _compareCookieKey = "compareString";
 
-        public ShopServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor, ITempDataDictionaryFactory tempFactory)
+
+
+        public ShopServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor, ITempDataDictionaryFactory tempFactory, IAccountService accountService)
         {
             this._shopContext = shopContext;
             this._accessor = accessor;
             this._tempFactory = tempFactory;
+            _accountService = accountService;
         }
 
-        public void SaveOrder(CheckoutVM model)
+        public async Task SaveOrder(CheckoutVM model)
         {
             Order order;
             string? userId = null;
 
-            // if User is logged in
+            // If User is logged in get userId
             if (_accessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                var userName = _accessor.HttpContext.User.Identity.Name;
-                userId = _shopContext.AspNetUsers.Where(o => o.UserName == userName)
-                    .Select(o => o.Id)
-                    .Single();
+                userId = await _accountService.GetUserId();
             }
 
+            // Map the data from the viewmodel to the Order object
             order = new Order
             {
                 FirstName = model.FirstName,
@@ -49,6 +53,7 @@ namespace HoldYourHorses.Services.Implementations
                 OrderDate = DateTime.Now
             };
 
+            // Start a tranasaction so that either all database changes are saved or none are
             using (var transaction = _shopContext.Database.BeginTransaction())
             {
                 _shopContext.Orders.Add(order);
@@ -64,35 +69,47 @@ namespace HoldYourHorses.Services.Implementations
             _tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.Email)] = model.Email;
         }
 
-
-
-        public void AddOrderLines(int id)
+        public void AddOrderLines(int orderId)
         {
             List<ShoppingCartDTO> shoppingCart;
+
+            // Get the shopping cart items as JSON string and deserialize them as a list of ShoppingCartDTO
             var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
             shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
+
             foreach (var item in shoppingCart)
             {
+                // Retrieve the article from the database based on its ArticleNr
                 var article = _shopContext.Articles.Find(item.ArticleNr);
 
-                OrderLine orderLine = new OrderLine()
+                // Check if the article exists
+                if (article != null)
                 {
-                    Amount = item.Amount,
-                    ArticleNr = article.ArticleNr,
-                    Price = article.Price,
-                    OrderId = id,
-                    ArticleName = article.ArticleName
-                };
+                    // Create an OrderLine object
+                    OrderLine orderLine = new OrderLine()
+                    {
+                        Amount = item.Amount,
+                        ArticleNr = article.ArticleNr,
+                        Price = article.Price,
+                        OrderId = orderId,
+                        ArticleName = article.ArticleName
+                    };
 
-                _shopContext.OrderLines.Add(orderLine);
+                    // Add the OrderLine to the OrderLines DbSet
+                    _shopContext.OrderLines.Add(orderLine);
+                }
+
+                // Save changes to the database and commit the transaction
                 _shopContext.SaveChanges();
             }
         }
 
-        public ArticleDetailsVM GetArticleDetailsVM(int artikelNr)
+
+        public ArticleDetailsVM GetArticleDetailsVM(int articleNr)
         {
+            // Returns an ArticleDetailsVM containing all the information needed for the articles view
             return _shopContext.Articles
-                 .Where(o => o.ArticleNr == artikelNr)
+                 .Where(o => o.ArticleNr == articleNr)
                  .Select(o => new ArticleDetailsVM()
                  {
                      ArticleNr = o.ArticleNr,
@@ -106,12 +123,13 @@ namespace HoldYourHorses.Services.Implementations
                      ProductionCountry = o.OriginCountry.Name,
                      AbsBrake = o.AbsBrake,
                  })
-                 .Single();
+                 .SingleOrDefault();
         }
 
 
         public OrderConfirmationVM GetOrderConfirmationVM()
         {
+            // Get first name and last name from TempData
             return new OrderConfirmationVM
             {
                 FirstName = (string)_tempFactory.GetTempData(_accessor.HttpContext)[nameof(OrderConfirmationVM.FirstName)],
@@ -119,69 +137,68 @@ namespace HoldYourHorses.Services.Implementations
             };
         }
 
-        public ShoppingCartVM[] GetShoppingCartVM()
+        public async Task<ShoppingCartVM[]> GetShoppingCartVM()
         {
             var model = new List<ShoppingCartVM>();
 
-            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
+            // Gets a JSON string containing the shopping cart information
+            var shoppingCartJson = _accessor.HttpContext.Request.Cookies[_shoppingCart];
 
-            if (string.IsNullOrEmpty(cookieContent))
+            if (string.IsNullOrEmpty(shoppingCartJson))
             {
+                // Return an empty array if no shopping cart is saved in cookie
                 return model.ToArray();
             }
 
-            var products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
+            // Deserialize the shoppingCartJson into ShoppingCartDTO
+            var products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(shoppingCartJson);
 
-            var articleNumbers = products.Select(p => p.ArticleNr).ToList();
-            var articles = _shopContext.Articles
+            var articleNumbers = products.Select(p => p.ArticleNr);
+
+            // Get all the articles in the shopping cart form the database
+            var articles = await _shopContext.Articles
                 .Where(article => articleNumbers.Contains(article.ArticleNr))
-                .ToList();
+                .ToListAsync();
 
-            foreach (var product in products)
+            foreach (var article in articles)
             {
-                var article = articles.FirstOrDefault(a => a.ArticleNr == product.ArticleNr);
-                if (article != null)
+                // Get the amount of each prdocut from the cookie
+                var amount = products.SingleOrDefault(p => p.ArticleNr == article.ArticleNr).Amount;
+                model.Add(new ShoppingCartVM
                 {
-                    model.Add(new ShoppingCartVM
-                    {
-                        ArticleNr = article.ArticleNr,
-                        ArticleName = article.ArticleName,
-                        Price = article.Price,
-                        Amount = product.Amount
-                    });
-                }
+                    ArticleNr = article.ArticleNr,
+                    ArticleName = article.ArticleName,
+                    Price = article.Price,
+                    Amount = amount
+                });
             }
 
             return model.ToArray();
         }
 
-        public async Task<IndexVM> GetIndexVMAsync(string search)
+        public async Task<IndexVM> GetIndexVM(string search)
         {
-            if (!string.IsNullOrEmpty(search))
-            {
-                _accessor.HttpContext.Session.SetString("search", search);
-            }
-            else
-            {
-                _accessor.HttpContext.Session.SetString("search", string.Empty);
-            }
+            var searchString = search ?? string.Empty;
 
-            var articles = await _shopContext.Articles.Select(o => new
-            {
-                o.Price,
-                o.HorsePowers,
-                o.Material,
-                Typ = o.Category.Name
-            }).ToArrayAsync();
+            // Store the search string in the user's session
+            _accessor.HttpContext.Session.SetString(_sessionSearchKey, searchString);
 
+            // Retrieve articles from the database, including related category and material information
+            var articles = await _shopContext.Articles
+                .Include(a => a.Category)
+                .Include(a => a.Material)
+                .ToArrayAsync();
+
+            // Prepare data for the Index View Model
             var indexVM = new IndexVM
             {
                 PriceMax = decimal.ToInt32(articles.Max(o => o.Price)),
                 PriceMin = decimal.ToInt32(articles.Min(o => o.Price)),
                 HorsePowersMax = articles.Max(o => o.HorsePowers),
                 HorsePowersMin = articles.Min(o => o.HorsePowers),
-                Material = articles.DistinctBy(o => o.Material.Name).Select(o => o.Material.Name).ToArray(),
-                Categories = articles.DistinctBy(o => o.Typ).Select(o => o.Typ).ToArray(),
+                Material = articles.Select(o => o.Material.Name).Distinct().ToArray(),
+                Categories = articles.Select(o => o.Category.Name).Distinct().ToArray(),
+                Search = searchString,
             };
 
             return indexVM;
@@ -190,8 +207,10 @@ namespace HoldYourHorses.Services.Implementations
         public IndexPartialVM[] GetIndexPartial(int minPrice, int maxPrice, int minHorsePowers, int maxHorsePowers, string category,
             string materials, bool isAscending, string sortOn)
         {
-            string searchString = _accessor.HttpContext.Session.GetString("search");
+            // Retrieve the search string from the user's session
+            string searchString = _accessor.HttpContext.Session.GetString(_sessionSearchKey);
 
+            // Build a query to filter articles based on the function parameters
             var articlesQuery = _shopContext.Articles
                 .Where(o => o.Price >= minPrice && o.Price <= maxPrice)
                 .Where(o => o.HorsePowers >= minHorsePowers && o.HorsePowers <= maxHorsePowers)
@@ -213,31 +232,35 @@ namespace HoldYourHorses.Services.Implementations
             else
                 sortedQuery = articlesQuery.OrderByDescending(o => o.GetType().GetProperty(sortOn).GetValue(o, null));
 
+            // Convert the sorted query to an array of IndexPartialVM
             return sortedQuery.ToArray();
         }
 
-
-        public async Task<CompareVM[]> GetCompareVMAsync()
+        public async Task<CompareVM[]> GetCompareVM()
         {
-            var key = "compareString";
-            var compareString = _accessor.HttpContext.Request.Cookies[key];
-            var compareList = JsonSerializer.Deserialize<List<int>>(compareString);
-            var model = await _shopContext.Articles.Where(o => compareList.Contains(o.ArticleNr)).Select(o => new CompareVM
-            {
-                ArticleName = o.ArticleName,
-                ArticleNr = o.ArticleNr,
-                HorsePowers = o.HorsePowers,
-                Country = o.OriginCountry.Name,
-                Material = o.Material.Name,
-                Category = o.Category.Name,
-                WoodDensity = o.TreeDensity
-            }).ToArrayAsync();
+            // Retrieve stored comparison data from user's cookies
+            var compareString = _accessor.HttpContext.Request.Cookies[_compareCookieKey];
 
+            // Deserialize the comparison data into a list of article numbers
+            var compareList = JsonSerializer.Deserialize<List<int>>(compareString);
+
+            // Query the database to fetch article details for comparison based on the article numbers
+            var model = await _shopContext.Articles
+                .Where(o => compareList.Contains(o.ArticleNr))
+                .Select(o => new CompareVM
+                {
+                    ArticleName = o.ArticleName,
+                    ArticleNr = o.ArticleNr,
+                    HorsePowers = o.HorsePowers,
+                    Country = o.OriginCountry.Name,
+                    Material = o.Material.Name,
+                    Category = o.Category.Name,
+                    WoodDensity = o.TreeDensity
+                })
+                .ToArrayAsync();
+
+            // Return an array of CompareVM representing articles for comparison
             return model;
         }
-
     }
-
-
 }
-

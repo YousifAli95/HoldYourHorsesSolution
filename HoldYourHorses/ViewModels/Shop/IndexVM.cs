@@ -8,6 +8,7 @@
         public int HorsePowersMax { get; set; }
         public string[] Material { get; set; }
         public string[] Categories { get; set; }
+        public string Search { get; set; }
 
 
     }

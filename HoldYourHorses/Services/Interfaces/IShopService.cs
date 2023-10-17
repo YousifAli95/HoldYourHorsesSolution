@@ -4,19 +4,19 @@ namespace HoldYourHorses.Services.Interfaces
 {
     public interface IShopService
     {
-        void SaveOrder(CheckoutVM checkoutVM);
+        Task SaveOrder(CheckoutVM checkoutVM);
 
         ArticleDetailsVM GetArticleDetailsVM(int articleNr);
 
         OrderConfirmationVM GetOrderConfirmationVM();
 
-        ShoppingCartVM[] GetShoppingCartVM();
+        Task<ShoppingCartVM[]> GetShoppingCartVM();
 
-        Task<IndexVM> GetIndexVMAsync(string search);
+        Task<IndexVM> GetIndexVM(string search);
 
         IndexPartialVM[] GetIndexPartial(int minPrice, int maxPrice, int minHorsePower, int maxHorsePower, string types, string materials, bool isAscending, string sortOn);
 
-        Task<CompareVM[]> GetCompareVMAsync();
+        Task<CompareVM[]> GetCompareVM();
 
 
     }

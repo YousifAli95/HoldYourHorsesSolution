@@ -19,14 +19,19 @@ namespace HoldYourHorses.Controllers
         [HttpGet("index")]
         public async Task<IActionResult> IndexAsync(string search)
         {
-            IndexVM model = await _shopService.GetIndexVMAsync(search);
+            IndexVM model = await _shopService.GetIndexVM(search);
             return View(model);
         }
 
         [HttpGet("article/{articleNr}")]
         public IActionResult ArticleDetails(int articleNr)
         {
-            ArticleDetailsVM model = _shopService.GetArticleDetailsVM(articleNr);
+
+            var model = _shopService.GetArticleDetailsVM(articleNr);
+
+            if (model == null)
+                return BadRequest("Article is not found");
+
             return View(model);
         }
 
@@ -37,12 +42,12 @@ namespace HoldYourHorses.Controllers
         }
 
         [HttpPost("checkout")]
-        public IActionResult Checkout(CheckoutVM model)
+        public async Task<IActionResult> Checkout(CheckoutVM model)
         {
             if (!ModelState.IsValid)
                 return View();
 
-            _shopService.SaveOrder(model);
+            await _shopService.SaveOrder(model);
             _ApiService.ClearCart();
             return RedirectToAction(nameof(OrderConfirmation));
         }
@@ -55,9 +60,9 @@ namespace HoldYourHorses.Controllers
         }
 
         [HttpGet("shopping-cart")]
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCart()
         {
-            ShoppingCartVM[] model = _shopService.GetShoppingCartVM();
+            ShoppingCartVM[] model = await _shopService.GetShoppingCartVM();
             return View(model);
         }
 
@@ -70,7 +75,7 @@ namespace HoldYourHorses.Controllers
         [HttpGet("compare")]
         public async Task<IActionResult> CompareAsync()
         {
-            CompareVM[] model = await _shopService.GetCompareVMAsync();
+            CompareVM[] model = await _shopService.GetCompareVM();
             return View(model);
         }
     }
