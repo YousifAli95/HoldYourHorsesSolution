@@ -16,7 +16,7 @@
         {
             <div class="order-container">
                 @{
-                    var orderPrice = ShopUtils.FormatPrice(order.OrderLines.Sum(o => o.Price));
+                    var orderPrice = ShopUtils.FormatPrice(order.OrderLines.Sum(o => o.Price * o.Amount));
                 }
                 <div class="plus-title-container">
                     <h2 class="order-title">
