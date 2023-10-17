@@ -16,7 +16,8 @@
     text-align: center;
 }
 
-#email-confirmation-p{
+.email-confirmation-p{
     width: 100%;
     word-break:break-word;
+    max-width: 60rem;
 }
