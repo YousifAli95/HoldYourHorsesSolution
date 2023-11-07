@@ -202,17 +202,15 @@ function showHideFilter() {
     const listItems = filterElement.children;
 
     for (var i = 1; i < listItems.length; i++) {
+        console.log(listItems[i]);
         if (isShown) {
             listItems[i].style.display = "none";
-        }
-        else {
-            setTimeout(
-                () =>
-                    a.style.display = "block"
-                ,
-                300,
-                listItems[i]
-            );
+        } else {
+            (function (index) {
+                setTimeout(() => {
+                    listItems[index].style.display = "block";
+                }, 300);
+            })(i);
         }
     }
 
