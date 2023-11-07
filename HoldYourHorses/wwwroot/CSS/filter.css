@@ -231,3 +231,11 @@ input::-webkit-inner-spin-button {
     width: auto;
     fill: var(--navbar-logos);
 }
+
+
+@media screen and (max-height: 730px) {
+    .filter button {
+        font-size: 1.5rem;
+        height: 5.5rem;
+    }
+}
