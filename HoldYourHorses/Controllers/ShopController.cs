@@ -41,6 +41,7 @@ namespace HoldYourHorses.Controllers
             return View();
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout(CheckoutVM model)
         {
