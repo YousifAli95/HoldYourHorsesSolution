@@ -262,5 +262,22 @@ namespace HoldYourHorses.Services.Implementations
             // Return an array of CompareVM representing articles for comparison
             return model;
         }
+
+        public int GetShoppingCartCount()
+        {
+            // Gets a JSON string containing the shopping cart information
+            var shoppingCartJson = _accessor.HttpContext.Request.Cookies[_shoppingCart];
+
+            if (string.IsNullOrEmpty(shoppingCartJson))
+            {
+                return 0;
+            }
+
+            // Deserialize the shoppingCartJson into ShoppingCartDTO
+            var products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(shoppingCartJson);
+
+            return products.Count();
+        }
+
     }
 }

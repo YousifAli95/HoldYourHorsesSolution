@@ -18,6 +18,8 @@ namespace HoldYourHorses.Services.Interfaces
 
         Task<CompareVM[]> GetCompareVM();
 
+        int GetShoppingCartCount();
+
 
     }
 }

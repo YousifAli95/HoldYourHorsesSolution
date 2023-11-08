@@ -38,6 +38,13 @@ namespace HoldYourHorses.Controllers
         [HttpGet("checkout")]
         public IActionResult Checkout()
         {
+            int ShoppingCartCount = _shopService.GetShoppingCartCount();
+
+            if (ShoppingCartCount < 1)
+            {
+                return RedirectToAction(nameof(ShoppingCart));
+            }
+
             return View();
         }
 
