@@ -17,13 +17,13 @@ namespace HoldYourHorses.Services.ServiceUtils
         public void ClearShoppingCartInCookie()
         {
             // Clear the shopping cart from all articles
-            _accessor.HttpContext.Response.Cookies.Append(_compareCookieKey, "");
+            _accessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieKey, "");
         }
 
         public void ClearCompareListInCookie()
         {
             // Clear the shopping cart list in Cookie
-            _accessor.HttpContext.Response.Cookies.Append(_shoppingCartCookieKey, "");
+            _accessor.HttpContext.Response.Cookies.Append(_compareCookieKey, "");
         }
 
 
