@@ -1,6 +1,7 @@
 ﻿using HoldYourHorses.Models.Entities;
 using HoldYourHorses.Services.DTOs;
 using HoldYourHorses.Services.Interfaces;
+using HoldYourHorses.Services.ServiceUtils;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -11,37 +12,35 @@ namespace HoldYourHorses.Services.Implementations
         readonly ShopDBContext _shopContext;
         readonly IHttpContextAccessor _accessor;
         readonly IAccountService _accountService;
-        readonly string _shoppingCart = "ShoppingCart";
-        readonly string _compareString = "compareString";
+        readonly CookieServiceUtil _cookieServiceUtil;
 
-        public ApiServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor, IAccountService accountService)
+
+        public ApiServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor, IAccountService accountService, CookieServiceUtil cookieServiceUtil)
         {
             _shopContext = shopContext;
             _accessor = accessor;
             _accountService = accountService;
+            _cookieServiceUtil = cookieServiceUtil;
         }
 
-        public void AddToCart(int articleNr, int amount)
+        public void AddArticleToShoppingCart(int articleNr, int amount)
         {
-            List<ShoppingCartDTO> shoppingCartList;
+            // Get shopping cart from cookie as a List of ShoppingCartDTO
+            List<ShoppingCartDTO> shoppingCartList = _cookieServiceUtil.GetShoppingCartFromCookie();
+
+            // Create a new ShoppingCartDTO object from the function arguments
             var shoppingCartDTO = new ShoppingCartDTO()
             {
                 ArticleNr = articleNr,
                 Amount = amount
             };
 
-            // Get shoppingCartList as a json string from cookie
-            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-
             // If shopping cart is empty
-            if (string.IsNullOrEmpty(cookieContent))
+            if (shoppingCartList.Count == 0)
                 shoppingCartList = new List<ShoppingCartDTO> { shoppingCartDTO };
 
             else
             {
-                // Convert the cookie string to a shoppingCartList
-                shoppingCartList = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
-
                 // Check if article already exists in the shopping cart
                 var article = shoppingCartList.SingleOrDefault(p => p.ArticleNr == articleNr);
                 if (article == null)
@@ -51,115 +50,85 @@ namespace HoldYourHorses.Services.Implementations
                     article.Amount += amount;
             }
 
-            // Save the updated shoppingCartList in cookie
-            string json = JsonSerializer.Serialize(shoppingCartList);
-            _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
+            // Save the the updated shopping cart in Cookie
+            _cookieServiceUtil.SaveShoppingCartInCookie(shoppingCartList);
         }
 
-        public void RemoveItemFromShoppingCart(int articleNr)
+        public void RemoveArticleFromShoppingCart(int articleNr)
         {
-            // Get shoppingCartList as a json string from cookie
-            var cookieString = _accessor.HttpContext.Request.Cookies[_shoppingCart];
+            // Get shopping cart from cookie as a List of ShoppingCartDTO
+            List<ShoppingCartDTO> shoppingCartList = _cookieServiceUtil.GetShoppingCartFromCookie();
 
-            if (!string.IsNullOrEmpty(cookieString))
+            // If List is not empty 
+            if (shoppingCartList.Count == 0)
+                throw new BadHttpRequestException("ArticleNr not found");
+
+            // Check if article that is going to be deleted is in the shopping cart already
+            var itemToBeDeleted = shoppingCartList.SingleOrDefault(p => p.ArticleNr == articleNr);
+            if (itemToBeDeleted == null)
             {
-                // Convert the cookie string to a shoppingCartList
-                var shoppingCartList = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieString);
-
-                // Check if article that is going to be deleted is in the shopping cart
-                var itemToBeDeleted = shoppingCartList.SingleOrDefault(p => p.ArticleNr == articleNr);
-                if (itemToBeDeleted == null)
-                {
-                    throw new BadHttpRequestException("ArticleNr not found");
-                }
-
-                // Remove the article form shopping cart and save the update shopping cart in cookie
-                shoppingCartList.Remove(itemToBeDeleted);
-                string json = JsonSerializer.Serialize(shoppingCartList);
-                _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, json);
+                throw new BadHttpRequestException("ArticleNr not found");
             }
+
+            // If the to be deleted article is in the list, remove the article from the shopping cart
+            shoppingCartList.Remove(itemToBeDeleted);
+
+            // Save the the updated shopping cart in Cookie
+            _cookieServiceUtil.SaveShoppingCartInCookie(shoppingCartList);
         }
 
-        public void ClearCart()
+        public void ClearShoppingCart()
         {
-            // Clear the shopping cart from all articles
-            _accessor.HttpContext.Response.Cookies.Append(_shoppingCart, "");
+            _cookieServiceUtil.ClearShoppingCartInCookie();
         }
 
         public int GetNumberOfItemsInCart()
         {
-            // Get shoppingCartList as a json string from cookie
-            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
+            // Get shopping cart from cookie as a List of ShoppingCartDTO
+            List<ShoppingCartDTO> shoppingCartList = _cookieServiceUtil.GetShoppingCartFromCookie();
 
-            if (string.IsNullOrEmpty(cookieContent))
+            // If List is empty return 0
+            if (shoppingCartList.Count == 0)
             {
                 return 0;
             }
 
-            var shoppingCart = new List<ShoppingCartDTO>();
-            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
-
-
-            return shoppingCart.Sum(o => o.Amount);
+            // Return the sum of all articles in the ShoppingCartList
+            return shoppingCartList.Sum(o => o.Amount);
         }
 
         public bool AddOrRemoveCompare(int articleNr)
         {
-            // Get compare list as a json string from cookie
-            var compareString = _accessor.HttpContext.Request.Cookies[_compareString];
+            // Get compareList from cookie
+            List<int> compareList = _cookieServiceUtil.GetCompareListFromCookie();
 
-            List<int> compareList;
-            string jsonString;
-
-            // If there is no compare list saved in cookie
-            if (string.IsNullOrEmpty(compareString))
-            {
-                // Create new list and save it in cookie
-                compareList = new List<int> { articleNr };
-                jsonString = JsonSerializer.Serialize(compareList);
-                _accessor.HttpContext.Response.Cookies.Append(_compareString, jsonString);
-                return true;
-            }
-            compareList = JsonSerializer.Deserialize<List<int>>(compareString);
             //If there is a saved compareList in cookie and it contains the articleNr
             if (compareList.Contains(articleNr))
             {
-                //If compareList contains the articleNr remove it from the list and update the saved cookie
+                //Remove the article from the list and save the update compareList cookie
                 compareList.Remove(articleNr);
-                jsonString = JsonSerializer.Serialize(compareList);
-                _accessor.HttpContext.Response.Cookies.Append(_compareString, jsonString);
+                _cookieServiceUtil.SaveCompareListInCookie(compareList);
+
+                // Return false due to removing the article
                 return false;
             }
 
-            // if compareList doesn't contain articleNr
-            // Add the the articleNr to the compare list and save the list in a cookie
+            // Add the the articleNr to the compareList and save the updated list in a cookie
             compareList.Add(articleNr);
-            jsonString = JsonSerializer.Serialize(compareList);
-            _accessor.HttpContext.Response.Cookies.Append(_compareString, jsonString);
+            _cookieServiceUtil.SaveCompareListInCookie(compareList);
+
+            // Return false due to adding the article
             return true;
         }
 
-
-        public int[] GetCompare()
+        public int[] GetCompareArticleNrArray()
         {
-            // Get compare list as a json string from cookie
-            string compareArticles = _accessor.HttpContext.Request.Cookies[_compareString];
-
-            if (!string.IsNullOrEmpty(compareArticles))
-            {
-                // If there is a compare list stored in cookie, deserialize it and return it as an array
-                int[] intValues = JsonSerializer.Deserialize<int[]>(compareArticles);
-                return intValues;
-            }
-
-            // return empty array if there is no compare list stored in cookie
-            return new int[] { };
+            return _cookieServiceUtil.GetCompareListFromCookie().ToArray();
         }
-
 
         public void RemoveAllComparisons()
         {
-            _accessor.HttpContext.Response.Cookies.Append(_compareString, "");
+            _cookieServiceUtil.RemoveAllComparisonsInCookie();
         }
 
         public async Task<bool> AddOrRemoveFavourite(int articleNr)

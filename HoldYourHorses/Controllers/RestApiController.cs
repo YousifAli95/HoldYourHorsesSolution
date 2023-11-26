@@ -25,7 +25,7 @@ namespace HoldYourHorses.Controllers
                 return BadRequest($"Invalid amount parameter. Amount must be between {minAmount + 1} and {maxAmount - 1}.");
             }
 
-            _restApiService.AddToCart(articleNr, amount);
+            _restApiService.AddArticleToShoppingCart(articleNr, amount);
             return Ok(new { message = "Shopping cart updated successfully." });
         }
 
@@ -34,7 +34,7 @@ namespace HoldYourHorses.Controllers
         {
             try
             {
-                _restApiService.RemoveItemFromShoppingCart(articleNr);
+                _restApiService.RemoveArticleFromShoppingCart(articleNr);
             }
             catch (BadHttpRequestException)
             {
@@ -47,7 +47,7 @@ namespace HoldYourHorses.Controllers
         [HttpDelete("clear-cart")]
         public IActionResult ClearCart()
         {
-            _restApiService.ClearCart();
+            _restApiService.ClearShoppingCart();
             return Ok(new { message = "Shopping Cart cleared successfully" });
 
         }
@@ -64,7 +64,7 @@ namespace HoldYourHorses.Controllers
         [HttpGet("get-compare")]
         public IActionResult GetCompare()
         {
-            var articleNrList = _restApiService.GetCompare();
+            var articleNrList = _restApiService.GetCompareArticleNrArray();
             return Ok(new { compareData = articleNrList });
         }
 

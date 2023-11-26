@@ -56,7 +56,7 @@ namespace HoldYourHorses.Controllers
                 return View();
 
             await _shopService.SaveOrder(model);
-            _ApiService.ClearCart();
+            _ApiService.ClearShoppingCart();
             return RedirectToAction(nameof(OrderConfirmation));
         }
 

@@ -125,8 +125,13 @@ namespace HoldYourHorses.Services.Implementations
             return orderHistoryVM;
         }
 
+
         public async Task<string> GetUserId()
         {
+            // Returns a null string if user is not authenticated
+            if (!_accessor.HttpContext.User.Identity.IsAuthenticated)
+                return null;
+
             // Get the currently authenticated user's username from HttpContext
             var userName = _accessor.HttpContext.User.Identity.Name;
 
@@ -138,6 +143,7 @@ namespace HoldYourHorses.Services.Implementations
 
             return userId;
         }
+
     }
 
 }

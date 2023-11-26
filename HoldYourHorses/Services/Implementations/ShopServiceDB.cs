@@ -1,10 +1,10 @@
 ﻿using HoldYourHorses.Models.Entities;
 using HoldYourHorses.Services.DTOs;
 using HoldYourHorses.Services.Interfaces;
+using HoldYourHorses.Services.ServiceUtils;
 using HoldYourHorses.ViewModels.Shop;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace HoldYourHorses.Services.Implementations
 {
@@ -14,30 +14,22 @@ namespace HoldYourHorses.Services.Implementations
         readonly IAccountService _accountService;
         readonly ITempDataDictionaryFactory _tempFactory;
         readonly IHttpContextAccessor _accessor;
-        readonly string _shoppingCart = "ShoppingCart";
+        readonly CookieServiceUtil _cookieServiceUtil;
         readonly string _sessionSearchKey = "search";
-        readonly string _compareCookieKey = "compareString";
 
-
-
-        public ShopServiceDB(ShopDBContext shopContext, IHttpContextAccessor accessor, ITempDataDictionaryFactory tempFactory, IAccountService accountService)
+        public ShopServiceDB(ShopDBContext shopContext, ITempDataDictionaryFactory tempFactory, IAccountService accountService, CookieServiceUtil cookieServiceUtil, IHttpContextAccessor accessor)
         {
-            this._shopContext = shopContext;
-            this._accessor = accessor;
-            this._tempFactory = tempFactory;
+            _shopContext = shopContext;
+            _tempFactory = tempFactory;
             _accountService = accountService;
+            _cookieServiceUtil = cookieServiceUtil;
+            _accessor = accessor;
         }
 
         public async Task SaveOrder(CheckoutVM model)
         {
             Order order;
-            string? userId = null;
-
-            // If User is logged in get userId
-            if (_accessor.HttpContext.User.Identity.IsAuthenticated)
-            {
-                userId = await _accountService.GetUserId();
-            }
+            string? userId = await _accountService.GetUserId();
 
             // Map the data from the viewmodel to the Order object
             order = new Order
@@ -71,11 +63,7 @@ namespace HoldYourHorses.Services.Implementations
 
         public void AddOrderLines(int orderId)
         {
-            List<ShoppingCartDTO> shoppingCart;
-
-            // Get the shopping cart items as JSON string and deserialize them as a list of ShoppingCartDTO
-            var cookieContent = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-            shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(cookieContent);
+            List<ShoppingCartDTO> shoppingCart = _cookieServiceUtil.GetShoppingCartFromCookie();
 
             foreach (var item in shoppingCart)
             {
@@ -104,8 +92,7 @@ namespace HoldYourHorses.Services.Implementations
             }
         }
 
-
-        public ArticleDetailsVM GetArticleDetailsVM(int articleNr)
+        public ArticleDetailsVM? GetArticleDetailsVM(int articleNr)
         {
             // Returns an ArticleDetailsVM containing all the information needed for the articles view
             return _shopContext.Articles
@@ -139,31 +126,25 @@ namespace HoldYourHorses.Services.Implementations
 
         public async Task<ShoppingCartVM[]> GetShoppingCartVM()
         {
+            // Initialize a list to store ShoppingCartVM objects
             var model = new List<ShoppingCartVM>();
 
-            // Gets a JSON string containing the shopping cart information
-            var shoppingCartJson = _accessor.HttpContext.Request.Cookies[_shoppingCart];
+            // Retrieve the shopping cart items as a List and extract the article numbers
+            var shoppingCart = _cookieServiceUtil.GetShoppingCartFromCookie();
+            var articleNumbers = shoppingCart.Select(p => p.ArticleNr);
 
-            if (string.IsNullOrEmpty(shoppingCartJson))
-            {
-                // Return an empty array if no shopping cart is saved in cookie
-                return model.ToArray();
-            }
-
-            // Deserialize the shoppingCartJson into ShoppingCartDTO
-            var products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(shoppingCartJson);
-
-            var articleNumbers = products.Select(p => p.ArticleNr);
-
-            // Get all the articles in the shopping cart form the database
+            // Retrieve article information from the database for the items in the shopping cart
             var articles = await _shopContext.Articles
                 .Where(article => articleNumbers.Contains(article.ArticleNr))
                 .ToListAsync();
 
+            // Populate the model with ShoppingCartVM objects
             foreach (var article in articles)
             {
-                // Get the amount of each prdocut from the cookie
-                var amount = products.SingleOrDefault(p => p.ArticleNr == article.ArticleNr).Amount;
+                // Retrieve the quantity of each product from the shopping cart
+                var amount = shoppingCart.SingleOrDefault(p => p.ArticleNr == article.ArticleNr)?.Amount ?? 0;
+
+                // Create a ShoppingCartVM object and add it to the model
                 model.Add(new ShoppingCartVM
                 {
                     ArticleNr = article.ArticleNr,
@@ -173,6 +154,7 @@ namespace HoldYourHorses.Services.Implementations
                 });
             }
 
+            // Convert the list of ShoppingCartVM objects to an array and return it
             return model.ToArray();
         }
 
@@ -238,11 +220,7 @@ namespace HoldYourHorses.Services.Implementations
 
         public async Task<CompareVM[]> GetCompareVM()
         {
-            // Retrieve stored comparison data from user's cookies
-            var compareString = _accessor.HttpContext.Request.Cookies[_compareCookieKey];
-
-            // Deserialize the comparison data into a list of article numbers
-            var compareList = JsonSerializer.Deserialize<List<int>>(compareString);
+            List<int> compareList = _cookieServiceUtil.GetCompareListFromCookie();
 
             // Query the database to fetch article details for comparison based on the article numbers
             var model = await _shopContext.Articles
@@ -265,18 +243,7 @@ namespace HoldYourHorses.Services.Implementations
 
         public int GetShoppingCartCount()
         {
-            // Gets a JSON string containing the shopping cart information
-            var shoppingCartJson = _accessor.HttpContext.Request.Cookies[_shoppingCart];
-
-            if (string.IsNullOrEmpty(shoppingCartJson))
-            {
-                return 0;
-            }
-
-            // Deserialize the shoppingCartJson into ShoppingCartDTO
-            var products = JsonSerializer.Deserialize<List<ShoppingCartDTO>>(shoppingCartJson);
-
-            return products.Count();
+            return _cookieServiceUtil.GetShoppingCartCount();
         }
 
     }

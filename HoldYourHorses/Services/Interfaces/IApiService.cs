@@ -2,15 +2,15 @@
 {
     public interface IApiService
     {
-        void AddToCart(int articleNr, int amount);
-        void RemoveItemFromShoppingCart(int articleNr);
+        void AddArticleToShoppingCart(int articleNr, int amount);
+        void RemoveArticleFromShoppingCart(int articleNr);
         bool AddOrRemoveCompare(int articleNr);
-        int[] GetCompare();
+        int[] GetCompareArticleNrArray();
         void RemoveAllComparisons();
         Task<bool> AddOrRemoveFavourite(int articleNr);
         Task<string> GetFavourites();
         int GetNumberOfItemsInCart();
-        void ClearCart();
+        void ClearShoppingCart();
 
         Task<string[]> GetArticles();
 

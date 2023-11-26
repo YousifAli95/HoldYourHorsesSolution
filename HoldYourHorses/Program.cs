@@ -1,6 +1,7 @@
 using HoldYourHorses.Models.Entities;
 using HoldYourHorses.Services.Implementations;
 using HoldYourHorses.Services.Interfaces;
+using HoldYourHorses.Services.ServiceUtils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddTransient<CookieServiceUtil>();
 builder.Services.AddTransient<IShopService, ShopServiceDB>();
 builder.Services.AddTransient<IAccountService, AccountServiceDB>();
 builder.Services.AddTransient<IApiService, ApiServiceDB>();
