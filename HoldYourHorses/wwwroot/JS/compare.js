@@ -1,100 +1,112 @@
-﻿//****variables****/
-var kategori;
-var density;
-var horsepowers;
-var wood;
-var land
-var counter = 0;
-var timeFactor = 5
-//****Get selectors and add animation
-const goal = document.querySelector(".goal")
-var numberOfHorses = document.querySelector(".numberOfHorses").innerHTML
-numberOfHorses = parseInt(numberOfHorses);
-goal.style.height = (150 * numberOfHorses) + "px";
-let horses = document.querySelectorAll(".horse");
-horses.forEach((e) => {
-    intKategori = getKategori(e.dataset.kategori);
-    density = e.dataset.density;
-    horsepowers = e.dataset.horsepowers;
-    wood = e.dataset.wood;
-    intLand = getCountry(e.dataset.land);
-    let t = (intKategori * density* intLand * timeFactor) / horsepowers;
-    let child = Array.from(e.children);
-    child.forEach((c) => { //adderar animationen till bild, namn och cirkel
-        c.style.animationTimingFunction = getBezier(wood);
-        c.style.animationDuration = t + "s";
-        c.style.animationFillMode = "forwards";
+﻿//**** Variables ****/
+
+// TIME_FACTOR is a property that let us control the overall speed of all horses.
+// Higher value results in slower horses, lower value will increase the speed of the horses. 
+const TIME_FACTOR = 8; 
+
+//**** Functions ****//
+
+function setCircleText() {
+    // Get the circles where the horse finish position will be written, and sort these circles based on horse finishing position
+    const circles = Array.from(document.querySelectorAll(".circle")).sort((a, b) => {
+        // Calculate where each horse will end up in the race and if there will be any ties
+        const dataA = a.parentElement.dataset;
+        const dataB = b.parentElement.dataset;
+
+        const timeA = (getCategory(dataA.category) * dataA.density * getCountry(dataA.country) * TIME_FACTOR) / dataA.horsepowers;
+        const timeB = (getCategory(dataB.category) * dataB.density * getCountry(dataB.country) * TIME_FACTOR) / dataB.horsepowers;
+
+        const deltaTime = timeA - timeB;
+
+        dataA.tie = deltaTime === 0 ? "true" : dataA.tie;
+
+        return deltaTime;
     });
-});
-let circles = Array.from(document.querySelectorAll(".circle")).sort((a, b) => {
-    let x = a.parentElement.dataset;
-    let y = b.parentElement.dataset;
-    let rtn =
-        (getKategori(x.kategori) * x.density * getCountry(x.Country) * timeFactor) / x.horsepowers -
-        (getKategori(y.kategori) * y.density * getCountry(y.Country) * timeFactor) / y.horsepowers 
-    if (rtn === 0) {
-        x.equal = "true";
-    }
-    return rtn;
-});
-circles.forEach((e) => {
-    if (e.parentElement.dataset.equal == "true") {
-        counter;
-    } else {
-        counter++;
-    }
-    e.innerHTML = counter + ":a";
-});
 
-//****listeners****/
+    let counter = 0;
 
-//**** functions*****/
+    // Set the horse finishing position in the circle text
+    circles.forEach((circle) => {
+        const parentData = circle.parentElement.dataset;
 
-function getBezier(material) {
-    console.log(material);
-    if (material == "Ek") {
-        return "cubic-bezier(0.27, 0.56, 0, 1.02)"
-    }
-    else if (material == "Furu") {
+        // Increment only if not a tie
+        counter += parentData.tie === "true" ? 0 : 1;
 
-        return "cubic-bezier(0.74, 0.22, 0.6, 0.86"
-    }
-    else if (material == "Mahogony") {
-        return "cubic-bezier(.45, .45, .75, .75)"
-       
-    }
-    else if (material == "Gran") {
-        return "cubic-bezier(.97, -1.01, 0, .12)"
-        console.log("´gran")
-    }
-    else {
-        return "cubic-bezier(0, 0.45, 0.51, 0.82)"
-    }
+        // Set the circle text to 1:a, 2:a, 3:a etc...
+        circle.innerHTML = `${counter}:a`;
+    });
 }
 
-function getKategori(kategori) {
-    if (kategori == "Sport") {
-        return 0.7;
+function setGoalHeight() {
+    // Set the height of the goal depending on how many horses there are in the race
+    const goal = document.querySelector(".goal");
+    const numberOfHorses = parseInt(document.querySelectorAll(".box").length);
+    const GOAL_HEIGHT_PER_HORSE_PX = 150;
 
-    }
-    else if (kategori == "Fritid") {
-        return 1
-    }
-    else if (kategori == "Barn") {
-        return 1.3
-    }
-    else { return (1.1) }
+    goal.style.height = `${GOAL_HEIGHT_PER_HORSE_PX * numberOfHorses}px`;
 }
-function getCountry(Country) {
-    if (kategori == "Sverige") {
-        return 0.7;
 
-    }
-    else if (kategori == "Norge") {
-        return 1
-    }
-    else if (kategori == "Danmark") {
-        return 1.3
-    }
-    else { return (1.1) }
+function setRacingAnimation() {
+    const horses = document.querySelectorAll(".horse");
+
+    horses.forEach((horse) => {
+        // Get horse properties from HTML code
+        const { category, density, horsepowers, wood, country } = horse.dataset;
+
+        // Get int representation of these properties
+        const intCategory = getCategory(category);
+        const intCountry = getCountry(country);
+
+        // Calculate the time needed to finish the race for each horse
+        const t = (intCategory * density * intCountry * TIME_FACTOR) / horsepowers;
+
+        // Set animation properties
+        Array.from(horse.children).forEach((child) => {
+            const style = child.style;
+            style.animationTimingFunction = getBezierFromMaterial(wood);
+            style.animationDuration = `${t}s`;
+            style.animationFillMode = "forwards";
+        });
+    });
 }
+
+function getBezierFromMaterial(material) {
+    const materialMap = {
+        "Ek": "cubic-bezier(0.27, 0.56, 0, 1.02)",
+        "Furu": "cubic-bezier(0.74, 0.22, 0.6, 0.86)",
+        "Mahogony": "cubic-bezier(0.45, 0.45, 0.75, 0.75)",
+        "Gran": "cubic-bezier(0.97, -1.01, 0, 0.12)"
+    };
+
+    return materialMap[material] || "cubic-bezier(0, 0.45, 0.51, 0.82)";
+}
+
+function getCategory(category) {
+    const categoryMap = {
+        "Sport": 0.7,
+        "Fritid": 1,
+        "Barn": 1.3
+    };
+
+    return categoryMap[category] || 1.1; // Default to 1.1 if kategori is not found
+}
+
+function getCountry(country) {
+    const countryMap = {
+        "Sverige": 0.7,
+        "Norge": 1,
+        "Danmark": 1.3
+    };
+
+    return countryMap[country] || 1.1; // Default to 1.1 if country is not found
+}
+
+
+//**** Code starts here **** //
+
+setGoalHeight();
+setRacingAnimation();
+setCircleText();
+
+
+

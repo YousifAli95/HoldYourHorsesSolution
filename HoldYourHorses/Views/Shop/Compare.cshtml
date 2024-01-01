@@ -1,27 +1,26 @@
 ﻿@model CompareVM[]
- @section CSS{
- <link rel="stylesheet" href="~/CSS/compare.css">
- }
-  @section JS{
- <script src="~/JS/compare.js" defer></script>
- }
- <div class="race-container">
-    <div class="race">
-      <div class="goal"></div>
-      @foreach (var item in Model)
-    {
-         <div data-land="@item.Country" data-kategori="@item.Category" data-density="@item.WoodDensity" data-horsepowers="@item.HorsePowers" data-wood="@item.Material"  data-equal="" id="div1" class="horse">
-        <div class="circle"></div>
-        <p class="p-name">@item.ArticleName</p>
-        <img src="@ShopUtils.GetPictureUrl(item.ArticleName)"
-          alt=""
-          id="a1"
-          class="box"
-        />
 
+@section CSS{
+    <link rel="stylesheet" href="~/CSS/compare.css">
+ }
+
+@section JS{
+    <script src="~/JS/compare.js" defer></script>
+ }
+
+<div class="race-container">
+    <div class="race">
+        <div class="goal"></div>
+        @foreach (var item in Model)
+        {
+            <div data-land="@item.Country" data-category="@item.Category" data-density="@item.WoodDensity" data-horsepowers="@item.HorsePowers" data-wood="@item.Material" data-tie="" class="horse">
+                <div class="circle"></div>
+                <p class="p-name">@item.ArticleName</p>
+                <img src="@ShopUtils.GetPictureUrl(item.ArticleName)"
+                 alt="@item.ArticleName"
+                 class="box" />
+            </div>
+        }
     </div>
-    }
-     
-</div>
-<div style="display:none" class="numberOfHorses">@Model.Count()</div>
+    <div style="display:none" class="numberOfHorses">@Model.Count()</div>
 </div>
