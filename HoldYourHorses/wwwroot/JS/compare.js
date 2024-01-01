@@ -13,10 +13,7 @@ function setCircleText() {
         const dataA = a.parentElement.dataset;
         const dataB = b.parentElement.dataset;
 
-        const timeA = (getCategory(dataA.category) * dataA.density * getCountry(dataA.country) * TIME_FACTOR) / dataA.horsepowers;
-        const timeB = (getCategory(dataB.category) * dataB.density * getCountry(dataB.country) * TIME_FACTOR) / dataB.horsepowers;
-
-        const deltaTime = timeA - timeB;
+        const deltaTime = parseFloat(dataA.time) - parseFloat(dataB.time);
 
         dataA.tie = deltaTime === 0 ? "true" : dataA.tie;
 
@@ -59,6 +56,7 @@ function setRacingAnimation() {
 
         // Calculate the time needed to finish the race for each horse
         const t = (intCategory * density * intCountry * TIME_FACTOR) / horsepowers;
+        horse.dataset.time = t;
 
         // Set animation properties
         Array.from(horse.children).forEach((child) => {
