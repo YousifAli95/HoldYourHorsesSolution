@@ -55,7 +55,7 @@ footer {
 
 .article-card {
     width: 25rem;
-    padding-bottom: 5rem;
+    padding-bottom: 1rem;
     box-shadow: rgba(0, 0, 0, 0.3) 0rem 0.25rem 1rem;
     border-radius: 1rem;
     background: white;
@@ -68,6 +68,7 @@ footer {
     .card-div:hover {
         scale: 1.1;
     }
+
 
 .card-container a {
     color: black;
@@ -84,47 +85,41 @@ footer {
 }
 
 .price {
-    position: absolute;
-    display: inline-block;
+    display: flex;
+    justify-content: start;
+    align-items: center;
     height: 4rem;
     width: 9rem;
     background: var(--price-tag);
     color: white;
     font-size: 1.5rem;
+    padding-left: 1rem;
 }
 
 .arrow-div {
     position: relative;
     margin: 0.5rem;
+    display: flex;
 }
 
 .arrow-right {
-    position: absolute;
-    margin-left: 9rem;
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-top: 2rem solid transparent;
-    border-bottom: 2rem solid transparent;
-    border-left: 2rem solid var(--price-tag);
+    height: 4rem;
+    fill: var(--price-tag);
+    transform: scaleX(-1) translate(1px);
 }
 
-.price-span {
-    position: absolute;
-    display: inline-block;
-    top: 50%;
-    left: 30%;
-    transform: translate( -30%, -50% );
+#price-name-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-#price-name-container{
-    margin-left: 1rem;
-}
-
-.name {
+.article-name {
     font-size: 1.8rem;
     margin: 0.5rem;
     overflow-wrap: break-word;
+    margin-left: 1rem;
 }
 
 #hamburger {
@@ -208,7 +203,7 @@ footer {
     text-align: center;
 }
 
-.svg-compare-fill{
+.svg-compare-fill {
     fill: var(--navbar-logos);
 }
 
@@ -219,11 +214,11 @@ footer {
     box-sizing: border-box;
 }
 
-    .main-div select:hover,
-    .main-div select:focus {
-        outline: 0.3rem solid var(--navbar-logos);
-        outline-offset: 0.4rem;
-    }
+.main-div select:hover,
+.main-div select:focus {
+    outline: 0.3rem solid var(--navbar-logos);
+    outline-offset: 0.4rem;
+}
 
 @media (max-width: 800px) {
     .article-card img {
@@ -237,19 +232,21 @@ footer {
         min-width: 100%;
     }
 
-    .main-div{
+    .main-div {
         margin: 0 1.5rem;
     }
 
-    .main-div-closed{
+    .main-div-closed {
         display: none;
     }
-    .article-card{
+
+    .article-card {
         width: 15rem;
     }
-    .article-card  img{
-        width: 15rem;
-    }
+
+        .article-card img {
+            width: 15rem;
+        }
 
     .compare-select * {
         width: 20rem !important;

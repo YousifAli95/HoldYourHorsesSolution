@@ -16,10 +16,12 @@
                 <img src="@ShopUtils.GetPictureUrl(card.ArticleName)"
                  alt="@card.ArticleName" />
                 <div id="price-name-container">
-                    <p class="name">@card.ArticleName</p>
+                    <p class="article-name">@card.ArticleName</p>
                     <div class="arrow-div">
                         <div class="price"><span class="price-span"> @ShopUtils.FormatPrice(card.Price) kr</span></div>
-                        <div class="arrow-right"></div>
+                        <svg class="arrow-right" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="0,100 100,200 100,0" />
+                        </svg>
                     </div>
                 </div>
             </div>
